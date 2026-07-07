@@ -6,6 +6,9 @@ import qualityRoutes from '@modules/quality/quality.routes.js';
 import paymentRoutes from '@modules/payment/payment.routes.js';
 import loanRoutes from '@modules/loan/loan.routes.js';
 import shareRoutes from '@modules/share/share.routes.js';
+import inventoryRoutes from '@modules/inventory/inventory.routes.js';
+import supplierRoutes from '@modules/supplier/supplier.routes.js';
+import purchaseOrderRoutes from '@modules/purchase-order/purchase-order.routes.js';
 import config from '@config/env.js';
 
 const router = Router();
@@ -19,5 +22,8 @@ router.use(`/api/${apiVersion}/quality-tests`, qualityRoutes);
 router.use(`/api/${apiVersion}/payments`, paymentRoutes);
 router.use(`/api/${apiVersion}/loans`, loanRoutes);
 router.use(`/api/${apiVersion}/shares`, shareRoutes);
+router.use(`/api/${apiVersion}/inventory`, inventoryRoutes);
+router.use(`/api/${apiVersion}/suppliers`, supplierRoutes);
+router.use(`/api/${apiVersion}/purchase-orders`, purchaseOrderRoutes);
 
 export default router;
