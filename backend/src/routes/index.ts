@@ -9,6 +9,9 @@ import shareRoutes from '@modules/share/share.routes.js';
 import inventoryRoutes from '@modules/inventory/inventory.routes.js';
 import supplierRoutes from '@modules/supplier/supplier.routes.js';
 import purchaseOrderRoutes from '@modules/purchase-order/purchase-order.routes.js';
+import customerRoutes from '@modules/customer/customer.routes.js';
+import vehicleRoutes from '@modules/vehicle/vehicle.routes.js';
+import employeeRoutes from '@modules/employee/employee.routes.js';
 import config from '@config/env.js';
 
 const router = Router();
@@ -25,5 +28,8 @@ router.use(`/api/${apiVersion}/shares`, shareRoutes);
 router.use(`/api/${apiVersion}/inventory`, inventoryRoutes);
 router.use(`/api/${apiVersion}/suppliers`, supplierRoutes);
 router.use(`/api/${apiVersion}/purchase-orders`, purchaseOrderRoutes);
+router.use(`/api/${apiVersion}/customers`, customerRoutes);
+router.use(`/api/${apiVersion}/vehicles`, vehicleRoutes);
+router.use(`/api/${apiVersion}/employees`, employeeRoutes);
 
 export default router;
