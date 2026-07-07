@@ -14,6 +14,7 @@ import vehicleRoutes from '@modules/vehicle/vehicle.routes.js';
 import employeeRoutes from '@modules/employee/employee.routes.js';
 import meetingRoutes from '@modules/meeting/meeting.routes.js';
 import dashboardRoutes from '@modules/dashboard/dashboard.routes.js';
+import superAdminRoutes from '@modules/super-admin/super-admin.routes.js';
 import config from '@config/env.js';
 
 const router = Router();
@@ -22,6 +23,7 @@ const apiVersion = config.apiVersion;
 
 router.use(`/api/${apiVersion}/auth`, authRoutes);
 router.use(`/api/${apiVersion}/dashboard`, dashboardRoutes);
+router.use(`/api/${apiVersion}/super-admin`, superAdminRoutes);
 router.use(`/api/${apiVersion}/farmers`, farmerRoutes);
 router.use(`/api/${apiVersion}/milk-collections`, milkCollectionRoutes);
 router.use(`/api/${apiVersion}/quality-tests`, qualityRoutes);
