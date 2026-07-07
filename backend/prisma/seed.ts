@@ -9,6 +9,7 @@ async function main() {
     update: {},
     create: {
       name: 'Default Cooperative',
+      slug: 'default',
       subdomain: 'default',
       isActive: true,
     },
@@ -17,7 +18,12 @@ async function main() {
   const hashedPassword = await bcrypt.hash('SuperAdmin@123', 12);
 
   await prisma.user.upsert({
-    where: { email: 'superadmin@dairycoop.com' },
+    where: { 
+      tenantId_email: {
+        tenantId: defaultTenant.id,
+        email: 'superadmin@dairycoop.com'
+      }
+    },
     update: {},
     create: {
       email: 'superadmin@dairycoop.com',
@@ -34,7 +40,12 @@ async function main() {
   const adminPassword = await bcrypt.hash('Admin@123', 12);
 
   await prisma.user.upsert({
-    where: { email: 'admin@dairycoop.com' },
+    where: { 
+      tenantId_email: {
+        tenantId: defaultTenant.id,
+        email: 'admin@dairycoop.com'
+      }
+    },
     update: {},
     create: {
       email: 'admin@dairycoop.com',

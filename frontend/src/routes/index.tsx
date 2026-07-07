@@ -55,6 +55,119 @@ export const router = createBrowserRouter([
     path: '/',
     element: <Navigate to="/dashboard" replace />,
   },
+  // Redirect old routes to dashboard routes
+  {
+    path: '/farmers',
+    element: <Navigate to="/dashboard/farmers" replace />,
+  },
+  {
+    path: '/farmers/*',
+    element: <Navigate to="/dashboard/farmers" replace />,
+  },
+  {
+    path: '/milk-collection',
+    element: <Navigate to="/dashboard/milk-collection" replace />,
+  },
+  {
+    path: '/milk-collection/*',
+    element: <Navigate to="/dashboard/milk-collection" replace />,
+  },
+  {
+    path: '/quality',
+    element: <Navigate to="/dashboard/quality" replace />,
+  },
+  {
+    path: '/quality/*',
+    element: <Navigate to="/dashboard/quality" replace />,
+  },
+  {
+    path: '/payments',
+    element: <Navigate to="/dashboard/payments" replace />,
+  },
+  {
+    path: '/payments/*',
+    element: <Navigate to="/dashboard/payments" replace />,
+  },
+  {
+    path: '/loans',
+    element: <Navigate to="/dashboard/loans" replace />,
+  },
+  {
+    path: '/loans/*',
+    element: <Navigate to="/dashboard/loans" replace />,
+  },
+  {
+    path: '/shares',
+    element: <Navigate to="/dashboard/shares" replace />,
+  },
+  {
+    path: '/shares/*',
+    element: <Navigate to="/dashboard/shares" replace />,
+  },
+  {
+    path: '/veterinary',
+    element: <Navigate to="/dashboard/veterinary" replace />,
+  },
+  {
+    path: '/veterinary/*',
+    element: <Navigate to="/dashboard/veterinary" replace />,
+  },
+  {
+    path: '/inventory',
+    element: <Navigate to="/dashboard/inventory" replace />,
+  },
+  {
+    path: '/inventory/*',
+    element: <Navigate to="/dashboard/inventory" replace />,
+  },
+  {
+    path: '/procurement',
+    element: <Navigate to="/dashboard/procurement" replace />,
+  },
+  {
+    path: '/fleet',
+    element: <Navigate to="/dashboard/fleet" replace />,
+  },
+  {
+    path: '/hr',
+    element: <Navigate to="/dashboard/hr" replace />,
+  },
+  {
+    path: '/accounting',
+    element: <Navigate to="/dashboard/accounting" replace />,
+  },
+  {
+    path: '/customers',
+    element: <Navigate to="/dashboard/customers" replace />,
+  },
+  {
+    path: '/meetings',
+    element: <Navigate to="/dashboard/meetings" replace />,
+  },
+  {
+    path: '/reports',
+    element: <Navigate to="/dashboard/reports" replace />,
+  },
+  {
+    path: '/analytics',
+    element: <Navigate to="/dashboard/analytics" replace />,
+  },
+  {
+    path: '/settings',
+    element: <Navigate to="/dashboard/settings" replace />,
+  },
+  {
+    path: '/profile',
+    element: <Navigate to="/dashboard/profile" replace />,
+  },
+  {
+    path: '/notifications',
+    element: <Navigate to="/dashboard/notifications" replace />,
+  },
+  {
+    path: '/search',
+    element: <Navigate to="/dashboard/search" replace />,
+  },
   // Auth Routes
   {
     path: '/login',
