@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -217,10 +217,10 @@ const InventoryListPage = () => {
       accessor: (row) => (
         <div>
           <div className="font-semibold text-gray-900 dark:text-white">
-            ₹{row.totalValue.toLocaleString()}
+            KSh {row.totalValue.toLocaleString()}
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            @ ₹{row.unitPrice}/{row.unit}
+            @ KSh {row.unitPrice}/{row.unit}
           </div>
         </div>
       ),
@@ -383,7 +383,7 @@ const InventoryListPage = () => {
               Total Inventory Value
             </p>
             <p className="mt-2 text-3xl font-bold text-blue-900 dark:text-blue-100">
-              ₹{totalValue.toLocaleString()}
+              KSh {totalValue.toLocaleString()}
             </p>
           </div>
           <CubeIcon className="h-12 w-12 text-blue-600 dark:text-blue-400 opacity-50" />

@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+﻿import { useParams, useNavigate } from 'react-router-dom';
 import {
   HiArrowLeft,
   HiPencil,
@@ -56,7 +56,7 @@ const FarmerProfilePage = () => {
       quantity: '25 L',
       fat: '4.5%',
       snf: '8.5%',
-      amount: '₹1,250',
+      amount: 'KSh 1,250',
       status: 'Accepted',
     },
     {
@@ -65,7 +65,7 @@ const FarmerProfilePage = () => {
       quantity: '22 L',
       fat: '4.2%',
       snf: '8.3%',
-      amount: '₹1,100',
+      amount: 'KSh 1,100',
       status: 'Accepted',
     },
   ];
@@ -75,9 +75,9 @@ const FarmerProfilePage = () => {
       date: '2024-01-01',
       period: 'December 2023',
       quantity: '750 L',
-      amount: '₹37,500',
-      deductions: '₹2,500',
-      netAmount: '₹35,000',
+      amount: 'KSh 37,500',
+      deductions: 'KSh 2,500',
+      netAmount: 'KSh 35,000',
       status: 'Paid',
     },
   ];
@@ -86,10 +86,10 @@ const FarmerProfilePage = () => {
     {
       loanNo: 'LN001',
       date: '2023-06-01',
-      amount: '₹50,000',
+      amount: 'KSh 50,000',
       interest: '12%',
-      emi: '₹5,000',
-      outstanding: '₹30,000',
+      emi: 'KSh 5,000',
+      outstanding: 'KSh 30,000',
       status: 'Active',
     },
   ];
@@ -152,7 +152,7 @@ const FarmerProfilePage = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InfoItem label="Number of Cattle" value={farmer.cattle} />
           <InfoItem label="Total Shares" value={farmer.totalShares} />
-          <InfoItem label="Outstanding Loan" value={`₹${farmer.outstandingLoan.toLocaleString()}`} />
+          <InfoItem label="Outstanding Loan" value={`KSh ${farmer.outstandingLoan.toLocaleString()}`} />
           <InfoItem label="Aadhar Number" value={farmer.aadharNumber} />
           <InfoItem label="PAN Number" value={farmer.panNumber || 'N/A'} />
         </div>
@@ -357,7 +357,7 @@ const FarmerProfilePage = () => {
               <StatItem label="Shares" value={farmer.totalShares} />
               <StatItem
                 label="Outstanding Loan"
-                value={`₹${farmer.outstandingLoan.toLocaleString()}`}
+                value={`KSh ${farmer.outstandingLoan.toLocaleString()}`}
               />
               <StatItem label="Member Since" value={new Date(farmer.joinDate).getFullYear()} />
             </div>

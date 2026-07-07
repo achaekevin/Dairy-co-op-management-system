@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -55,7 +55,7 @@ const GeneratePaymentPage = () => {
   useEffect(() => {
     if (formData.farmerId && formData.period) {
       // Simulate fetching milk collection data
-      const avgRate = 48; // ₹48 per liter
+      const avgRate = 48; // KSh 48 per liter
       const daysInMonth = 30;
       const avgDailyQuantity = 40;
       const estimatedQuantity = avgDailyQuantity * daysInMonth;
@@ -176,7 +176,7 @@ const GeneratePaymentPage = () => {
               </div>
               <div className="space-y-4">
                 <Input
-                  label="Total Amount (₹)"
+                  label="Total Amount (KSh )"
                   type="number"
                   step="0.01"
                   value={formData.totalAmount}
@@ -187,7 +187,7 @@ const GeneratePaymentPage = () => {
                 />
                 <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
                   <label className="block text-sm font-medium text-green-900 dark:text-green-100 mb-2">
-                    Bonus Amount (₹)
+                    Bonus Amount (KSh )
                   </label>
                   <Input
                     type="number"
@@ -206,7 +206,7 @@ const GeneratePaymentPage = () => {
                 </div>
                 <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
                   <label className="block text-sm font-medium text-red-900 dark:text-red-100 mb-2">
-                    Deduction Amount (₹)
+                    Deduction Amount (KSh )
                   </label>
                   <Input
                     type="number"
@@ -282,7 +282,7 @@ const GeneratePaymentPage = () => {
                       Base Amount
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100">
-                      ₹{parseFloat(formData.totalAmount || '0').toLocaleString()}
+                      KSh {parseFloat(formData.totalAmount || '0').toLocaleString()}
                     </span>
                   </div>
                   {parseFloat(formData.bonusAmount || '0') > 0 && (
@@ -291,7 +291,7 @@ const GeneratePaymentPage = () => {
                         Bonus
                       </span>
                       <span className="font-medium text-green-600 dark:text-green-400">
-                        +₹{parseFloat(formData.bonusAmount).toLocaleString()}
+                        +KSh {parseFloat(formData.bonusAmount).toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -301,7 +301,7 @@ const GeneratePaymentPage = () => {
                         Deduction
                       </span>
                       <span className="font-medium text-red-600 dark:text-red-400">
-                        -₹{parseFloat(formData.deductionAmount).toLocaleString()}
+                        -KSh {parseFloat(formData.deductionAmount).toLocaleString()}
                       </span>
                     </div>
                   )}
@@ -310,7 +310,7 @@ const GeneratePaymentPage = () => {
                       Net Amount
                     </span>
                     <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      ₹{netAmount.toLocaleString()}
+                      KSh {netAmount.toLocaleString()}
                     </span>
                   </div>
                 </div>

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -243,7 +243,7 @@ const VeterinaryServicesPage = () => {
       header: 'Cost',
       accessor: (row) => (
         <div className="font-semibold text-gray-900 dark:text-white">
-          ₹{row.cost.toLocaleString()}
+          KSh {row.cost.toLocaleString()}
         </div>
       ),
       align: 'right',

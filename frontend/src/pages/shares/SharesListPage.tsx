@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -99,7 +99,7 @@ const SharesListPage = () => {
   const stats = [
     {
       label: 'Total Share Capital',
-      value: '₹5,80,000',
+      value: 'KSh 5,80,000',
       change: '+8.5%',
       changeType: 'positive' as const,
       icon: CurrencyRupeeIcon,
@@ -168,7 +168,7 @@ const SharesListPage = () => {
             {row.shareCount} Shares
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
-            @ ₹{row.shareValue.toLocaleString()} each
+            @ KSh {row.shareValue.toLocaleString()} each
           </div>
         </div>
       ),
@@ -178,7 +178,7 @@ const SharesListPage = () => {
       header: 'Total Value',
       accessor: (row) => (
         <div className="font-semibold text-gray-900 dark:text-white">
-          ₹{row.totalValue.toLocaleString()}
+          KSh {row.totalValue.toLocaleString()}
         </div>
       ),
     },
@@ -378,7 +378,7 @@ const SharesListPage = () => {
               <div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">Par Value per Share</p>
                 <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
-                  ₹1,000
+                  KSh 1,000
                 </p>
               </div>
               <div>

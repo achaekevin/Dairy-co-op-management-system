@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -57,7 +57,7 @@ const AnalyticsPage = () => {
   const kpiCards = [
     {
       title: 'Total Revenue',
-      value: '₹20.4L',
+      value: 'KSh 20.4L',
       change: '+12.5%',
       trend: 'up' as const,
       description: 'vs last month',

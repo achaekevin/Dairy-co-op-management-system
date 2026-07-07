@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import { motion, AnimatePresence } from 'framer-motion';
 import { HiBell, HiCheck, HiCheckCircle, HiExclamationCircle, HiInformationCircle, HiXMark } from 'react-icons/hi2';
 import { formatRelativeTime } from '../../utils/format';
 
@@ -32,7 +32,7 @@ const NotificationPanel = ({ isOpen, onClose }: NotificationPanelProps) => {
     {
       id: '2',
       title: 'Payment Approved',
-      message: 'Monthly payment of ₹45,000 has been approved for processing',
+      message: 'Monthly payment of KSh 45,000 has been approved for processing',
       type: 'success',
       isRead: false,
       createdAt: new Date(Date.now() - 15 * 60000).toISOString(),

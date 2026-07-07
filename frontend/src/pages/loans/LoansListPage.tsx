@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -117,7 +117,7 @@ const LoansListPage = () => {
   const stats = [
     {
       label: 'Total Loans',
-      value: '₹2,95,000',
+      value: 'KSh 2,95,000',
       change: '+15.3%',
       changeType: 'positive' as const,
       icon: BanknotesIcon,
@@ -125,7 +125,7 @@ const LoansListPage = () => {
     },
     {
       label: 'Active Loans',
-      value: '₹50,000',
+      value: 'KSh 50,000',
       change: '17%',
       changeType: 'positive' as const,
       icon: CheckCircleIcon,
@@ -133,7 +133,7 @@ const LoansListPage = () => {
     },
     {
       label: 'Pending Approval',
-      value: '₹75,000',
+      value: 'KSh 75,000',
       change: '25.4%',
       changeType: 'neutral' as const,
       icon: ClockIcon,
@@ -141,7 +141,7 @@ const LoansListPage = () => {
     },
     {
       label: 'Outstanding',
-      value: '₹2,10,000',
+      value: 'KSh 2,10,000',
       change: '71.2%',
       changeType: 'neutral' as const,
       icon: CurrencyRupeeIcon,
@@ -183,7 +183,7 @@ const LoansListPage = () => {
       accessor: (row) => (
         <div>
           <div className="font-semibold text-gray-900 dark:text-gray-100">
-            ₹{row.amount.toLocaleString()}
+            KSh {row.amount.toLocaleString()}
           </div>
           <div className="text-sm text-gray-500 dark:text-gray-400">
             @ {row.interestRate}% for {row.tenure} months
@@ -196,7 +196,7 @@ const LoansListPage = () => {
       header: 'EMI',
       accessor: (row) => (
         <div className="font-medium text-gray-900 dark:text-gray-100">
-          ₹{row.emiAmount.toLocaleString()}/mo
+          KSh {row.emiAmount.toLocaleString()}/mo
         </div>
       ),
     },
@@ -206,11 +206,11 @@ const LoansListPage = () => {
       accessor: (row) => (
         <div>
           <div className="font-semibold text-red-600 dark:text-red-400">
-            ₹{row.outstandingAmount.toLocaleString()}
+            KSh {row.outstandingAmount.toLocaleString()}
           </div>
           {row.status === 'ACTIVE' && (
             <div className="text-sm text-gray-500 dark:text-gray-400">
-              Paid: ₹{row.paidAmount.toLocaleString()}
+              Paid: KSh {row.paidAmount.toLocaleString()}
             </div>
           )}
         </div>

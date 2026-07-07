@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+﻿import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   HiArrowLeft,
@@ -205,7 +205,7 @@ const CollectionDetailPage = () => {
                     Rate per Liter
                   </span>
                   <span className="text-lg font-semibold text-slate-900 dark:text-white">
-                    ₹{(collection.amount / collection.quantity).toFixed(2)}
+                    KSh {(collection.amount / collection.quantity).toFixed(2)}
                   </span>
                 </div>
               </div>
@@ -217,7 +217,7 @@ const CollectionDetailPage = () => {
                   Total Amount
                 </span>
                 <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  ₹{collection.amount.toLocaleString()}
+                  KSh {collection.amount.toLocaleString()}
                 </span>
               </div>
             </div>

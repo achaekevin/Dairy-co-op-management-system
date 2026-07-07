@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -135,7 +135,7 @@ const ShareDetailPage = () => {
                 {share.shareCount} Shares
               </h2>
               <p className="mt-1 text-gray-600 dark:text-gray-400">
-                @ ₹{share.shareValue.toLocaleString()} per share
+                @ KSh {share.shareValue.toLocaleString()} per share
               </p>
             </div>
           </div>
@@ -153,7 +153,7 @@ const ShareDetailPage = () => {
               {share.status}
             </Badge>
             <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-              Total Value: ₹{share.totalValue.toLocaleString()}
+              Total Value: KSh {share.totalValue.toLocaleString()}
             </p>
           </div>
         </div>
@@ -235,7 +235,7 @@ const ShareDetailPage = () => {
                   Par Value per Share
                 </span>
                 <span className="text-xl font-semibold text-gray-900 dark:text-white">
-                  ₹{share.shareValue.toLocaleString()}
+                  KSh {share.shareValue.toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
@@ -243,7 +243,7 @@ const ShareDetailPage = () => {
                   Total Investment
                 </span>
                 <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  ₹{share.totalValue.toLocaleString()}
+                  KSh {share.totalValue.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -365,7 +365,7 @@ const ShareDetailPage = () => {
                   </p>
                 </div>
                 <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  ₹{share.totalValue.toLocaleString()}
+                  KSh {share.totalValue.toLocaleString()}
                 </p>
               </div>
               <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
@@ -373,7 +373,7 @@ const ShareDetailPage = () => {
                   Estimated Annual Dividend
                 </p>
                 <p className="text-xl font-bold text-green-600 dark:text-green-400">
-                  ₹{Math.round(share.totalValue * 0.08).toLocaleString()}
+                  KSh {Math.round(share.totalValue * 0.08).toLocaleString()}
                 </p>
                 <p className="text-xs text-green-600 dark:text-green-400 mt-1">
                   @ 8% dividend rate

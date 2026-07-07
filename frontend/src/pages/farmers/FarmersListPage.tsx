@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -184,7 +184,7 @@ const FarmersListPage = () => {
               : 'text-green-600 dark:text-green-400'
           }`}
         >
-          ₹{row.outstandingLoan.toLocaleString()}
+          KSh {row.outstandingLoan.toLocaleString()}
         </span>
       ),
       align: 'right' as const,
@@ -302,7 +302,7 @@ const FarmersListPage = () => {
           },
           {
             label: 'Outstanding Loans',
-            value: `₹${farmers
+            value: `KSh ${farmers
               .reduce((sum, f) => sum + f.outstandingLoan, 0)
               .toLocaleString()}`,
             color: 'text-amber-600',

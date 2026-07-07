@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import {
   HiCog6Tooth,
   HiPaintBrush,
@@ -22,9 +22,9 @@ const SettingsPage = () => {
     pushNotifications: false,
     smsNotifications: true,
     language: 'en',
-    timezone: 'Asia/Kolkata',
+    timezone: 'Africa/Nairobi',
     dateFormat: 'DD/MM/YYYY',
-    currency: 'INR',
+    currency: 'KES',
   });
 
   const handleToggle = (key: string) => {
@@ -83,8 +83,9 @@ const SettingsPage = () => {
               value={settings.timezone}
               onChange={(e) => handleChange('timezone', e.target.value)}
               options={[
-                { value: 'Asia/Kolkata', label: 'India (IST)' },
-                { value: 'Asia/Dubai', label: 'Dubai (GST)' },
+                { value: 'Africa/Nairobi', label: 'Kenya (EAT)' },
+                { value: 'UTC', label: 'UTC' },
+                { value: 'Africa/Johannesburg', label: 'South Africa (SAST)' },
               ]}
             />
           </FormField>
@@ -104,8 +105,9 @@ const SettingsPage = () => {
               value={settings.currency}
               onChange={(e) => handleChange('currency', e.target.value)}
               options={[
-                { value: 'INR', label: 'Indian Rupee (₹)' },
+                { value: 'KES', label: 'Kenyan Shilling (KSh)' },
                 { value: 'USD', label: 'US Dollar ($)' },
+                { value: 'EUR', label: 'Euro (€)' },
               ]}
             />
           </FormField>

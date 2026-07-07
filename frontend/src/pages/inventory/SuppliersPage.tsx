@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -218,7 +218,7 @@ const SuppliersPage = () => {
       accessor: (row) => (
         <div>
           <div className="text-sm text-gray-900 dark:text-white">
-            Limit: ₹{row.creditLimit.toLocaleString()}
+            Limit: KSh {row.creditLimit.toLocaleString()}
           </div>
           <div className="text-xs text-gray-500 dark:text-gray-400">
             {row.creditDays} days
@@ -238,7 +238,7 @@ const SuppliersPage = () => {
                 : 'text-green-600'
             }`}
           >
-            ₹{row.outstandingAmount.toLocaleString()}
+            KSh {row.outstandingAmount.toLocaleString()}
           </div>
         </div>
       ),
@@ -249,7 +249,7 @@ const SuppliersPage = () => {
       header: 'Total Purchases',
       accessor: (row) => (
         <div className="text-right font-medium text-gray-900 dark:text-white">
-          ₹{row.totalPurchases.toLocaleString()}
+          KSh {row.totalPurchases.toLocaleString()}
         </div>
       ),
       align: 'right',
@@ -384,7 +384,7 @@ const SuppliersPage = () => {
               Total Purchases
             </p>
             <p className="mt-2 text-3xl font-bold text-blue-900 dark:text-blue-100">
-              ₹{totalPurchases.toLocaleString()}
+              KSh {totalPurchases.toLocaleString()}
             </p>
           </div>
         </Card>
@@ -394,7 +394,7 @@ const SuppliersPage = () => {
               Total Outstanding
             </p>
             <p className="mt-2 text-3xl font-bold text-red-900 dark:text-red-100">
-              ₹{totalOutstanding.toLocaleString()}
+              KSh {totalOutstanding.toLocaleString()}
             </p>
           </div>
         </Card>

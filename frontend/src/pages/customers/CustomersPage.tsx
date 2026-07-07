@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -88,7 +88,7 @@ const CustomersPage = () => {
     { label: 'Total Customers', value: customers.length.toString(), icon: UserGroupIcon, color: 'blue' },
     { label: 'Active', value: customers.filter(c => c.status === 'ACTIVE').length.toString(), icon: CheckCircleIcon, color: 'green' },
     { label: 'Inactive', value: customers.filter(c => c.status === 'INACTIVE' || c.status === 'BLOCKED').length.toString(), icon: XCircleIcon, color: 'red' },
-    { label: 'Outstanding', value: `₹${customers.reduce((sum, c) => sum + c.outstandingAmount, 0).toLocaleString()}`, icon: CurrencyRupeeIcon, color: 'yellow' },
+    { label: 'Outstanding', value: `KSh ${customers.reduce((sum, c) => sum + c.outstandingAmount, 0).toLocaleString()}`, icon: CurrencyRupeeIcon, color: 'yellow' },
   ];
 
   const totalSales = customers.reduce((sum, c) => sum + c.totalSales, 0);
@@ -127,7 +127,7 @@ const CustomersPage = () => {
     {
       id: 'credit',
       header: 'Credit Limit',
-      accessor: (row) => `₹${row.creditLimit.toLocaleString()}`,
+      accessor: (row) => `KSh ${row.creditLimit.toLocaleString()}`,
       align: 'right',
     },
     {
@@ -135,7 +135,7 @@ const CustomersPage = () => {
       header: 'Outstanding',
       accessor: (row) => (
         <div className={`font-semibold text-right ${row.outstandingAmount > 0 ? 'text-red-600' : 'text-green-600'}`}>
-          ₹{row.outstandingAmount.toLocaleString()}
+          KSh {row.outstandingAmount.toLocaleString()}
         </div>
       ),
       align: 'right',
@@ -143,7 +143,7 @@ const CustomersPage = () => {
     {
       id: 'totalSales',
       header: 'Total Sales',
-      accessor: (row) => `₹${row.totalSales.toLocaleString()}`,
+      accessor: (row) => `KSh ${row.totalSales.toLocaleString()}`,
       align: 'right',
     },
     {
@@ -199,7 +199,7 @@ const CustomersPage = () => {
       <Card className="bg-gradient-to-r from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/20">
         <div>
           <p className="text-sm font-medium text-green-900 dark:text-green-100">Total Sales</p>
-          <p className="mt-2 text-3xl font-bold text-green-900 dark:text-green-100">₹{totalSales.toLocaleString()}</p>
+          <p className="mt-2 text-3xl font-bold text-green-900 dark:text-green-100">KSh {totalSales.toLocaleString()}</p>
         </div>
       </Card>
 

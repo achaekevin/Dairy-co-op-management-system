@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   ArrowLeftIcon,
@@ -372,19 +372,19 @@ const ServiceDetailPage = () => {
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Service Charges</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  ₹{(service.cost * 0.6).toFixed(0)}
+                  KSh {(service.cost * 0.6).toFixed(0)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Medicines</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  ₹{(service.cost * 0.3).toFixed(0)}
+                  KSh {(service.cost * 0.3).toFixed(0)}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-600 dark:text-gray-400">Visit Charges</span>
                 <span className="font-medium text-gray-900 dark:text-white">
-                  ₹{(service.cost * 0.1).toFixed(0)}
+                  KSh {(service.cost * 0.1).toFixed(0)}
                 </span>
               </div>
               <div className="border-t border-gray-200 dark:border-gray-700 pt-2">
@@ -393,7 +393,7 @@ const ServiceDetailPage = () => {
                     Total Cost
                   </span>
                   <span className="text-xl font-bold text-gray-900 dark:text-white">
-                    ₹{service.cost.toLocaleString()}
+                    KSh {service.cost.toLocaleString()}
                   </span>
                 </div>
               </div>

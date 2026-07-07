@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -379,7 +379,7 @@ const BookServicePage = () => {
                     Service Charges
                   </span>
                   <span className="font-medium text-gray-900 dark:text-white">
-                    ₹
+                    KSh 
                     {serviceType === 'CHECKUP'
                       ? '300'
                       : serviceType === 'VACCINATION'
@@ -400,13 +400,13 @@ const BookServicePage = () => {
                     Visit Charges
                   </span>
                   <span className="font-medium text-gray-900 dark:text-white">
-                    ₹100
+                    KSh 100
                   </span>
                 </div>
                 {priority === 'EMERGENCY' && (
                   <div className="flex justify-between text-red-600">
                     <span>Emergency Charges</span>
-                    <span className="font-medium">₹500</span>
+                    <span className="font-medium">KSh 500</span>
                   </div>
                 )}
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-2 mt-2">
@@ -415,7 +415,7 @@ const BookServicePage = () => {
                       Total Estimate
                     </span>
                     <span className="text-xl font-bold text-gray-900 dark:text-white">
-                      ₹
+                      KSh 
                       {serviceType
                         ? parseInt(
                             serviceType === 'CHECKUP'

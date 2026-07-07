@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import {
   HiMagnifyingGlass,
   HiUserCircle,
@@ -51,7 +51,7 @@ const SearchPage = () => {
           id: '2',
           type: 'payment',
           title: 'Payment #PAY-2024-001',
-          description: 'Farmer: Jane Smith • Amount: ₹45,000',
+          description: 'Farmer: Jane Smith • Amount: KSh 45,000',
           metadata: { status: 'Paid', date: '15 Jan 2024' },
           url: '/payments/1',
         },
@@ -75,8 +75,8 @@ const SearchPage = () => {
           id: '5',
           type: 'loan',
           title: 'Loan #LN-2024-001',
-          description: 'Farmer: John Doe • Amount: ₹50,000',
-          metadata: { status: 'Active', emi: '₹5,000' },
+          description: 'Farmer: John Doe • Amount: KSh 50,000',
+          metadata: { status: 'Active', emi: 'KSh 5,000' },
           url: '/loans/1',
         },
       ];

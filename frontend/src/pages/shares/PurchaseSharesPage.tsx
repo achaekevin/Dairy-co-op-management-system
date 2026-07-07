@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -135,7 +135,7 @@ const PurchaseSharesPage = () => {
                           <span className="font-semibold">
                             {selectedFarmer.currentShares} shares
                           </span>{' '}
-                          worth ₹
+                          worth KSh 
                           {(selectedFarmer.currentShares * shareValue).toLocaleString()}
                         </p>
                         <p className="text-xs mt-1">
@@ -160,7 +160,7 @@ const PurchaseSharesPage = () => {
                       Par Value per Share
                     </span>
                     <span className="text-xl font-bold text-gray-900 dark:text-white">
-                      ₹{shareValue.toLocaleString()}
+                      KSh {shareValue.toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -211,7 +211,7 @@ const PurchaseSharesPage = () => {
                     deducted from farmer's monthly milk payments over the next 6 months.
                   </p>
                   <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-2">
-                    Monthly Deduction: ₹{Math.round(totalAmount / 6).toLocaleString()}
+                    Monthly Deduction: KSh {Math.round(totalAmount / 6).toLocaleString()}
                   </p>
                 </div>
               )}
@@ -287,7 +287,7 @@ const PurchaseSharesPage = () => {
                       Price per Share
                     </span>
                     <span className="font-semibold text-gray-900 dark:text-gray-100">
-                      ₹{shareValue.toLocaleString()}
+                      KSh {shareValue.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
@@ -307,7 +307,7 @@ const PurchaseSharesPage = () => {
                       Total Amount
                     </span>
                     <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                      ₹{totalAmount.toLocaleString()}
+                      KSh {totalAmount.toLocaleString()}
                     </span>
                   </div>
                 </div>

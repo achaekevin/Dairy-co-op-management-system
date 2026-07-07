@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { useState } from 'react';
 import StatsCard from '../../components/cards/StatsCard';
 import Card, { CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
@@ -52,14 +52,14 @@ const DashboardPage = () => {
     },
     {
       title: 'Revenue Today',
-      value: '₹4,23,890',
+      value: 'KSh 4,23,890',
       icon: <HiCurrencyRupee className="w-6 h-6" />,
       trend: { value: 12.5, isPositive: true },
       color: 'success' as const,
     },
     {
       title: 'Outstanding Loans',
-      value: '₹28,45,000',
+      value: 'KSh 28,45,000',
       icon: <HiBanknotes className="w-6 h-6" />,
       trend: { value: 3.2, isPositive: false },
       color: 'warning' as const,

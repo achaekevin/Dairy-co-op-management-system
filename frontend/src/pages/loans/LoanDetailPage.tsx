@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -210,7 +210,7 @@ const LoanDetailPage = () => {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                ₹{loan.amount.toLocaleString()}
+                KSh {loan.amount.toLocaleString()}
               </h2>
               <p className="mt-1 text-gray-600 dark:text-gray-400">
                 @ {loan.interestRate}% p.a. for {loan.tenure} months
@@ -238,7 +238,7 @@ const LoanDetailPage = () => {
               <div className="mt-2">
                 <p className="text-sm text-gray-600 dark:text-gray-400">Outstanding</p>
                 <p className="text-lg font-semibold text-red-600 dark:text-red-400">
-                  ₹{loan.outstandingAmount.toLocaleString()}
+                  KSh {loan.outstandingAmount.toLocaleString()}
                 </p>
               </div>
             )}
@@ -290,7 +290,7 @@ const LoanDetailPage = () => {
                 <div>
                   <p className="text-sm text-gray-600 dark:text-gray-400">EMI Amount</p>
                   <p className="font-medium text-gray-900 dark:text-gray-100">
-                    ₹{loan.emiAmount.toLocaleString()}/month
+                    KSh {loan.emiAmount.toLocaleString()}/month
                   </p>
                 </div>
               </div>
@@ -312,7 +312,7 @@ const LoanDetailPage = () => {
               <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <span className="text-gray-600 dark:text-gray-400">Loan Amount</span>
                 <span className="text-lg font-semibold text-gray-900 dark:text-white">
-                  ₹{loan.amount.toLocaleString()}
+                  KSh {loan.amount.toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -330,7 +330,7 @@ const LoanDetailPage = () => {
               <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                 <span className="text-gray-600 dark:text-gray-400">Total Interest</span>
                 <span className="font-medium text-orange-600 dark:text-orange-400">
-                  ₹{((loan.emiAmount * loan.tenure) - loan.amount).toLocaleString()}
+                  KSh {((loan.emiAmount * loan.tenure) - loan.amount).toLocaleString()}
                 </span>
               </div>
               <div className="flex items-center justify-between p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
@@ -338,7 +338,7 @@ const LoanDetailPage = () => {
                   Total Payable
                 </span>
                 <span className="text-xl font-bold text-blue-600 dark:text-blue-400">
-                  ₹{(loan.emiAmount * loan.tenure).toLocaleString()}
+                  KSh {(loan.emiAmount * loan.tenure).toLocaleString()}
                 </span>
               </div>
             </div>
@@ -387,13 +387,13 @@ const LoanDetailPage = () => {
                           {dayjs(emi.dueDate).format('DD MMM YYYY')}
                         </td>
                         <td className="py-3 px-4 text-right text-gray-900 dark:text-gray-100">
-                          ₹{emi.principal.toLocaleString()}
+                          KSh {emi.principal.toLocaleString()}
                         </td>
                         <td className="py-3 px-4 text-right text-gray-600 dark:text-gray-400">
-                          ₹{emi.interest.toLocaleString()}
+                          KSh {emi.interest.toLocaleString()}
                         </td>
                         <td className="py-3 px-4 text-right font-semibold text-gray-900 dark:text-white">
-                          ₹{emi.total.toLocaleString()}
+                          KSh {emi.total.toLocaleString()}
                         </td>
                         <td className="py-3 px-4 text-center">
                           <Badge
@@ -432,7 +432,7 @@ const LoanDetailPage = () => {
                     Paid Amount
                   </p>
                   <p className="text-xl font-bold text-green-600 dark:text-green-400">
-                    ₹{loan.paidAmount.toLocaleString()}
+                    KSh {loan.paidAmount.toLocaleString()}
                   </p>
                 </div>
                 <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-lg">
@@ -440,7 +440,7 @@ const LoanDetailPage = () => {
                     Outstanding
                   </p>
                   <p className="text-xl font-bold text-red-600 dark:text-red-400">
-                    ₹{loan.outstandingAmount.toLocaleString()}
+                    KSh {loan.outstandingAmount.toLocaleString()}
                   </p>
                 </div>
                 <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">

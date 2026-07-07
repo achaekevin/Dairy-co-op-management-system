@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiArrowLeft, HiCheckCircle } from 'react-icons/hi2';
@@ -270,7 +270,7 @@ const AddCollectionPage = () => {
                   />
                   <SummaryItem
                     label="Rate per Liter"
-                    value={`₹${qualityResult.rate}`}
+                    value={`KSh ${qualityResult.rate}`}
                   />
                 </div>
 
@@ -281,7 +281,7 @@ const AddCollectionPage = () => {
                       Total Amount
                     </span>
                     <span className="text-2xl font-bold text-green-600 dark:text-green-400">
-                      ₹{qualityResult.amount.toLocaleString()}
+                      KSh {qualityResult.amount.toLocaleString()}
                     </span>
                   </div>
                 </div>
@@ -314,22 +314,22 @@ const AddCollectionPage = () => {
               <QualityStandard
                 grade="Excellent"
                 criteria="Fat ≥ 4.5%, SNF ≥ 8.5%, Temp ≤ 4°C"
-                rate="₹50/L"
+                rate="KSh 50/L"
               />
               <QualityStandard
                 grade="Good"
                 criteria="Fat ≥ 4.0%, SNF ≥ 8.0%, Temp ≤ 5°C"
-                rate="₹48/L"
+                rate="KSh 48/L"
               />
               <QualityStandard
                 grade="Average"
                 criteria="Fat ≥ 3.5%, SNF ≥ 7.5%, Temp ≤ 6°C"
-                rate="₹45/L"
+                rate="KSh 45/L"
               />
               <QualityStandard
                 grade="Poor"
                 criteria="Below average standards"
-                rate="₹40/L"
+                rate="KSh 40/L"
               />
             </div>
           </Card>

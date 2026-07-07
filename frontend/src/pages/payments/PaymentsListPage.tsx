@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -105,7 +105,7 @@ const PaymentsListPage = () => {
   const stats = [
     {
       label: 'Total Payments',
-      value: '₹3,79,820',
+      value: 'KSh 3,79,820',
       change: '+12.5%',
       changeType: 'positive' as const,
       icon: BanknotesIcon,
@@ -113,7 +113,7 @@ const PaymentsListPage = () => {
     },
     {
       label: 'Paid',
-      value: '₹1,06,920',
+      value: 'KSh 1,06,920',
       change: '28.1%',
       changeType: 'positive' as const,
       icon: CheckCircleIcon,
@@ -121,7 +121,7 @@ const PaymentsListPage = () => {
     },
     {
       label: 'Pending',
-      value: '₹70,600',
+      value: 'KSh 70,600',
       change: '18.6%',
       changeType: 'neutral' as const,
       icon: ClockIcon,
@@ -129,7 +129,7 @@ const PaymentsListPage = () => {
     },
     {
       label: 'Approved',
-      value: '₹47,740',
+      value: 'KSh 47,740',
       change: '12.6%',
       changeType: 'positive' as const,
       icon: CheckCircleIcon,
@@ -181,14 +181,14 @@ const PaymentsListPage = () => {
           <div className="flex justify-between gap-4">
             <span className="text-gray-600 dark:text-gray-400">Total:</span>
             <span className="font-medium text-gray-900 dark:text-gray-100">
-              ₹{row.totalAmount.toLocaleString()}
+              KSh {row.totalAmount.toLocaleString()}
             </span>
           </div>
           {row.bonusAmount > 0 && (
             <div className="flex justify-between gap-4">
               <span className="text-green-600 dark:text-green-400">Bonus:</span>
               <span className="font-medium text-green-600 dark:text-green-400">
-                +₹{row.bonusAmount.toLocaleString()}
+                +KSh {row.bonusAmount.toLocaleString()}
               </span>
             </div>
           )}
@@ -196,7 +196,7 @@ const PaymentsListPage = () => {
             <div className="flex justify-between gap-4">
               <span className="text-red-600 dark:text-red-400">Deduction:</span>
               <span className="font-medium text-red-600 dark:text-red-400">
-                -₹{row.deductionAmount.toLocaleString()}
+                -KSh {row.deductionAmount.toLocaleString()}
               </span>
             </div>
           )}
@@ -209,7 +209,7 @@ const PaymentsListPage = () => {
       accessor: (row) => (
         <div className="text-right">
           <div className="text-lg font-semibold text-gray-900 dark:text-white">
-            ₹{row.netAmount.toLocaleString()}
+            KSh {row.netAmount.toLocaleString()}
           </div>
         </div>
       ),

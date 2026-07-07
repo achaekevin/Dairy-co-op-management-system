@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -196,11 +196,11 @@ const PurchaseOrdersPage = () => {
       accessor: (row) => (
         <div className="text-right">
           <div className="font-semibold text-gray-900 dark:text-white">
-            ₹{row.totalAmount.toLocaleString()}
+            KSh {row.totalAmount.toLocaleString()}
           </div>
           {row.balanceAmount > 0 && (
             <div className="text-xs text-red-600">
-              Due: ₹{row.balanceAmount.toLocaleString()}
+              Due: KSh {row.balanceAmount.toLocaleString()}
             </div>
           )}
         </div>
@@ -342,7 +342,7 @@ const PurchaseOrdersPage = () => {
               Total Order Value
             </p>
             <p className="mt-2 text-3xl font-bold text-green-900 dark:text-green-100">
-              ₹{totalOrderValue.toLocaleString()}
+              KSh {totalOrderValue.toLocaleString()}
             </p>
           </div>
         </Card>
@@ -352,7 +352,7 @@ const PurchaseOrdersPage = () => {
               Pending Payments
             </p>
             <p className="mt-2 text-3xl font-bold text-red-900 dark:text-red-100">
-              ₹{totalPending.toLocaleString()}
+              KSh {totalPending.toLocaleString()}
             </p>
           </div>
         </Card>

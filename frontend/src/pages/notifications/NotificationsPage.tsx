@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { HiCheckCircle, HiTrash, HiBell } from 'react-icons/hi2';
 import { motion } from 'framer-motion';
 import NotificationCard from '../../components/common/NotificationCard';
@@ -21,7 +21,7 @@ const NotificationsPage = () => {
     {
       id: '2',
       title: 'Payment Processed',
-      message: 'Monthly payment of ₹45,000 has been processed successfully',
+      message: 'Monthly payment of KSh 45,000 has been processed successfully',
       type: 'SUCCESS',
       isRead: false,
       createdAt: new Date(Date.now() - 3600000).toISOString(),

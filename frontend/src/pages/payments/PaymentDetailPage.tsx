@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -164,7 +164,7 @@ const PaymentDetailPage = () => {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
-                ₹{payment.netAmount.toLocaleString()}
+                KSh {payment.netAmount.toLocaleString()}
               </h2>
               <p className="mt-1 text-gray-600 dark:text-gray-400">
                 Payment for {payment.period}
@@ -262,7 +262,7 @@ const PaymentDetailPage = () => {
                   </p>
                 </div>
                 <span className="text-xl font-semibold text-gray-900 dark:text-white">
-                  ₹{payment.totalAmount.toLocaleString()}
+                  KSh {payment.totalAmount.toLocaleString()}
                 </span>
               </div>
               {payment.bonusAmount > 0 && (
@@ -276,7 +276,7 @@ const PaymentDetailPage = () => {
                     </p>
                   </div>
                   <span className="text-xl font-semibold text-green-600 dark:text-green-400">
-                    +₹{payment.bonusAmount.toLocaleString()}
+                    +KSh {payment.bonusAmount.toLocaleString()}
                   </span>
                 </div>
               )}
@@ -291,7 +291,7 @@ const PaymentDetailPage = () => {
                     </p>
                   </div>
                   <span className="text-xl font-semibold text-red-600 dark:text-red-400">
-                    -₹{payment.deductionAmount.toLocaleString()}
+                    -KSh {payment.deductionAmount.toLocaleString()}
                   </span>
                 </div>
               )}
@@ -305,7 +305,7 @@ const PaymentDetailPage = () => {
                   </p>
                 </div>
                 <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  ₹{payment.netAmount.toLocaleString()}
+                  KSh {payment.netAmount.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -365,7 +365,7 @@ const PaymentDetailPage = () => {
                       {entry.quantity}L
                     </p>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
-                      ₹{entry.amount}
+                      KSh {entry.amount}
                     </p>
                   </div>
                 </div>

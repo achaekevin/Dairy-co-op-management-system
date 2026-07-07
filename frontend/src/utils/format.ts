@@ -6,15 +6,15 @@ dayjs.extend(relativeTime);
 dayjs.extend(customParseFormat);
 
 export const formatCurrency = (amount: number): string => {
-  return new Intl.NumberFormat('en-IN', {
+  return new Intl.NumberFormat('en-KE', {
     style: 'currency',
-    currency: 'INR',
+    currency: 'KES',
     minimumFractionDigits: 2,
   }).format(amount);
 };
 
 export const formatNumber = (value: number): string => {
-  return new Intl.NumberFormat('en-IN').format(value);
+  return new Intl.NumberFormat('en-KE').format(value);
 };
 
 export const formatDate = (date: string | Date, format = 'DD/MM/YYYY'): string => {

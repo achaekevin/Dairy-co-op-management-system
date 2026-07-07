@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -137,7 +137,7 @@ const HRPage = () => {
     {
       id: 'salary',
       header: 'Salary',
-      accessor: (row) => `₹${row.salary.toLocaleString()}`,
+      accessor: (row) => `KSh ${row.salary.toLocaleString()}`,
       align: 'right',
     },
     {
@@ -193,7 +193,7 @@ const HRPage = () => {
       <Card className="bg-gradient-to-r from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/20">
         <div>
           <p className="text-sm font-medium text-purple-900 dark:text-purple-100">Monthly Salary Expense</p>
-          <p className="mt-2 text-3xl font-bold text-purple-900 dark:text-purple-100">₹{monthlySalary.toLocaleString()}</p>
+          <p className="mt-2 text-3xl font-bold text-purple-900 dark:text-purple-100">KSh {monthlySalary.toLocaleString()}</p>
         </div>
       </Card>
 

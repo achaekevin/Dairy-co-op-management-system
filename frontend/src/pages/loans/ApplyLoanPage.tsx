@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -137,7 +137,7 @@ const ApplyLoanPage = () => {
                           <li>✓ Active member for 6+ months</li>
                           <li>✓ Regular milk supply record</li>
                           <li>✓ No pending loan defaults</li>
-                          <li>✓ Eligible for loan up to ₹1,00,000</li>
+                          <li>✓ Eligible for loan up to KSh 1,00,000</li>
                         </ul>
                       </div>
                     </div>
@@ -170,7 +170,7 @@ const ApplyLoanPage = () => {
               </div>
               <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <Input
-                  label="Loan Amount (₹)"
+                  label="Loan Amount (KSh )"
                   type="number"
                   step="1000"
                   min="5000"
@@ -178,7 +178,7 @@ const ApplyLoanPage = () => {
                   value={formData.amount}
                   onChange={(e) => handleChange('amount', e.target.value)}
                   placeholder="50000"
-                  helperText="Minimum: ₹5,000 | Maximum: ₹2,00,000"
+                  helperText="Minimum: KSh 5,000 | Maximum: KSh 2,00,000"
                   required
                 />
                 <Input
@@ -277,7 +277,7 @@ const ApplyLoanPage = () => {
                     {emiAmount > 0 ? (
                       <>
                         <p className="text-4xl font-bold text-blue-600 dark:text-blue-400 mt-2">
-                          ₹{emiAmount.toLocaleString()}
+                          KSh {emiAmount.toLocaleString()}
                         </p>
                         <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                           per month
@@ -298,7 +298,7 @@ const ApplyLoanPage = () => {
                         Loan Amount
                       </span>
                       <span className="font-semibold text-gray-900 dark:text-gray-100">
-                        ₹{parseFloat(formData.amount).toLocaleString()}
+                        KSh {parseFloat(formData.amount).toLocaleString()}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pb-3 border-b border-gray-200 dark:border-gray-700">
@@ -322,7 +322,7 @@ const ApplyLoanPage = () => {
                         Total Interest
                       </span>
                       <span className="font-semibold text-orange-600 dark:text-orange-400">
-                        ₹{totalInterest.toLocaleString()}
+                        KSh {totalInterest.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex justify-between items-center pt-3">
@@ -330,7 +330,7 @@ const ApplyLoanPage = () => {
                         Total Payable
                       </span>
                       <span className="text-xl font-bold text-gray-900 dark:text-white">
-                        ₹{totalPayable.toLocaleString()}
+                        KSh {totalPayable.toLocaleString()}
                       </span>
                     </div>
                   </div>

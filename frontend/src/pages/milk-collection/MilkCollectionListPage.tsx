@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -177,7 +177,7 @@ const MilkCollectionListPage = () => {
       header: 'Amount',
       accessor: (row) => (
         <span className="font-medium text-slate-900 dark:text-white">
-          ₹{row.amount.toLocaleString()}
+          KSh {row.amount.toLocaleString()}
         </span>
       ),
       align: 'right',
@@ -281,7 +281,7 @@ const MilkCollectionListPage = () => {
           },
           {
             label: 'Total Amount',
-            value: `₹${stats.totalAmount.toLocaleString()}`,
+            value: `KSh ${stats.totalAmount.toLocaleString()}`,
             color: 'text-green-600',
           },
         ].map((stat, index) => (
