@@ -15,6 +15,9 @@ async function main() {
     },
   });
 
+  // ⚠️ WARNING: These are TEST/DEMO credentials ONLY
+  // DO NOT use these passwords in production environments
+  // Change all default passwords immediately after deployment
   const users = [
     {
       email: 'superadmin@dairycoop.com',
