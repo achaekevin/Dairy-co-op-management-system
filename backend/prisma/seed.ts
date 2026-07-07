@@ -15,49 +15,109 @@ async function main() {
     },
   });
 
-  const hashedPassword = await bcrypt.hash('SuperAdmin@123', 12);
-
-  await prisma.user.upsert({
-    where: { 
-      tenantId_email: {
-        tenantId: defaultTenant.id,
-        email: 'superadmin@dairycoop.com'
-      }
-    },
-    update: {},
-    create: {
+  const users = [
+    {
       email: 'superadmin@dairycoop.com',
-      passwordHash: hashedPassword,
+      password: 'SuperAdmin@123',
       firstName: 'Super',
-      lastName: 'Admin',
+      lastName: 'Administrator',
       role: 'SUPER_ADMIN',
-      tenantId: defaultTenant.id,
-      isEmailVerified: true,
-      isActive: true,
+      phoneNumber: '+254700000001',
     },
-  });
-
-  const adminPassword = await bcrypt.hash('Admin@123', 12);
-
-  await prisma.user.upsert({
-    where: { 
-      tenantId_email: {
-        tenantId: defaultTenant.id,
-        email: 'admin@dairycoop.com'
-      }
-    },
-    update: {},
-    create: {
+    {
       email: 'admin@dairycoop.com',
-      passwordHash: adminPassword,
+      password: 'Admin@123',
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
-      tenantId: defaultTenant.id,
-      isEmailVerified: true,
-      isActive: true,
+      phoneNumber: '+254700000009',
     },
-  });
+    {
+      email: 'manager@dairycoop.com',
+      password: 'Manager@123',
+      firstName: 'John',
+      lastName: 'Kamau',
+      role: 'MANAGER',
+      phoneNumber: '+254700000002',
+    },
+    {
+      email: 'collection@dairycoop.com',
+      password: 'Collection@123',
+      firstName: 'Peter',
+      lastName: 'Mwangi',
+      role: 'OPERATOR',
+      phoneNumber: '+254700000003',
+    },
+    {
+      email: 'accountant@dairycoop.com',
+      password: 'Accountant@123',
+      firstName: 'Jane',
+      lastName: 'Wanjiku',
+      role: 'ACCOUNTANT',
+      phoneNumber: '+254700000004',
+    },
+    {
+      email: 'store@dairycoop.com',
+      password: 'Store@123',
+      firstName: 'David',
+      lastName: 'Ochieng',
+      role: 'STORE_MANAGER',
+      phoneNumber: '+254700000005',
+    },
+    {
+      email: 'vet@dairycoop.com',
+      password: 'Vet@123',
+      firstName: 'Dr. Sarah',
+      lastName: 'Njeri',
+      role: 'VETERINARIAN',
+      phoneNumber: '+254700000006',
+    },
+    {
+      email: 'farmer@dairycoop.com',
+      password: 'Farmer@123',
+      firstName: 'James',
+      lastName: 'Kiprop',
+      role: 'FARMER',
+      phoneNumber: '+254700000007',
+    },
+    {
+      email: 'customer@dairycoop.com',
+      password: 'Customer@123',
+      firstName: 'Mary',
+      lastName: 'Achieng',
+      role: 'CUSTOMER',
+      phoneNumber: '+254700000008',
+    },
+  ];
+
+  for (const userData of users) {
+    const hashedPassword = await bcrypt.hash(userData.password, 12);
+
+    await prisma.user.upsert({
+      where: {
+        tenantId_email: {
+          tenantId: defaultTenant.id,
+          email: userData.email,
+        },
+      },
+      update: {},
+      create: {
+        email: userData.email,
+        passwordHash: hashedPassword,
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        phoneNumber: userData.phoneNumber,
+        role: userData.role,
+        tenantId: defaultTenant.id,
+        isEmailVerified: true,
+        isActive: true,
+      },
+    });
+
+    console.log(`✓ Created user: ${userData.email} (${userData.role})`);
+  }
+
+  console.log('\n✅ Seed completed successfully!');
 }
 
 main()
