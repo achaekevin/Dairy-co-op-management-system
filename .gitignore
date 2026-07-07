@@ -1,0 +1,50 @@
+# IDE and Editor files
+.vscode/
+.idea/
+.claude/
+*.code-workspace
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Documentation (except README)
+*.md
+!README.md
+
+# Logs
+*.log
+logs/
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
