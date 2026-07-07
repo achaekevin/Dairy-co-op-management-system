@@ -1,0 +1,738 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Tenant {
+  id                String             @id @default(uuid())
+  name              String
+  slug              String             @unique
+  subdomain         String             @unique
+  domain            String?            @unique
+  logo              String?
+  primaryColor      String             @default("#3B82F6")
+  secondaryColor    String             @default("#10B981")
+  subscriptionPlan  SubscriptionPlan   @default(TRIAL)
+  subscriptionStart DateTime           @default(now())
+  subscriptionEnd   DateTime?
+  isActive          Boolean            @default(true)
+  settings          Json?
+  createdAt         DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+  deletedAt         DateTime?
+  users             User[]
+  farmers           Farmer[]
+  milkCollections   MilkCollection[]
+  qualityTests      QualityTest[]
+  payments          Payment[]
+  loans             Loan[]
+  shares            Share[]
+  vehicles          Vehicle[]
+  employees         Employee[]
+  customers         Customer[]
+  suppliers         Supplier[]
+  inventoryItems    InventoryItem[]
+  purchaseOrders    PurchaseOrder[]
+  meetings          Meeting[]
+
+  @@index([slug])
+  @@index([isActive])
+  @@map("tenants")
+}
+
+enum SubscriptionPlan {
+  TRIAL
+  BASIC
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+model User {
+  id                        String               @id @default(uuid())
+  tenantId                  String
+  tenant                    Tenant               @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  email                     String
+  passwordHash              String
+  firstName                 String
+  lastName                  String
+  phoneNumber               String?
+  avatar                    String?
+  role                      UserRole             @default(VIEWER)
+  isActive                  Boolean              @default(true)
+  isEmailVerified           Boolean              @default(false)
+  emailVerifiedAt           DateTime?
+  emailVerificationToken    String?
+  emailVerificationExpires  DateTime?
+  resetPasswordToken        String?
+  resetPasswordExpires      DateTime?
+  lastLoginAt               DateTime?
+  lastLoginIp               String?
+  failedLoginAttempts       Int                  @default(0)
+  lockedUntil               DateTime?
+  twoFactorEnabled          Boolean              @default(false)
+  twoFactorSecret           String?
+  refreshTokens             RefreshToken[]
+  sessions                  Session[]
+  auditLogs                 AuditLog[]
+  createdAt                 DateTime             @default(now())
+  updatedAt                 DateTime             @updatedAt
+  deletedAt                 DateTime?
+
+  @@unique([tenantId, email])
+  @@index([tenantId])
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  ADMIN
+  MANAGER
+  OPERATOR
+  ACCOUNTANT
+  VIEWER
+  LAB_TECHNICIAN
+  QUALITY_OFFICER
+  PROCUREMENT_OFFICER
+  STORE_MANAGER
+  VETERINARIAN
+  EXTENSION_OFFICER
+  DRIVER
+  FARMER
+  CUSTOMER
+  AUDITOR
+}
+
+model RefreshToken {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([token])
+  @@map("refresh_tokens")
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  ipAddress String?
+  userAgent String?
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@map("sessions")
+}
+
+model AuditLog {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String
+  entity    String   @default("")
+  entityId  String?
+  oldValues Json?
+  newValues Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([entity])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+model Farmer {
+  id              String           @id @default(uuid())
+  tenantId        String
+  tenant          Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  farmerId        String
+  firstName       String
+  lastName        String
+  phoneNumber     String
+  email           String?
+  dateOfBirth     DateTime?
+  gender          Gender?
+  address         String?
+  village         String?
+  district        String?
+  pinCode         String?
+  gpsLatitude     Float?
+  gpsLongitude    Float?
+  bankName        String?
+  accountNumber   String?
+  ifscCode        String?
+  aadharNumber    String?
+  panNumber       String?
+  photo           String?
+  status          FarmerStatus     @default(ACTIVE)
+  joinDate        DateTime         @default(now())
+  cattle          Int              @default(0)
+  totalShares     Int              @default(0)
+  outstandingLoan Decimal          @default(0) @db.Decimal(10, 2)
+  milkCollections MilkCollection[]
+  payments        Payment[]
+  loans           Loan[]
+  shares          Share[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([tenantId, farmerId])
+  @@index([tenantId])
+  @@index([status])
+  @@map("farmers")
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum FarmerStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+model MilkCollection {
+  id          String            @id @default(uuid())
+  tenantId    String
+  tenant      Tenant            @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  farmerId    String
+  farmer      Farmer            @relation(fields: [farmerId], references: [id], onDelete: Restrict)
+  date        DateTime
+  shift       Shift
+  quantity    Decimal           @db.Decimal(10, 2)
+  fat         Decimal           @db.Decimal(5, 2)
+  snf         Decimal           @db.Decimal(5, 2)
+  temperature Decimal?          @db.Decimal(5, 2)
+  quality     QualityGrade
+  status      CollectionStatus  @default(ACCEPTED)
+  reason      String?
+  collectedBy String
+  centerId    String?
+  amount      Decimal           @db.Decimal(10, 2)
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  deletedAt   DateTime?
+
+  @@index([tenantId])
+  @@index([farmerId])
+  @@index([date])
+  @@index([status])
+  @@map("milk_collections")
+}
+
+enum Shift {
+  MORNING
+  EVENING
+}
+
+enum QualityGrade {
+  EXCELLENT
+  GOOD
+  AVERAGE
+  POOR
+}
+
+enum CollectionStatus {
+  ACCEPTED
+  REJECTED
+}
+
+model QualityTest {
+  id              String           @id @default(uuid())
+  tenantId        String
+  tenant          Tenant           @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  testNumber      String
+  date            DateTime
+  time            String
+  sampleType      SampleType
+  batchNumber     String?
+  farmerId        String?
+  testedBy        String
+  fat             Decimal          @db.Decimal(5, 2)
+  snf             Decimal          @db.Decimal(5, 2)
+  protein         Decimal          @db.Decimal(5, 2)
+  lactose         Decimal          @db.Decimal(5, 2)
+  temperature     Decimal          @db.Decimal(5, 2)
+  pH              Decimal          @db.Decimal(4, 2)
+  acidity         Decimal          @db.Decimal(5, 2)
+  density         Decimal          @db.Decimal(6, 4)
+  alcoholTest     TestResult
+  cob             TestResult
+  mbrt            Int
+  coliformCount   Int
+  overallResult   OverallResult
+  remarks         String?
+  status          TestStatus       @default(PENDING)
+  approvedBy      String?
+  approvedDate    DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([tenantId, testNumber])
+  @@index([tenantId])
+  @@index([date])
+  @@index([status])
+  @@map("quality_tests")
+}
+
+enum SampleType {
+  INCOMING_MILK
+  PROCESSED_MILK
+  BUTTER
+  GHEE
+  PANEER
+  CURD
+}
+
+enum TestResult {
+  PASS
+  FAIL
+}
+
+enum OverallResult {
+  PASS
+  FAIL
+  RETEST
+}
+
+enum TestStatus {
+  PENDING
+  COMPLETED
+  APPROVED
+  REJECTED
+}
+
+model Payment {
+  id               String        @id @default(uuid())
+  tenantId         String
+  tenant           Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  farmerId         String
+  farmer           Farmer        @relation(fields: [farmerId], references: [id], onDelete: Restrict)
+  period           String
+  totalQuantity    Decimal       @db.Decimal(10, 2)
+  totalAmount      Decimal       @db.Decimal(10, 2)
+  bonusAmount      Decimal       @default(0) @db.Decimal(10, 2)
+  deductionAmount  Decimal       @default(0) @db.Decimal(10, 2)
+  netAmount        Decimal       @db.Decimal(10, 2)
+  status           PaymentStatus @default(PENDING)
+  paymentDate      DateTime?
+  paymentMode      PaymentMode?
+  transactionId    String?
+  approvedBy       String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  deletedAt        DateTime?
+
+  @@index([tenantId])
+  @@index([farmerId])
+  @@index([status])
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  PAID
+  REJECTED
+}
+
+enum PaymentMode {
+  BANK_TRANSFER
+  CASH
+  CHEQUE
+  MOBILE_MONEY
+}
+
+model Loan {
+  id                 String      @id @default(uuid())
+  tenantId           String
+  tenant             Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  loanNumber         String
+  farmerId           String
+  farmer             Farmer      @relation(fields: [farmerId], references: [id], onDelete: Restrict)
+  amount             Decimal     @db.Decimal(10, 2)
+  interestRate       Decimal     @db.Decimal(5, 2)
+  tenure             Int
+  emiAmount          Decimal     @db.Decimal(10, 2)
+  purpose            String
+  status             LoanStatus  @default(PENDING)
+  appliedDate        DateTime    @default(now())
+  approvedDate       DateTime?
+  disbursementDate   DateTime?
+  closureDate        DateTime?
+  outstandingAmount  Decimal     @db.Decimal(10, 2)
+  paidAmount         Decimal     @default(0) @db.Decimal(10, 2)
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  deletedAt          DateTime?
+
+  @@unique([tenantId, loanNumber])
+  @@index([tenantId])
+  @@index([farmerId])
+  @@index([status])
+  @@map("loans")
+}
+
+enum LoanStatus {
+  PENDING
+  APPROVED
+  ACTIVE
+  CLOSED
+  REJECTED
+}
+
+model Share {
+  id                String      @id @default(uuid())
+  tenantId          String
+  tenant            Tenant      @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  shareNumber       String
+  farmerId          String
+  farmer            Farmer      @relation(fields: [farmerId], references: [id], onDelete: Restrict)
+  shareCount        Int
+  shareValue        Decimal     @db.Decimal(10, 2)
+  totalValue        Decimal     @db.Decimal(10, 2)
+  purchaseDate      DateTime    @default(now())
+  status            ShareStatus @default(ACTIVE)
+  certificateNumber String?
+  transferredTo     String?
+  transferDate      DateTime?
+  redemptionDate    DateTime?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  deletedAt         DateTime?
+
+  @@unique([tenantId, shareNumber])
+  @@index([tenantId])
+  @@index([farmerId])
+  @@index([status])
+  @@map("shares")
+}
+
+enum ShareStatus {
+  ACTIVE
+  TRANSFERRED
+  REDEEMED
+}
+
+model Vehicle {
+  id              String        @id @default(uuid())
+  tenantId        String
+  tenant          Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  vehicleNumber   String
+  vehicleType     VehicleType
+  brand           String
+  model           String
+  capacity        Int?
+  fuelType        FuelType
+  purchaseDate    DateTime
+  insuranceExpiry DateTime
+  fitnessExpiry   DateTime
+  lastService     DateTime?
+  nextService     DateTime
+  currentMileage  Int           @default(0)
+  driverName      String?
+  status          VehicleStatus @default(ACTIVE)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  deletedAt       DateTime?
+
+  @@unique([tenantId, vehicleNumber])
+  @@index([tenantId])
+  @@index([status])
+  @@map("vehicles")
+}
+
+enum VehicleType {
+  MILK_TANKER
+  DELIVERY_VAN
+  TRUCK
+  CAR
+  BIKE
+}
+
+enum FuelType {
+  PETROL
+  DIESEL
+  CNG
+  ELECTRIC
+}
+
+enum VehicleStatus {
+  ACTIVE
+  MAINTENANCE
+  INACTIVE
+}
+
+model Employee {
+  id             String         @id @default(uuid())
+  tenantId       String
+  tenant         Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  employeeId     String
+  firstName      String
+  lastName       String
+  designation    String
+  department     String
+  phoneNumber    String
+  email          String?
+  dateOfBirth    DateTime?
+  dateOfJoining  DateTime
+  salary         Decimal        @db.Decimal(10, 2)
+  address        String?
+  city           String?
+  state          String?
+  pinCode        String?
+  aadharNumber   String?
+  panNumber      String?
+  bankName       String?
+  accountNumber  String?
+  ifscCode       String?
+  status         EmployeeStatus @default(ACTIVE)
+  photo          String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([tenantId, employeeId])
+  @@index([tenantId])
+  @@index([status])
+  @@map("employees")
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  ON_LEAVE
+  RESIGNED
+  TERMINATED
+}
+
+model Customer {
+  id                 String         @id @default(uuid())
+  tenantId           String
+  tenant             Tenant         @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  customerId         String
+  customerName       String
+  businessName       String?
+  customerType       CustomerType
+  phoneNumber        String
+  email              String?
+  address            String?
+  city               String?
+  state              String?
+  pinCode            String?
+  gstNumber          String?
+  creditLimit        Decimal        @default(0) @db.Decimal(10, 2)
+  creditDays         Int            @default(0)
+  outstandingAmount  Decimal        @default(0) @db.Decimal(10, 2)
+  totalSales         Decimal        @default(0) @db.Decimal(10, 2)
+  status             CustomerStatus @default(ACTIVE)
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  deletedAt          DateTime?
+
+  @@unique([tenantId, customerId])
+  @@index([tenantId])
+  @@index([status])
+  @@map("customers")
+}
+
+enum CustomerType {
+  RETAIL
+  WHOLESALE
+  DISTRIBUTOR
+  INSTITUTION
+}
+
+enum CustomerStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model Supplier {
+  id                 String          @id @default(uuid())
+  tenantId           String
+  tenant             Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  supplierCode       String
+  name               String
+  category           String
+  contactPerson      String
+  phoneNumber        String
+  email              String?
+  address            String?
+  city               String?
+  state              String?
+  pinCode            String?
+  gstNumber          String?
+  bankName           String?
+  accountNumber      String?
+  ifscCode           String?
+  creditLimit        Decimal         @default(0) @db.Decimal(10, 2)
+  creditDays         Int             @default(0)
+  outstandingAmount  Decimal         @default(0) @db.Decimal(10, 2)
+  totalPurchases     Decimal         @default(0) @db.Decimal(10, 2)
+  status             SupplierStatus  @default(ACTIVE)
+  rating             Decimal         @default(0) @db.Decimal(3, 1)
+  purchaseOrders     PurchaseOrder[]
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  deletedAt          DateTime?
+
+  @@unique([tenantId, supplierCode])
+  @@index([tenantId])
+  @@index([status])
+  @@map("suppliers")
+}
+
+enum SupplierStatus {
+  ACTIVE
+  INACTIVE
+  BLOCKED
+}
+
+model InventoryItem {
+  id            String        @id @default(uuid())
+  tenantId      String
+  tenant        Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  itemCode      String
+  itemName      String
+  category      ItemCategory
+  unit          String
+  currentStock  Decimal       @db.Decimal(10, 2)
+  minStock      Decimal       @db.Decimal(10, 2)
+  maxStock      Decimal       @db.Decimal(10, 2)
+  unitPrice     Decimal       @db.Decimal(10, 2)
+  totalValue    Decimal       @db.Decimal(10, 2)
+  supplierName  String?
+  location      String?
+  expiryDate    DateTime?
+  batchNumber   String?
+  lastRestocked DateTime?
+  status        ItemStatus
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+  deletedAt     DateTime?
+
+  @@unique([tenantId, itemCode])
+  @@index([tenantId])
+  @@index([status])
+  @@map("inventory_items")
+}
+
+enum ItemCategory {
+  CATTLE_FEED
+  MEDICINE
+  EQUIPMENT
+  PACKAGING
+  CLEANING
+  OTHER
+}
+
+enum ItemStatus {
+  IN_STOCK
+  LOW_STOCK
+  OUT_OF_STOCK
+  EXPIRED
+}
+
+model PurchaseOrder {
+  id               String          @id @default(uuid())
+  tenantId         String
+  tenant           Tenant          @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  poNumber         String
+  supplierId       String
+  supplier         Supplier        @relation(fields: [supplierId], references: [id], onDelete: Restrict)
+  orderDate        DateTime        @default(now())
+  expectedDelivery DateTime
+  actualDelivery   DateTime?
+  status           POStatus        @default(DRAFT)
+  totalItems       Int
+  totalAmount      Decimal         @db.Decimal(10, 2)
+  paidAmount       Decimal         @default(0) @db.Decimal(10, 2)
+  balanceAmount    Decimal         @db.Decimal(10, 2)
+  paymentStatus    POPaymentStatus @default(UNPAID)
+  createdBy        String
+  approvedBy       String?
+  notes            String?
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  deletedAt        DateTime?
+
+  @@unique([tenantId, poNumber])
+  @@index([tenantId])
+  @@index([supplierId])
+  @@index([status])
+  @@map("purchase_orders")
+}
+
+enum POStatus {
+  DRAFT
+  PENDING
+  APPROVED
+  DELIVERED
+  CANCELLED
+}
+
+enum POPaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+}
+
+model Meeting {
+  id             String        @id @default(uuid())
+  tenantId       String
+  tenant         Tenant        @relation(fields: [tenantId], references: [id], onDelete: Cascade)
+  meetingNumber  String
+  title          String
+  meetingType    MeetingType
+  date           DateTime
+  time           String
+  venue          String
+  agenda         String
+  conductedBy    String
+  totalAttendees Int           @default(0)
+  status         MeetingStatus @default(SCHEDULED)
+  minutes        String?
+  decisions      String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  deletedAt      DateTime?
+
+  @@unique([tenantId, meetingNumber])
+  @@index([tenantId])
+  @@index([status])
+  @@map("meetings")
+}
+
+enum MeetingType {
+  BOARD
+  GENERAL
+  COMMITTEE
+  SPECIAL
+  AGM
+}
+
+enum MeetingStatus {
+  SCHEDULED
+  COMPLETED
+  CANCELLED
+  POSTPONED
+}
