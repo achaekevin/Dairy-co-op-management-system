@@ -10,14 +10,14 @@ const DashboardLayout = () => {
   const { isCollapsed } = useSidebarStore();
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-50 to-primary-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
       <Sidebar />
       <div className="flex flex-col min-h-screen">
         <Header />
         <motion.main
           initial={false}
           animate={{
-            marginLeft: typeof window !== 'undefined' && window.innerWidth >= 1024 ? (isCollapsed ? 80 : 256) : 0,
+            marginLeft: typeof window !== 'undefined' && window.innerWidth >= 1024 ? (isCollapsed ? 80 : 280) : 0,
           }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className="flex-1 pt-14 sm:pt-16"

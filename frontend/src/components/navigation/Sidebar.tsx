@@ -23,6 +23,7 @@ import {
   HiChartPie,
   HiUserGroup,
   HiCubeTransparent,
+  HiChevronRight,
 } from 'react-icons/hi2';
 import { useState } from 'react';
 
@@ -78,26 +79,29 @@ const Sidebar = () => {
           <button
             onClick={() => toggleSubmenu(item.id)}
             className={cn(
-              'w-full flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg transition-all duration-200 min-h-[44px]',
-              'hover:bg-slate-100 dark:hover:bg-slate-800',
-              'text-slate-700 dark:text-slate-300',
+              'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 min-h-[44px] group',
+              'hover:bg-primary-50 dark:hover:bg-primary-900/20',
+              'text-slate-700 dark:text-slate-300 hover:text-primary-700 dark:hover:text-primary-400',
               isCollapsed && 'justify-center'
             )}
           >
-            <Icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+            <div className={cn(
+              "flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200",
+              "bg-slate-100 dark:bg-slate-800 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30",
+              "group-hover:scale-110"
+            )}>
+              <Icon className="w-5 h-5" />
+            </div>
             {!isCollapsed && (
               <>
-                <span className="flex-1 text-left text-xs sm:text-sm font-medium truncate">{item.label}</span>
-                <motion.svg
-                  animate={{ rotate: isOpen ? 180 : 0 }}
+                <span className="flex-1 text-left text-sm font-medium truncate">{item.label}</span>
+                <motion.div
+                  animate={{ rotate: isOpen ? 90 : 0 }}
                   transition={{ duration: 0.2 }}
-                  className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  className="flex-shrink-0"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </motion.svg>
+                  <HiChevronRight className="w-4 h-4" />
+                </motion.div>
               </>
             )}
           </button>
@@ -108,7 +112,7 @@ const Sidebar = () => {
                 animate={{ height: 'auto', opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="overflow-hidden ml-3 sm:ml-4 mt-0.5 sm:mt-1 space-y-0.5 sm:space-y-1"
+                className="overflow-hidden ml-12 mt-1 space-y-1"
               >
                 {item.children?.map((child) => renderMenuItem(child, level + 1))}
               </motion.div>
@@ -124,21 +128,44 @@ const Sidebar = () => {
         to={item.path || '#'}
         onClick={() => isMobileOpen && setMobileOpen(false)}
         className={cn(
-          'flex items-center gap-2 sm:gap-3 px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg transition-all duration-200 min-h-[44px]',
-          'hover:bg-slate-100 dark:hover:bg-slate-800',
+          'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 min-h-[44px] group relative',
           active
-            ? 'bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400'
-            : 'text-slate-700 dark:text-slate-300',
+            ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-soft'
+            : 'hover:bg-primary-50 dark:hover:bg-primary-900/20 text-slate-700 dark:text-slate-300 hover:text-primary-700 dark:hover:text-primary-400',
           isCollapsed && 'justify-center',
-          level > 0 && 'pl-4 sm:pl-6'
+          level > 0 && !isCollapsed && 'pl-6'
         )}
       >
-        <Icon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-        {!isCollapsed && (
-          <span className="flex-1 text-xs sm:text-sm font-medium truncate">{item.label}</span>
+        {active && !isCollapsed && (
+          <motion.div
+            layoutId="activeIndicator"
+            className="absolute left-0 w-1 h-8 bg-white rounded-r-full"
+            transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+          />
         )}
-        {!isCollapsed && item.badge && (
-          <span className="badge-error text-[10px] sm:text-xs flex-shrink-0">{item.badge}</span>
+        <div className={cn(
+          "flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200",
+          active 
+            ? "bg-white/20" 
+            : "bg-slate-100 dark:bg-slate-800 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30",
+          "group-hover:scale-110"
+        )}>
+          <Icon className="w-5 h-5" />
+        </div>
+        {!isCollapsed && (
+          <>
+            <span className="flex-1 text-sm font-medium truncate">{item.label}</span>
+            {item.badge && (
+              <span className={cn(
+                "px-2 py-0.5 rounded-full text-xs font-semibold flex-shrink-0",
+                active 
+                  ? "bg-white/20 text-white" 
+                  : "bg-error-100 dark:bg-error-900/30 text-error-700 dark:text-error-400"
+              )}>
+                {item.badge}
+              </span>
+            )}
+          </>
         )}
       </Link>
     );
@@ -147,34 +174,38 @@ const Sidebar = () => {
   const sidebarContent = (
     <div className="flex flex-col h-full">
       {/* Logo */}
-      <div className="h-14 sm:h-16 flex items-center px-3 sm:px-4 border-b border-slate-200 dark:border-slate-700 flex-shrink-0">
+      <div className="h-16 flex items-center px-4 flex-shrink-0">
         <motion.div
           initial={false}
-          animate={{ scale: isCollapsed ? 0.8 : 1 }}
-          className="flex items-center gap-2 sm:gap-3 min-w-0"
+          animate={{ scale: isCollapsed ? 0.9 : 1 }}
+          className="flex items-center gap-3 min-w-0"
         >
-          <div className="w-8 h-8 sm:w-9 sm:h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-lg flex items-center justify-center flex-shrink-0">
-            <HiBeaker className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-glow flex-shrink-0">
+            <HiBeaker className="w-6 h-6 text-white" />
           </div>
           {!isCollapsed && (
             <div className="min-w-0">
-              <h1 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white truncate">DairyCoop</h1>
-              <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 truncate">Management System</p>
+              <h1 className="text-lg font-bold text-slate-900 dark:text-white truncate">DairyCoop</h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400 truncate">Management</p>
             </div>
           )}
         </motion.div>
       </div>
 
+      <div className="px-3 mb-3">
+        <div className="h-px bg-gradient-to-r from-transparent via-slate-200 dark:via-slate-700 to-transparent" />
+      </div>
+
       {/* Navigation */}
-      <nav className="flex-1 overflow-y-auto scrollbar-thin p-3 sm:p-4 space-y-0.5 sm:space-y-1">
+      <nav className="flex-1 overflow-y-auto scrollbar-thin px-3 space-y-1">
         {menuItems.map((item) => renderMenuItem(item))}
       </nav>
 
       {/* Footer */}
       {!isCollapsed && (
-        <div className="p-3 sm:p-4 border-t border-slate-200 dark:border-slate-700 flex-shrink-0">
-          <div className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 text-center">
-            Version 1.0.0
+        <div className="p-4 border-t border-slate-200 dark:border-slate-700 flex-shrink-0">
+          <div className="text-xs text-slate-500 dark:text-slate-400 text-center">
+            v1.0.0 © 2026 DairyCoop
           </div>
         </div>
       )}
@@ -186,7 +217,7 @@ const Sidebar = () => {
       {/* Desktop Sidebar */}
       <motion.aside
         initial={false}
-        animate={{ width: isCollapsed ? 80 : 256 }}
+        animate={{ width: isCollapsed ? 80 : 280 }}
         transition={{ duration: 0.3, ease: 'easeInOut' }}
         className="hidden lg:block fixed left-0 top-0 h-screen bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 z-30 overflow-hidden"
       >
@@ -202,14 +233,14 @@ const Sidebar = () => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setMobileOpen(false)}
-              className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+              className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-40"
             />
             <motion.aside
-              initial={{ x: -280 }}
+              initial={{ x: -320 }}
               animate={{ x: 0 }}
-              exit={{ x: -280 }}
+              exit={{ x: -320 }}
               transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              className="lg:hidden fixed left-0 top-0 h-screen w-64 sm:w-72 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 z-50 shadow-2xl"
+              className="lg:hidden fixed left-0 top-0 h-screen w-280 bg-white dark:bg-slate-800 border-r border-slate-200 dark:border-slate-700 z-50 shadow-elevated"
             >
               {sidebarContent}
             </motion.aside>
