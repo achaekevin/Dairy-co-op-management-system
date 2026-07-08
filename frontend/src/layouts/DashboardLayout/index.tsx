@@ -19,10 +19,10 @@ const DashboardLayout = () => {
           animate={{
             marginLeft: typeof window !== 'undefined' && window.innerWidth >= 1024 ? (isCollapsed ? 80 : 256) : 0,
           }}
-          transition={{ duration: 0.3 }}
-          className="flex-1 pt-16"
+          transition={{ duration: 0.3, ease: 'easeInOut' }}
+          className="flex-1 pt-14 sm:pt-16"
         >
-          <div className="p-4 md:p-6 lg:p-8">
+          <div className="p-3 sm:p-4 md:p-6 lg:p-8 max-w-[2000px] mx-auto">
             <Breadcrumb />
             <Outlet />
           </div>

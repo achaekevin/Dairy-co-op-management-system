@@ -126,37 +126,38 @@ const DashboardPage = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4"
       >
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-2">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white mb-1 sm:mb-2 truncate">
             Dashboard
           </h1>
-          <p className="text-slate-600 dark:text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400">
             Welcome back! Here's what's happening with your cooperative today.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           <Button
             variant="outline"
             size="sm"
             onClick={handleRefresh}
             disabled={refreshing}
+            className="flex-1 sm:flex-none"
           >
             <HiArrowPath
-              className={`w-4 h-4 mr-2 ${refreshing ? 'animate-spin' : ''}`}
+              className={`w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2 ${refreshing ? 'animate-spin' : ''}`}
             />
-            Refresh
+            <span className="text-xs sm:text-sm">Refresh</span>
           </Button>
-          <Button variant="primary" size="sm" onClick={handleExport}>
-            <HiArrowDownTray className="w-4 h-4 mr-2" />
-            Export
+          <Button variant="primary" size="sm" onClick={handleExport} className="flex-1 sm:flex-none">
+            <HiArrowDownTray className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+            <span className="text-xs sm:text-sm">Export</span>
           </Button>
         </div>
       </motion.div>
@@ -166,7 +167,7 @@ const DashboardPage = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
       >
         {stats.map((stat) => (
           <motion.div key={stat.title} variants={itemVariants}>
@@ -176,7 +177,7 @@ const DashboardPage = () => {
       </motion.div>
 
       {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Milk Collection Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -200,17 +201,17 @@ const DashboardPage = () => {
                     dataKey: 'Morning',
                     name: 'Morning',
                     color: '#22c55e',
-                    strokeWidth: 3,
+                    strokeWidth: 2,
                   },
                   {
                     dataKey: 'Evening',
                     name: 'Evening',
                     color: '#3b82f6',
-                    strokeWidth: 3,
+                    strokeWidth: 2,
                   },
                 ]}
                 xAxisKey="date"
-                height={300}
+                height={250}
               />
             </CardContent>
           </Card>
@@ -242,7 +243,7 @@ const DashboardPage = () => {
                   },
                 ]}
                 xAxisKey="month"
-                height={300}
+                height={250}
               />
             </CardContent>
           </Card>
@@ -250,7 +251,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Bottom Row - Widgets */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Quality Distribution */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -259,14 +260,14 @@ const DashboardPage = () => {
         >
           <Card>
             <CardHeader>
-              <CardTitle>Milk Quality Distribution</CardTitle>
+              <CardTitle className="text-sm sm:text-base">Milk Quality Distribution</CardTitle>
             </CardHeader>
             <CardContent>
               <PieChart
                 data={qualityDataChart}
-                height={250}
-                innerRadius={60}
-                outerRadius={80}
+                height={220}
+                innerRadius={50}
+                outerRadius={70}
               />
             </CardContent>
           </Card>
@@ -277,17 +278,17 @@ const DashboardPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.9 }}
-          className="lg:col-span-2"
+          className="md:col-span-2 lg:col-span-2"
         >
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle>Recent Activities</CardTitle>
-                <Badge variant="primary">Live</Badge>
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <CardTitle className="text-sm sm:text-base">Recent Activities</CardTitle>
+                <Badge variant="primary" className="text-xs">Live</Badge>
               </div>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 sm:space-y-4">
                 {[
                   {
                     action: 'Milk collection completed',
@@ -316,10 +317,10 @@ const DashboardPage = () => {
                 ].map((activity, index) => (
                   <div
                     key={index}
-                    className="flex items-start gap-3 pb-4 border-b border-slate-200 dark:border-slate-700 last:border-0 last:pb-0"
+                    className="flex items-start gap-2 sm:gap-3 pb-3 sm:pb-4 border-b border-slate-200 dark:border-slate-700 last:border-0 last:pb-0"
                   >
                     <div
-                      className={`w-2 h-2 rounded-full mt-2 ${
+                      className={`w-2 h-2 rounded-full mt-1.5 sm:mt-2 flex-shrink-0 ${
                         activity.type === 'success'
                           ? 'bg-green-500'
                           : activity.type === 'error'
@@ -327,11 +328,11 @@ const DashboardPage = () => {
                           : 'bg-blue-500'
                       }`}
                     />
-                    <div className="flex-1">
-                      <p className="text-sm font-medium text-slate-900 dark:text-white">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm font-medium text-slate-900 dark:text-white truncate">
                         {activity.action}
                       </p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                      <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
                         {activity.user} • {activity.time}
                       </p>
                     </div>
@@ -344,7 +345,7 @@ const DashboardPage = () => {
       </div>
 
       {/* Additional Widgets Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
