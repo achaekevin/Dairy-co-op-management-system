@@ -11,6 +11,8 @@ import TasksWidget from '../../components/dashboard/TasksWidget';
 import LineChart from '../../components/charts/LineChart';
 import BarChart from '../../components/charts/BarChart';
 import PieChart from '../../components/charts/PieChart';
+import { exportToExcel } from '../../utils/export';
+import toast from 'react-hot-toast';
 import {
   HiUsers,
   HiBeaker,
@@ -32,7 +34,21 @@ const DashboardPage = () => {
   };
 
   const handleExport = () => {
-    // Export logic here
+    try {
+      // Prepare export data
+      const exportStats = stats.map(stat => ({
+        Metric: stat.title,
+        Value: stat.value,
+        Trend: `${stat.trend.isPositive ? '+' : '-'}${stat.trend.value}%`,
+        Status: stat.color,
+      }));
+
+      exportToExcel(exportStats, 'dashboard_stats');
+      toast.success('Dashboard data exported successfully!');
+    } catch (error) {
+      toast.error('Failed to export data');
+      console.error('Export error:', error);
+    }
   };
   // Mock data
   const stats = [
