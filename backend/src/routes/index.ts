@@ -21,6 +21,7 @@ import accountantRoutes from '@modules/accountant/accountant.routes.js';
 import storeOfficerRoutes from '@modules/store-officer/store-officer.routes.js';
 import veterinaryOfficerRoutes from '@modules/veterinary-officer/veterinary-officer.routes.js';
 import farmerPortalRoutes from '@modules/farmer-portal/farmer-portal.routes.js';
+import customerPortalRoutes from '@modules/customer-portal/customer-portal.routes.js';
 import config from '@config/env.js';
 
 const router = Router();
@@ -36,6 +37,7 @@ router.use(`/api/${apiVersion}/accountant`, accountantRoutes);
 router.use(`/api/${apiVersion}/store-officer`, storeOfficerRoutes);
 router.use(`/api/${apiVersion}/veterinary-officer`, veterinaryOfficerRoutes);
 router.use(`/api/${apiVersion}/farmer-portal`, farmerPortalRoutes);
+router.use(`/api/${apiVersion}/customer-portal`, customerPortalRoutes);
 router.use(`/api/${apiVersion}/farmers`, farmerRoutes);
 router.use(`/api/${apiVersion}/milk-collections`, milkCollectionRoutes);
 router.use(`/api/${apiVersion}/quality-tests`, qualityRoutes);
