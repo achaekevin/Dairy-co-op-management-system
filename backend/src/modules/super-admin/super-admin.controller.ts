@@ -14,7 +14,7 @@ export const getDashboardStats = async (req: Request, res: Response, next: NextF
   }
 };
 
-export const getSystemHealth = async (req: Request, res: Response, next: NextFunction) => {
+export const getSystemHealth = async (_req: Request, res: Response, next: NextFunction) => {
   try {
     const health = await superAdminService.getSystemHealth();
     sendSuccess(res, health, 'System health retrieved successfully');

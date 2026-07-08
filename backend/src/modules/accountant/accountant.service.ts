@@ -1,7 +1,6 @@
 import prisma from '../../database/client';
 import {
   AccountantDashboardStats,
-  PaymentGeneration,
   FarmerStatement,
   LoanLedger,
   RepaymentSchedule,
@@ -214,7 +213,7 @@ export class AccountantService {
       data: {
         status: 'PAID',
         paymentDate: new Date(),
-        paymentMode,
+        paymentMode: paymentMode as any,
         transactionId,
       },
     });
@@ -291,9 +290,10 @@ export class AccountantService {
   }
 
   async getLoanLedger(tenantId: string, page = 1, limit = 20) {
+    const statusValues: Array<'ACTIVE' | 'APPROVED'> = ['ACTIVE', 'APPROVED'];
     const where = {
       tenantId,
-      status: { in: ['ACTIVE', 'APPROVED'] },
+      status: { in: statusValues },
       deletedAt: null,
     };
 
@@ -422,7 +422,7 @@ export class AccountantService {
   async getShareContributions(tenantId: string, page = 1, limit = 20) {
     const where = {
       tenantId,
-      status: 'ACTIVE',
+      status: 'ACTIVE' as const,
       deletedAt: null,
     };
 
@@ -507,7 +507,7 @@ export class AccountantService {
   async getEmployeeSalaries(tenantId: string, page = 1, limit = 20) {
     const where = {
       tenantId,
-      status: 'ACTIVE',
+      status: 'ACTIVE' as const,
       deletedAt: null,
     };
 

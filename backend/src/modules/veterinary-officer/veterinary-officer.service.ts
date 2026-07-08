@@ -50,19 +50,19 @@ export class VeterinaryOfficerService {
     }).then(result => Number(result._sum.cattle || 0));
   }
 
-  private async getVaccinationsDue(tenantId: string, today: Date, nextMonth: Date): Promise<number> {
+  private async getVaccinationsDue(_tenantId: string, _today: Date, _nextMonth: Date): Promise<number> {
     return 0;
   }
 
-  private async getSickAnimalsCount(tenantId: string): Promise<number> {
+  private async getSickAnimalsCount(_tenantId: string): Promise<number> {
     return 0;
   }
 
-  private async getPregnantCowsCount(tenantId: string): Promise<number> {
+  private async getPregnantCowsCount(_tenantId: string): Promise<number> {
     return 0;
   }
 
-  private async getUpcomingVisitsCount(tenantId: string, today: Date, nextMonth: Date): Promise<number> {
+  private async getUpcomingVisitsCount(_tenantId: string, _today: Date, _nextMonth: Date): Promise<number> {
     return 0;
   }
 
@@ -86,7 +86,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async getAnimalProfile(tenantId: string, animalId: string): Promise<AnimalProfile | null> {
+  async getAnimalProfile(_tenantId: string, animalId: string): Promise<AnimalProfile | null> {
     return {
       id: animalId,
       tagNumber: 'TAG-001',
@@ -106,7 +106,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async recordVaccination(tenantId: string, vaccination: Omit<VaccinationRecord, 'nextDueDate'>) {
+  async recordVaccination(_tenantId: string, vaccination: Omit<VaccinationRecord, 'nextDueDate'>) {
     const nextDueDate = new Date(vaccination.administeredDate);
     nextDueDate.setMonth(nextDueDate.getMonth() + 6);
 
@@ -116,7 +116,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async recordTreatment(tenantId: string, treatment: TreatmentRecord) {
+  async recordTreatment(_tenantId: string, treatment: TreatmentRecord) {
     return {
       id: `treatment-${Date.now()}`,
       ...treatment,
@@ -142,21 +142,21 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async recordBreeding(tenantId: string, breeding: BreedingRecord) {
+  async recordBreeding(_tenantId: string, breeding: BreedingRecord) {
     return {
       id: `breeding-${Date.now()}`,
       ...breeding,
     };
   }
 
-  async recordPregnancy(tenantId: string, pregnancy: PregnancyRecord) {
+  async recordPregnancy(_tenantId: string, pregnancy: PregnancyRecord) {
     return {
       id: `pregnancy-${Date.now()}`,
       ...pregnancy,
     };
   }
 
-  async recordCalving(tenantId: string, calving: CalvingRecord) {
+  async recordCalving(_tenantId: string, calving: CalvingRecord) {
     return {
       id: `calving-${Date.now()}`,
       ...calving,
@@ -186,7 +186,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async completeFarmVisit(tenantId: string, visitId: string, findings: string, recommendations: string) {
+  async completeFarmVisit(_tenantId: string, visitId: string, findings: string, recommendations: string) {
     return {
       id: visitId,
       findings,
@@ -214,7 +214,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async getVaccinationReport(tenantId: string, startDate: Date, endDate: Date): Promise<VaccinationReport> {
+  async getVaccinationReport(_tenantId: string, startDate: Date, endDate: Date): Promise<VaccinationReport> {
     return {
       period: `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`,
       totalVaccinations: 150,
@@ -229,7 +229,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async getDiseaseStatistics(tenantId: string, startDate: Date, endDate: Date): Promise<DiseaseStatistics> {
+  async getDiseaseStatistics(_tenantId: string, startDate: Date, endDate: Date): Promise<DiseaseStatistics> {
     return {
       period: `${startDate.toLocaleDateString()} - ${endDate.toLocaleDateString()}`,
       totalCases: 45,
@@ -274,7 +274,7 @@ export class VeterinaryOfficerService {
     };
   }
 
-  async getFarmVisits(tenantId: string, page = 1, limit = 20, status?: string) {
+  async getFarmVisits(_tenantId: string, page = 1, limit = 20, status?: string) {
     const where: any = {};
 
     if (status) {

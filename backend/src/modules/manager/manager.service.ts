@@ -354,7 +354,7 @@ export class ManagerService {
   async getPendingLoans(tenantId: string, page = 1, limit = 20) {
     const where = {
       tenantId,
-      status: 'PENDING',
+      status: 'PENDING' as const,
       deletedAt: null,
     };
 
@@ -418,7 +418,7 @@ export class ManagerService {
     });
   }
 
-  async rejectLoan(tenantId: string, loanId: string, reason?: string) {
+  async rejectLoan(tenantId: string, loanId: string, _reason?: string) {
     const loan = await prisma.loan.findFirst({
       where: { id: loanId, tenantId, deletedAt: null },
     });

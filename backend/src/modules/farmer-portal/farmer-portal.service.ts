@@ -46,7 +46,7 @@ export class FarmerPortalService {
     };
   }
 
-  private async getFarmerByUserId(tenantId: string, userId: string) {
+  private async getFarmerByUserId(tenantId: string, _userId: string) {
     const farmer = await prisma.farmer.findFirst({
       where: {
         tenantId,

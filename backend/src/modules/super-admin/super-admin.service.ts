@@ -140,12 +140,12 @@ export class SuperAdminService {
     const databaseStatus = await this.checkDatabaseHealth();
     const redisStatus = await this.checkRedisHealth();
 
-    const overallStatus =
-      databaseStatus.status === 'down' || redisStatus.status === 'down'
-        ? 'critical'
-        : databaseStatus.status === 'degraded' || redisStatus.status === 'degraded'
-        ? 'warning'
-        : 'healthy';
+    let overallStatus: 'healthy' | 'warning' | 'critical' = 'healthy';
+    if (databaseStatus.status === 'down' || redisStatus.status === 'down') {
+      overallStatus = 'critical';
+    } else if (databaseStatus.status === 'degraded' || redisStatus.status === 'degraded') {
+      overallStatus = 'warning';
+    }
 
     return {
       status: overallStatus,
@@ -171,8 +171,9 @@ export class SuperAdminService {
     try {
       await prisma.$queryRaw`SELECT 1`;
       const responseTime = Date.now() - startTime;
+      const status: 'up' | 'degraded' = responseTime < 100 ? 'up' : 'degraded';
       return {
-        status: responseTime < 100 ? 'up' : 'degraded' as const,
+        status,
         responseTime,
         lastChecked: new Date(),
       };
@@ -189,8 +190,9 @@ export class SuperAdminService {
     const startTime = Date.now();
     try {
       const responseTime = Date.now() - startTime;
+      const status: 'up' | 'degraded' = responseTime < 100 ? 'up' : 'degraded';
       return {
-        status: 'up' as const,
+        status,
         responseTime,
         lastChecked: new Date(),
       };
@@ -203,7 +205,7 @@ export class SuperAdminService {
     }
   }
 
-  async getAuditLogs(tenantId: string, query: AuditLogQuery) {
+  async getAuditLogs(_tenantId: string, query: AuditLogQuery) {
     const { userId, action, entity, startDate, endDate, page = 1, limit = 20 } = query;
 
     const where: any = {};
@@ -239,8 +241,8 @@ export class SuperAdminService {
     };
   }
 
-  async getLoginHistory(tenantId: string, query: LoginHistoryQuery) {
-    const { userId, status, startDate, endDate, page = 1, limit = 20 } = query;
+  async getLoginHistory(_tenantId: string, query: LoginHistoryQuery) {
+    const { userId, startDate, endDate, page = 1, limit = 20 } = query;
 
     const where: any = {};
 
@@ -388,11 +390,11 @@ export class SuperAdminService {
     };
   }
 
-  async getBackups(tenantId: string): Promise<BackupInfo[]> {
+  async getBackups(_tenantId: string): Promise<BackupInfo[]> {
     return [];
   }
 
-  async restoreBackup(tenantId: string, backupId: string): Promise<boolean> {
+  async restoreBackup(_tenantId: string, _backupId: string): Promise<boolean> {
     return true;
   }
 }

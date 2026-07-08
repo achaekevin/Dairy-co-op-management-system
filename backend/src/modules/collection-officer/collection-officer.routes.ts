@@ -14,7 +14,7 @@ import {
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize(['SUPER_ADMIN', 'ADMIN', 'MANAGER', 'OPERATOR']));
+router.use(authorize('SUPER_ADMIN', 'ADMIN', 'MANAGER', 'OPERATOR'));
 
 router.get('/dashboard/stats', getDashboardStats);
 router.get('/verify-farmer', verifyFarmer);

@@ -57,7 +57,7 @@ export const assessQuality = async (req: Request, res: Response, next: NextFunct
 export const recordCollection = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const tenantId = req.tenantId as string;
-    const userId = req.userId as string;
+    const userId = req.user?.userId as string;
 
     const {
       farmerId,

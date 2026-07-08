@@ -5,11 +5,9 @@ import {
   ProductCategory,
   PlaceOrderRequest,
   OrderTracking,
-  CustomerPayment,
   PaymentRequest,
   Invoice,
   ReturnRequest,
-  CustomerReturn,
   CustomerProfile,
   DeliveryAddress,
   SavedPaymentMethod,
@@ -36,7 +34,7 @@ export class CustomerPortalService {
     };
   }
 
-  private async getCustomerByUserId(tenantId: string, userId: string) {
+  private async getCustomerByUserId(tenantId: string, _userId: string) {
     return prisma.customer.findFirst({
       where: {
         tenantId,
@@ -182,7 +180,7 @@ export class CustomerPortalService {
     };
   }
 
-  async cancelOrder(tenantId: string, userId: string, orderId: string) {
+  async cancelOrder(tenantId: string, userId: string, _orderId: string) {
     const customer = await this.getCustomerByUserId(tenantId, userId);
 
     if (!customer) {
