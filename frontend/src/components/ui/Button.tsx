@@ -24,20 +24,20 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-lg active:scale-[0.98]';
+    const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed rounded-xl active:scale-[0.98] select-none relative overflow-hidden';
 
     const variants = {
-      primary: 'bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500',
-      secondary: 'bg-secondary-600 hover:bg-secondary-700 text-white focus:ring-secondary-500',
-      outline: 'border border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300',
-      ghost: 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300',
-      danger: 'bg-red-600 hover:bg-red-700 text-white focus:ring-red-500',
+      primary: 'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white shadow-soft hover:shadow-elevated focus:ring-primary-500',
+      secondary: 'bg-gradient-to-r from-secondary-600 to-secondary-700 hover:from-secondary-700 hover:to-secondary-800 text-white shadow-soft hover:shadow-elevated focus:ring-secondary-500',
+      outline: 'border-2 border-slate-300 dark:border-slate-600 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:border-slate-400 dark:hover:border-slate-500 text-slate-700 dark:text-slate-300 focus:ring-slate-500',
+      ghost: 'hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-700 dark:text-slate-300 focus:ring-slate-500',
+      danger: 'bg-gradient-to-r from-error-600 to-error-700 hover:from-error-700 hover:to-error-800 text-white shadow-soft hover:shadow-elevated focus:ring-error-500',
     };
 
     const sizes = {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2 text-base',
-      lg: 'px-6 py-3 text-lg',
+      sm: 'px-3.5 py-2 text-sm gap-1.5',
+      md: 'px-5 py-2.5 text-base gap-2',
+      lg: 'px-6 py-3.5 text-lg gap-2.5',
     };
 
     return (
@@ -49,7 +49,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       >
         {isLoading ? (
           <svg
-            className="animate-spin -ml-1 mr-2 h-4 w-4"
+            className="animate-spin h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
@@ -69,10 +69,10 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             />
           </svg>
         ) : leftIcon ? (
-          <span className="mr-2">{leftIcon}</span>
+          <span className="flex-shrink-0">{leftIcon}</span>
         ) : null}
         {children}
-        {rightIcon && <span className="ml-2">{rightIcon}</span>}
+        {rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
       </button>
     );
   }
