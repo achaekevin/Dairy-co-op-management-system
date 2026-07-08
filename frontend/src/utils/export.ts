@@ -8,7 +8,7 @@ interface ExportOptions {
   filename: string;
   format: ExportFormat;
   data: any[];
-  columns?: { header: string; key: string }[];
+  columns?: { header: string; dataKey: string }[];
 }
 
 /**

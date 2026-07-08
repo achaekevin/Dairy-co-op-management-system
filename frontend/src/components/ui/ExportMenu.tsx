@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiArrowDownTray, HiChevronDown } from 'react-icons/hi2';
-import { exportToCSV, exportToExcel, exportToPDF, ExportFormat } from '../../utils/export';
+import { exportToCSV, exportToExcel, exportToPDF, type ExportFormat } from '../../utils/export';
 import toast from 'react-hot-toast';
 import { cn } from '../../utils/cn';
 

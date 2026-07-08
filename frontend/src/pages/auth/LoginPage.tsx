@@ -11,7 +11,6 @@ import {
   HiEyeSlash, 
   HiBeaker,
   HiUsers,
-  HiCubeTransparent,
   HiBuildingOffice2,
   HiSparkles,
   HiCheckCircle

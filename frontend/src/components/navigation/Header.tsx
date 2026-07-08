@@ -10,7 +10,6 @@ import {
   HiMagnifyingGlass,
   HiBell,
   HiMoon,
-  HiSun,
   HiChevronDown,
   HiCog,
   HiUser,
