@@ -22,7 +22,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const setAuth = useAuthStore((state) => state.setAuth);
+  const { setAuth, rememberedEmail, setRememberedEmail } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -33,9 +33,9 @@ const LoginPage = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: 'admin@dairycoop.com',
-      password: 'password123',
-      rememberMe: false,
+      email: rememberedEmail || '',
+      password: '',
+      rememberMe: !!rememberedEmail,
     },
   });
 
@@ -64,7 +64,13 @@ const LoginPage = () => {
       const mockToken = 'mock-jwt-token-' + Date.now();
       const mockRefreshToken = 'mock-refresh-token-' + Date.now();
       
-      setAuth(mockUser, mockToken, mockRefreshToken);
+      if (data.rememberMe) {
+        setRememberedEmail(data.email);
+      } else {
+        setRememberedEmail(null);
+      }
+      
+      setAuth(mockUser, mockToken, mockRefreshToken, data.rememberMe ? data.email : undefined);
       
       toast.success('Login successful!');
       
@@ -72,7 +78,6 @@ const LoginPage = () => {
       navigate(from, { replace: true });
     } catch (error) {
       toast.error('Invalid email or password');
-      console.error('Login error:', error);
     } finally {
       setIsLoading(false);
     }
@@ -98,7 +103,7 @@ const LoginPage = () => {
           {...register('email')}
           label="Email Address"
           type="email"
-          placeholder="admin@dairycoop.com"
+          placeholder="Enter your email"
           error={errors.email?.message}
           leftIcon={<HiEnvelope className="w-5 h-5" />}
           autoComplete="email"
@@ -158,28 +163,6 @@ const LoginPage = () => {
           Sign In
         </Button>
       </form>
-
-      <div className="mt-6">
-        <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200 dark:border-slate-700" />
-          </div>
-          <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400">
-              Demo Credentials
-            </span>
-          </div>
-        </div>
-
-        <div className="mt-4 p-4 bg-slate-50 dark:bg-slate-900/50 rounded-lg">
-          <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-            <strong>Email:</strong> admin@dairycoop.com
-          </p>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
-            <strong>Password:</strong> password123
-          </p>
-        </div>
-      </div>
     </motion.div>
   );
 };

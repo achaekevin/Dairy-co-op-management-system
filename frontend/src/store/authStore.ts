@@ -7,9 +7,11 @@ interface AuthState {
   token: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
-  setAuth: (user: User, token: string, refreshToken: string) => void;
+  rememberedEmail: string | null;
+  setAuth: (user: User, token: string, refreshToken: string, rememberEmail?: string) => void;
   clearAuth: () => void;
   updateUser: (user: Partial<User>) => void;
+  setRememberedEmail: (email: string | null) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -19,12 +21,14 @@ export const useAuthStore = create<AuthState>()(
       token: null,
       refreshToken: null,
       isAuthenticated: false,
-      setAuth: (user, token, refreshToken) =>
+      rememberedEmail: null,
+      setAuth: (user, token, refreshToken, rememberEmail) =>
         set({
           user,
           token,
           refreshToken,
           isAuthenticated: true,
+          rememberedEmail: rememberEmail || null,
         }),
       clearAuth: () =>
         set({
@@ -37,6 +41,10 @@ export const useAuthStore = create<AuthState>()(
         set((state) => ({
           user: state.user ? { ...state.user, ...userData } : null,
         })),
+      setRememberedEmail: (email) =>
+        set({
+          rememberedEmail: email,
+        }),
     }),
     {
       name: 'auth-storage',
