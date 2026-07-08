@@ -43,7 +43,7 @@ export const getMilkStatement = async (req: Request, res: Response, next: NextFu
   }
 };
 
-export const getCollectionReceipt = async (req: Request, res: Response, next: NextFunction) => {
+export const getCollectionReceipt = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const tenantId = req.tenantId as string;
     const userId = req.user?.userId as string;
@@ -51,7 +51,8 @@ export const getCollectionReceipt = async (req: Request, res: Response, next: Ne
 
     const result = await farmerPortalService.getCollectionReceipt(tenantId, userId, collectionId);
     if (!result) {
-      return res.status(404).json({ success: false, message: 'Receipt not found' });
+      sendSuccess(res, null, 'Receipt not found', 404);
+      return;
     }
     sendSuccess(res, result, 'Collection receipt retrieved successfully');
   } catch (error) {
@@ -100,7 +101,7 @@ export const getLoanStatus = async (req: Request, res: Response, next: NextFunct
   }
 };
 
-export const getRepaymentSchedule = async (req: Request, res: Response, next: NextFunction) => {
+export const getRepaymentSchedule = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
   try {
     const tenantId = req.tenantId as string;
     const userId = req.user?.userId as string;
@@ -108,7 +109,8 @@ export const getRepaymentSchedule = async (req: Request, res: Response, next: Ne
 
     const result = await farmerPortalService.getRepaymentSchedule(tenantId, userId, loanId);
     if (!result) {
-      return res.status(404).json({ success: false, message: 'Loan not found' });
+      sendSuccess(res, null, 'Loan not found', 404);
+      return;
     }
     sendSuccess(res, result, 'Repayment schedule retrieved successfully');
   } catch (error) {

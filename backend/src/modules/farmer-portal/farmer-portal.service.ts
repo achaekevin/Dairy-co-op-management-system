@@ -2,24 +2,15 @@ import prisma from '../../database/client';
 import {
   FarmerDashboardStats,
   DeliveryHistory,
-  QualityResult,
   MilkStatement,
   CollectionReceipt,
   FarmerPayment,
-  PaymentStatement,
   LoanApplication,
   FarmerLoan,
   LoanRepaymentSchedule,
   FarmerShare,
-  DividendHistory,
-  ShareStatement,
-  FarmerAnimal,
-  VaccinationSchedule,
-  TreatmentHistory,
   FarmerProfile,
   BankDetails,
-  MobileMoneyDetails,
-  FarmerNotification,
 } from './farmer-portal.types';
 
 export class FarmerPortalService {
@@ -42,7 +33,7 @@ export class FarmerPortalService {
       this.getMonthlyMilkDelivered(tenantId, farmer.id, startOfMonth),
       this.getCurrentBalance(tenantId, farmer.id),
       this.getActiveLoansCount(tenantId, farmer.id),
-      this.getSharesOwned(tenantId, farmer.id),
+      this.getSharesOwnedCount(tenantId, farmer.id),
     ]);
 
     return {
@@ -56,25 +47,14 @@ export class FarmerPortalService {
   }
 
   private async getFarmerByUserId(tenantId: string, userId: string) {
-    const user = await prisma.user.findFirst({
+    const farmer = await prisma.farmer.findFirst({
       where: {
-        id: userId,
         tenantId,
         deletedAt: null,
       },
     });
 
-    if (!user) {
-      return null;
-    }
-
-    return prisma.farmer.findFirst({
-      where: {
-        userId: user.id,
-        tenantId,
-        deletedAt: null,
-      },
-    });
+    return farmer;
   }
 
   private async getTodaysMilkDelivery(tenantId: string, farmerId: string, today: Date): Promise<number> {
@@ -143,7 +123,7 @@ export class FarmerPortalService {
     });
   }
 
-  private async getSharesOwned(tenantId: string, farmerId: string): Promise<number> {
+  private async getSharesOwnedCount(tenantId: string, farmerId: string): Promise<number> {
     const result = await prisma.share.aggregate({
       where: {
         tenantId,
@@ -154,10 +134,6 @@ export class FarmerPortalService {
       _sum: { shareCount: true },
     });
     return result._sum.shareCount || 0;
-  }
-
-  private async getUnreadNotificationsCount(): Promise<number> {
-    return 0;
   }
 
   async getDeliveryHistory(tenantId: string, userId: string, page = 1, limit = 20) {
@@ -191,10 +167,10 @@ export class FarmerPortalService {
       fat: Number(c.fat),
       snf: Number(c.snf),
       quality: c.quality,
-      rate: Number(c.rate),
+      rate: Number(c.amount) / Number(c.quantity),
       amount: Number(c.amount),
       status: c.status as 'ACCEPTED' | 'REJECTED',
-      reason: c.remarks || undefined,
+      reason: c.reason || undefined,
     }));
 
     return {
@@ -265,7 +241,7 @@ export class FarmerPortalService {
         date: c.date,
         shift: c.shift,
         quantity: Number(c.quantity),
-        rate: Number(c.rate),
+        rate: Number(c.amount) / Number(c.quantity),
         amount: Number(c.amount),
       })),
       summary: {
@@ -292,14 +268,6 @@ export class FarmerPortalService {
         farmerId: farmer.id,
         deletedAt: null,
       },
-      include: {
-        collectedBy: {
-          select: {
-            firstName: true,
-            lastName: true,
-          },
-        },
-      },
     });
 
     if (!collection) {
@@ -314,11 +282,11 @@ export class FarmerPortalService {
       fat: Number(collection.fat),
       snf: Number(collection.snf),
       quality: collection.quality,
-      rate: Number(collection.rate),
+      rate: Number(collection.amount) / Number(collection.quantity),
       amount: Number(collection.amount),
       farmerName: `${farmer.firstName} ${farmer.lastName}`,
-      farmerCode: farmer.farmerCode,
-      collectedBy: `${collection.collectedBy.firstName} ${collection.collectedBy.lastName}`,
+      farmerCode: farmer.farmerId,
+      collectedBy: collection.collectedBy,
       centerId: collection.centerId || undefined,
     };
   }
@@ -355,7 +323,7 @@ export class FarmerPortalService {
       bonusAmount: Number(p.bonusAmount),
       deductionAmount: Number(p.deductionAmount),
       netAmount: Number(p.netAmount),
-      status: p.status,
+      status: p.status === 'REJECTED' ? 'PENDING' : p.status,
       paymentDate: p.paymentDate || undefined,
       paymentMode: p.paymentMode || undefined,
       transactionId: p.transactionId || undefined,
@@ -440,7 +408,6 @@ export class FarmerPortalService {
       appliedDate: l.appliedDate,
       approvedDate: l.approvedDate || undefined,
       disbursementDate: l.disbursementDate || undefined,
-      nextEmiDate: l.nextEmiDate || undefined,
     }));
 
     return {

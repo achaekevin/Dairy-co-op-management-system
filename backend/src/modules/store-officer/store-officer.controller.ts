@@ -89,11 +89,10 @@ export const getSuppliers = async (req: Request, res: Response, next: NextFuncti
 
 export const createPurchaseRequest = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const tenantId = req.tenantId as string;
     const { items } = req.body;
     const requestedBy = req.user?.userId as string;
 
-    const result = await storeOfficerService.createPurchaseRequest(tenantId, items, requestedBy);
+    const result = await storeOfficerService.createPurchaseRequest(items, requestedBy);
     sendSuccess(res, result, 'Purchase request created successfully', 201);
   } catch (error) {
     next(error);

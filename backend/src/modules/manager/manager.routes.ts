@@ -17,7 +17,7 @@ import {
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize(['SUPER_ADMIN', 'ADMIN', 'MANAGER']));
+router.use(authorize('SUPER_ADMIN', 'ADMIN', 'MANAGER'));
 
 router.get('/dashboard/stats', getDashboardStats);
 router.get('/farmers/performance', getFarmerPerformance);

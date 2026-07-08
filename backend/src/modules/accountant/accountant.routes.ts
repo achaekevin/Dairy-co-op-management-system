@@ -20,7 +20,7 @@ import {
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize(['SUPER_ADMIN', 'ADMIN', 'ACCOUNTANT']));
+router.use(authorize('SUPER_ADMIN', 'ADMIN', 'ACCOUNTANT'));
 
 // Dashboard
 router.get('/dashboard/stats', getDashboardStats);

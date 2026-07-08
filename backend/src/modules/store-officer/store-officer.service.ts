@@ -6,7 +6,6 @@ import {
   StockTransfer,
   FeedSale,
   SupplierInfo,
-  PurchaseRequest,
   GoodsReceived,
   WarehouseInventory,
   DamagedStock,
@@ -33,33 +32,33 @@ export class StoreOfficerService {
   }
 
   private async getCurrentStockCount(tenantId: string): Promise<number> {
-    return prisma.inventory.count({
+    return prisma.inventoryItem.count({
       where: {
         tenantId,
-        quantity: { gt: 0 },
+        currentStock: { gt: 0 },
         deletedAt: null,
       },
     });
   }
 
   private async getLowStockCount(tenantId: string): Promise<number> {
-    const items = await prisma.inventory.findMany({
+    const items = await prisma.inventoryItem.findMany({
       where: {
         tenantId,
         deletedAt: null,
       },
       select: {
-        quantity: true,
+        currentStock: true,
         minStock: true,
       },
     });
 
-    return items.filter((item) => Number(item.quantity) <= Number(item.minStock || 0)).length;
+    return items.filter((item) => Number(item.currentStock) <= Number(item.minStock)).length;
   }
 
   private async getExpiredItemsCount(tenantId: string): Promise<number> {
     const today = new Date();
-    return prisma.inventory.count({
+    return prisma.inventoryItem.count({
       where: {
         tenantId,
         expiryDate: { lte: today },
@@ -79,18 +78,18 @@ export class StoreOfficerService {
   }
 
   private async getTotalInventoryValue(tenantId: string): Promise<number> {
-    const items = await prisma.inventory.findMany({
+    const items = await prisma.inventoryItem.findMany({
       where: {
         tenantId,
         deletedAt: null,
       },
       select: {
-        quantity: true,
+        currentStock: true,
         unitPrice: true,
       },
     });
 
-    return items.reduce((total, item) => total + Number(item.quantity) * Number(item.unitPrice), 0);
+    return items.reduce((total, item) => total + Number(item.currentStock) * Number(item.unitPrice), 0);
   }
 
   async getStockLevels(tenantId: string, page = 1, limit = 20, category?: string) {
@@ -104,19 +103,19 @@ export class StoreOfficerService {
     }
 
     const [items, total] = await Promise.all([
-      prisma.inventory.findMany({
+      prisma.inventoryItem.findMany({
         where,
         orderBy: { itemName: 'asc' },
         skip: (page - 1) * limit,
         take: limit,
       }),
-      prisma.inventory.count({ where }),
+      prisma.inventoryItem.count({ where }),
     ]);
 
     const data: StockLevel[] = items.map((item) => {
-      const currentStock = Number(item.quantity);
-      const minStock = Number(item.minStock || 0);
-      const maxStock = Number(item.maxStock || 999999);
+      const currentStock = Number(item.currentStock);
+      const minStock = Number(item.minStock);
+      const maxStock = Number(item.maxStock);
 
       let status: StockLevel['status'] = 'IN_STOCK';
       if (item.expiryDate && item.expiryDate <= new Date()) {
@@ -153,7 +152,7 @@ export class StoreOfficerService {
   }
 
   async adjustStock(tenantId: string, adjustment: StockAdjustment) {
-    const item = await prisma.inventory.findFirst({
+    const item = await prisma.inventoryItem.findFirst({
       where: {
         id: adjustment.itemId,
         tenantId,
@@ -165,7 +164,7 @@ export class StoreOfficerService {
       throw new Error('Item not found');
     }
 
-    const currentQuantity = Number(item.quantity);
+    const currentQuantity = Number(item.currentStock);
     const adjustmentQty = adjustment.quantity;
 
     let newQuantity: number;
@@ -178,17 +177,18 @@ export class StoreOfficerService {
       newQuantity = currentQuantity - adjustmentQty;
     }
 
-    return prisma.inventory.update({
+    return prisma.inventoryItem.update({
       where: { id: adjustment.itemId },
       data: {
-        quantity: newQuantity,
+        currentStock: newQuantity,
+        totalValue: newQuantity * Number(item.unitPrice),
         lastRestocked: adjustment.type === 'ADD' ? new Date() : item.lastRestocked,
       },
     });
   }
 
   async transferStock(tenantId: string, transfer: StockTransfer) {
-    const item = await prisma.inventory.findFirst({
+    const item = await prisma.inventoryItem.findFirst({
       where: {
         id: transfer.itemId,
         tenantId,
@@ -200,15 +200,18 @@ export class StoreOfficerService {
       throw new Error('Item not found');
     }
 
-    const currentQuantity = Number(item.quantity);
+    const currentQuantity = Number(item.currentStock);
     if (currentQuantity < transfer.quantity) {
       throw new Error('Insufficient stock for transfer');
     }
 
-    return prisma.inventory.update({
+    const newQuantity = currentQuantity - transfer.quantity;
+
+    return prisma.inventoryItem.update({
       where: { id: transfer.itemId },
       data: {
-        quantity: currentQuantity - transfer.quantity,
+        currentStock: newQuantity,
+        totalValue: newQuantity * Number(item.unitPrice),
       },
     });
   }
@@ -227,7 +230,7 @@ export class StoreOfficerService {
     }
 
     for (const item of sale.items) {
-      const inventory = await prisma.inventory.findFirst({
+      const inventory = await prisma.inventoryItem.findFirst({
         where: {
           id: item.itemId,
           tenantId,
@@ -239,15 +242,18 @@ export class StoreOfficerService {
         throw new Error(`Item ${item.itemName} not found`);
       }
 
-      const currentQuantity = Number(inventory.quantity);
+      const currentQuantity = Number(inventory.currentStock);
       if (currentQuantity < item.quantity) {
         throw new Error(`Insufficient stock for ${item.itemName}`);
       }
 
-      await prisma.inventory.update({
+      const newQuantity = currentQuantity - item.quantity;
+
+      await prisma.inventoryItem.update({
         where: { id: item.itemId },
         data: {
-          quantity: currentQuantity - item.quantity,
+          currentStock: newQuantity,
+          totalValue: newQuantity * Number(inventory.unitPrice),
         },
       });
     }
@@ -297,7 +303,6 @@ export class StoreOfficerService {
   }
 
   async createPurchaseRequest(
-    tenantId: string,
     items: { itemName: string; quantity: number; estimatedPrice: number }[],
     requestedBy: string
   ) {
@@ -316,7 +321,7 @@ export class StoreOfficerService {
   async receiveGoods(tenantId: string, goods: GoodsReceived) {
     const po = await prisma.purchaseOrder.findFirst({
       where: {
-        orderNumber: goods.poNumber,
+        poNumber: goods.poNumber,
         tenantId,
         deletedAt: null,
       },
@@ -329,7 +334,8 @@ export class StoreOfficerService {
     await prisma.purchaseOrder.update({
       where: { id: po.id },
       data: {
-        status: 'RECEIVED',
+        status: 'DELIVERED',
+        actualDelivery: goods.receivedDate,
       },
     });
 
@@ -337,7 +343,7 @@ export class StoreOfficerService {
   }
 
   async getWarehouseInventory(tenantId: string) {
-    const items = await prisma.inventory.findMany({
+    const items = await prisma.inventoryItem.findMany({
       where: {
         tenantId,
         deletedAt: null,
@@ -346,7 +352,7 @@ export class StoreOfficerService {
 
     const totalItems = items.length;
     const totalValue = items.reduce(
-      (sum, item) => sum + Number(item.quantity) * Number(item.unitPrice),
+      (sum, item) => sum + Number(item.totalValue),
       0
     );
 
@@ -364,7 +370,7 @@ export class StoreOfficerService {
   }
 
   async reportDamagedStock(tenantId: string, damaged: Omit<DamagedStock, 'status'>) {
-    const item = await prisma.inventory.findFirst({
+    const item = await prisma.inventoryItem.findFirst({
       where: {
         id: damaged.itemId,
         tenantId,
@@ -376,15 +382,18 @@ export class StoreOfficerService {
       throw new Error('Item not found');
     }
 
-    const currentQuantity = Number(item.quantity);
+    const currentQuantity = Number(item.currentStock);
     if (currentQuantity < damaged.quantity) {
       throw new Error('Reported quantity exceeds current stock');
     }
 
-    await prisma.inventory.update({
+    const newQuantity = currentQuantity - damaged.quantity;
+
+    await prisma.inventoryItem.update({
       where: { id: damaged.itemId },
       data: {
-        quantity: currentQuantity - damaged.quantity,
+        currentStock: newQuantity,
+        totalValue: newQuantity * Number(item.unitPrice),
       },
     });
 
@@ -406,13 +415,13 @@ export class StoreOfficerService {
       if (endDate) where.createdAt.lte = endDate;
     }
 
-    const items = await prisma.inventory.findMany({
+    const items = await prisma.inventoryItem.findMany({
       where,
       orderBy: { itemName: 'asc' },
     });
 
     const totalValue = items.reduce(
-      (sum, item) => sum + Number(item.quantity) * Number(item.unitPrice),
+      (sum, item) => sum + Number(item.totalValue),
       0
     );
 
@@ -424,9 +433,9 @@ export class StoreOfficerService {
         itemCode: item.itemCode,
         itemName: item.itemName,
         category: item.category,
-        quantity: Number(item.quantity),
+        quantity: Number(item.currentStock),
         unitPrice: Number(item.unitPrice),
-        totalValue: Number(item.quantity) * Number(item.unitPrice),
+        totalValue: Number(item.totalValue),
       })),
     };
   }
@@ -462,7 +471,7 @@ export class StoreOfficerService {
       totalOrders: orders.length,
       totalAmount,
       orders: orders.map((order) => ({
-        orderNumber: order.orderNumber,
+        orderNumber: order.poNumber,
         supplierName: order.supplier.name,
         orderDate: order.orderDate,
         totalAmount: Number(order.totalAmount),

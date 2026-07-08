@@ -15,7 +15,7 @@ import {
 const router = Router();
 
 router.use(authenticate);
-router.use(authorize(['SUPER_ADMIN', 'ADMIN']));
+router.use(authorize('SUPER_ADMIN', 'ADMIN'));
 
 router.get('/dashboard/stats', getDashboardStats);
 router.get('/system/health', getSystemHealth);
