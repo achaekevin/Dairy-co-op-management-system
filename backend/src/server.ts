@@ -4,13 +4,18 @@ import config from '@config/env.js';
 import logger from '@core/logger.js';
 import { connectDatabase, disconnectDatabase } from '@database/client.js';
 import { disconnectRedis } from '@database/redis.js';
+import { sessionCleanupService } from './shared/services/session-cleanup.service.js';
 
 const server = http.createServer(app);
+let cleanupInterval: NodeJS.Timeout | null = null;
 
 const startServer = async () => {
   try {
     await connectDatabase();
     logger.info('Database connected successfully');
+
+    cleanupInterval = sessionCleanupService.startScheduledCleanup(60);
+    logger.info('Session cleanup service started (runs every 60 minutes)');
 
     server.listen(config.port, () => {
       logger.info(`Server running on port ${config.port} in ${config.env} mode`);
@@ -24,6 +29,11 @@ const startServer = async () => {
 
 const gracefulShutdown = async () => {
   logger.info('Received shutdown signal, closing server gracefully...');
+
+  if (cleanupInterval) {
+    clearInterval(cleanupInterval);
+    logger.info('Session cleanup service stopped');
+  }
 
   server.close(async () => {
     try {
