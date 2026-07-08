@@ -103,7 +103,7 @@ const LoginPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden bg-gradient-to-br from-slate-50 via-primary-50/30 to-secondary-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
+    <div className="min-h-screen w-full flex relative overflow-hidden bg-gradient-to-br from-slate-50 via-primary-50/30 to-secondary-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-900">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -224,7 +224,7 @@ const LoginPage = () => {
       </motion.div>
 
       {/* Right Side - Login Form */}
-      <div className="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center p-6 sm:p-8 lg:p-12 relative z-10">
+      <div className="w-full lg:w-1/2 xl:w-2/5 flex items-center justify-center p-4 sm:p-6 lg:p-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -232,8 +232,8 @@ const LoginPage = () => {
           className="w-full max-w-md"
         >
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center shadow-glow">
+          <div className="lg:hidden flex items-center justify-center gap-3 mb-8">
+            <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center">
               <HiBeaker className="w-6 h-6 text-white" />
             </div>
             <div>
@@ -243,7 +243,9 @@ const LoginPage = () => {
           </div>
 
           {/* Login Card */}
-          <div className="glass rounded-3xl p-8 sm:p-10 shadow-elevated border border-white/20 dark:border-slate-700/50">
+          <div className="bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-3xl p-6 sm:p-8 lg:p-10 border border-white/20 dark:border-slate-700/50"
+            style={{ boxShadow: '0 8px 32px 0 rgb(0 0 0 / 0.12)' }}
+          >
             {/* Theme Toggle */}
             <div className="flex justify-end mb-6">
               <button
@@ -368,12 +370,13 @@ const LoginPage = () => {
                 type="submit"
                 disabled={isLoading}
                 className={cn(
-                  'w-full py-3.5 rounded-xl font-semibold text-white shadow-soft',
+                  'w-full py-3.5 rounded-xl font-semibold text-white',
                   'bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800',
                   'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-                  'transition-all duration-200 hover:shadow-elevated hover:scale-[1.02] active:scale-[0.98]',
+                  'transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]',
                   'disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
                 )}
+                style={{ boxShadow: '0 2px 8px 0 rgb(0 0 0 / 0.08)' }}
               >
                 {isLoading ? (
                   <span className="flex items-center justify-center gap-2">
@@ -401,6 +404,17 @@ const LoginPage = () => {
                 </Link>
               </p>
             </div>
+          </div>
+
+          {/* Mobile Stats */}
+          <div className="lg:hidden grid grid-cols-3 gap-3 mt-6">
+            {stats.map((stat) => (
+              <div key={stat.label} className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl p-3 border border-white/20 dark:border-slate-700/50 text-center">
+                <stat.icon className="w-6 h-6 text-primary-600 dark:text-primary-400 mx-auto mb-1" />
+                <div className="text-lg font-bold text-slate-900 dark:text-white">{stat.value}</div>
+                <div className="text-[10px] text-slate-600 dark:text-slate-400">{stat.label}</div>
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>
