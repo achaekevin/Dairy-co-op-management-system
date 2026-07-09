@@ -7,6 +7,12 @@ import { disconnectRedis } from '@database/redis.js';
 import { sessionCleanupService } from './shared/services/session-cleanup.service.js';
 
 const server = http.createServer(app);
+
+server.keepAliveTimeout = 65000;
+server.headersTimeout = 66000;
+server.maxHeadersCount = 100;
+server.timeout = 120000;
+
 let cleanupInterval: NodeJS.Timeout | null = null;
 
 const startServer = async () => {
