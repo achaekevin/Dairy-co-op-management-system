@@ -247,11 +247,23 @@ const DashboardPage = () => {
         animate="visible"
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
       >
-        {filteredStats.map((stat) => (
-          <motion.div key={stat.title} variants={itemVariants}>
-            <StatsCard {...stat} />
+        {filteredStats.length > 0 ? (
+          filteredStats.map((stat) => (
+            <motion.div key={stat.title} variants={itemVariants}>
+              <StatsCard {...stat} />
+            </motion.div>
+          ))
+        ) : (
+          <motion.div variants={itemVariants} className="col-span-full">
+            <Card>
+              <CardContent className="py-12 text-center">
+                <p className="text-slate-600 dark:text-slate-400">
+                  Your account has limited access. Contact your administrator for more information.
+                </p>
+              </CardContent>
+            </Card>
           </motion.div>
-        ))}
+        )}
       </motion.div>
 
       {/* Charts Grid - Only for users with operational access */}
@@ -428,41 +440,57 @@ const DashboardPage = () => {
       </div>
       )}
 
-      {/* Additional Widgets Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {/* Additional Widgets Row - Role-based */}
+      {(canSeeOperations || canSeeFinancials) && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {/* Weather Widget - All authenticated users */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 1.0 }}
+          >
+            <WeatherWidget />
+          </motion.div>
+
+          {/* Tasks Widget - Only for users with operational or managerial access */}
+          {(userRole === UserRole.SUPER_ADMIN || 
+            userRole === UserRole.ADMIN || 
+            userRole === UserRole.MANAGER || 
+            userRole === UserRole.OPERATOR) && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.1 }}
+            >
+              <TasksWidget />
+            </motion.div>
+          )}
+
+          {/* Quick Actions Widget - Only for admins and managers */}
+          {(userRole === UserRole.SUPER_ADMIN || 
+            userRole === UserRole.ADMIN || 
+            userRole === UserRole.MANAGER) && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 1.2 }}
+            >
+              <QuickActionsWidget />
+            </motion.div>
+          )}
+        </div>
+      )}
+
+      {/* Upcoming Events - Only for users with operational or financial access */}
+      {(canSeeOperations || canSeeFinancials) && (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.0 }}
+          transition={{ duration: 0.5, delay: 1.3 }}
         >
-          <WeatherWidget />
+          <UpcomingEventsWidget />
         </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.1 }}
-        >
-          <TasksWidget />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
-        >
-          <QuickActionsWidget />
-        </motion.div>
-      </div>
-
-      {/* Last Row */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 1.3 }}
-      >
-        <UpcomingEventsWidget />
-      </motion.div>
+      )}
     </div>
   );
 };
