@@ -38,7 +38,7 @@ export interface FarmerFilters {
 }
 
 export const farmerService = {
-  getAll: async (filters?: FarmerFilters): Promise<ApiResponse<PaginatedResponse<Farmer>>> => {
+  getAll: async (filters?: FarmerFilters): Promise<ApiResponse<Farmer[]>> => {
     const response = await api.get('/farmers', { params: filters });
     return response.data;
   },

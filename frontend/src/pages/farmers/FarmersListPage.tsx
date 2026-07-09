@@ -61,12 +61,13 @@ const FarmersListPage = () => {
         pageSize: 10,
       });
 
-      if (response.success) {
-        setFarmers(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setFarmers(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load farmers');
+      setFarmers([]);
     } finally {
       setIsLoading(false);
     }
