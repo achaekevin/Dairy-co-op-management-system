@@ -231,6 +231,36 @@ class AuthService {
     await authRepository.revokeAllUserRefreshTokens(userId);
     await authRepository.createAuditLog(userId, 'USER_LOGOUT_ALL');
   }
+
+  async getUserProfile(userId: string): Promise<{
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string | null;
+    avatar: string | null;
+    role: string;
+    tenantId: string;
+    isEmailVerified: boolean;
+  }> {
+    const user = await authRepository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    return {
+      id: user.id,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      phoneNumber: user.phoneNumber,
+      avatar: user.avatar,
+      role: user.role,
+      tenantId: user.tenantId,
+      isEmailVerified: user.isEmailVerified,
+    };
+  }
 }
 
 export default new AuthService();

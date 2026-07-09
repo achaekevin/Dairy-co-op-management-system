@@ -167,7 +167,11 @@ class AuthController {
 
   async me(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      sendSuccess(res, req.user, 'User profile retrieved successfully');
+      const userId = req.user!.userId;
+      
+      const user = await authService.getUserProfile(userId);
+      
+      sendSuccess(res, user, 'User profile retrieved successfully');
     } catch (error) {
       next(error);
     }
