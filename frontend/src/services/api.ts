@@ -38,11 +38,11 @@ api.interceptors.response.use(
       
       try {
         const refreshToken = useAuthStore.getState().refreshToken;
-        const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
+        const response = await axios.post(`${API_BASE_URL}/auth/refresh-token`, {
           refreshToken,
         });
 
-        const { token: newToken, refreshToken: newRefreshToken } = response.data.data;
+        const { accessToken: newToken, refreshToken: newRefreshToken } = response.data.data;
         const user = useAuthStore.getState().user;
         
         if (user) {

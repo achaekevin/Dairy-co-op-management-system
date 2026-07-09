@@ -9,7 +9,7 @@ export interface LoginCredentials {
 
 export interface LoginResponse {
   user: User;
-  token: string;
+  accessToken: string;
   refreshToken: string;
 }
 
@@ -52,12 +52,12 @@ export const authService = {
   },
 
   getProfile: async (): Promise<ApiResponse<User>> => {
-    const response = await api.get('/auth/profile');
+    const response = await api.get('/auth/me');
     return response.data;
   },
 
   updateProfile: async (data: Partial<User>): Promise<ApiResponse<User>> => {
-    const response = await api.put('/auth/profile', data);
+    const response = await api.put('/auth/me', data);
     return response.data;
   },
 };

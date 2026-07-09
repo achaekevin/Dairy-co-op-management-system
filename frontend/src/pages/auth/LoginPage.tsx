@@ -50,8 +50,8 @@ const LoginPage = () => {
       const response = await authService.login(data);
       
       if (response.success) {
-        const { user, token, refreshToken } = response.data;
-        setAuth(user, token, refreshToken);
+        const { user, accessToken, refreshToken } = response.data;
+        setAuth(user, accessToken, refreshToken);
         toast.success('Login successful!');
         navigate('/dashboard', { replace: true });
       } else {
