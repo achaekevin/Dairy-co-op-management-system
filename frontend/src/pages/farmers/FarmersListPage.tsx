@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -18,6 +18,8 @@ import Pagination from '../../components/ui/Pagination';
 import Avatar from '../../components/ui/Avatar';
 import ConfirmDialog from '../../components/ui/ConfirmDialog';
 import type { Farmer, Column } from '../../types';
+import { farmerService } from '../../services/farmerService';
+import toast from 'react-hot-toast';
 
 const FarmersListPage = () => {
   const navigate = useNavigate();
@@ -29,83 +31,57 @@ const FarmersListPage = () => {
     farmerId: string | null;
   }>({ isOpen: false, farmerId: null });
 
-  // Mock data
-  const farmers: Farmer[] = [
-    {
-      id: '1',
-      farmerId: 'FM001',
-      firstName: 'Ramesh',
-      lastName: 'Kumar',
-      phoneNumber: '+91 98765 43210',
-      email: 'ramesh.kumar@example.com',
-      dateOfBirth: '1980-05-15',
-      gender: 'MALE',
-      address: '123 Village Road',
-      village: 'Green Valley',
-      district: 'Mumbai',
-      pinCode: '400001',
-      bankName: 'State Bank',
-      accountNumber: '1234567890',
-      ifscCode: 'SBIN0001234',
-      aadharNumber: '1234-5678-9012',
-      panNumber: 'ABCDE1234F',
-      status: 'ACTIVE',
-      joinDate: '2020-01-15',
-      cattle: 5,
-      totalShares: 10,
-      outstandingLoan: 50000,
-      createdAt: '2020-01-15T00:00:00Z',
-      updatedAt: '2024-01-15T00:00:00Z',
-    },
-    {
-      id: '2',
-      farmerId: 'FM002',
-      firstName: 'Suresh',
-      lastName: 'Patel',
-      phoneNumber: '+91 98765 43211',
-      dateOfBirth: '1985-08-20',
-      gender: 'MALE',
-      address: '456 Farm Lane',
-      village: 'Sunrise Village',
-      district: 'Pune',
-      pinCode: '411001',
-      bankName: 'HDFC Bank',
-      accountNumber: '0987654321',
-      ifscCode: 'HDFC0001234',
-      aadharNumber: '9876-5432-1098',
-      status: 'ACTIVE',
-      joinDate: '2020-03-20',
-      cattle: 8,
-      totalShares: 15,
-      outstandingLoan: 0,
-      createdAt: '2020-03-20T00:00:00Z',
-      updatedAt: '2024-01-15T00:00:00Z',
-    },
-    {
-      id: '3',
-      farmerId: 'FM003',
-      firstName: 'Mahesh',
-      lastName: 'Singh',
-      phoneNumber: '+91 98765 43212',
-      dateOfBirth: '1975-12-10',
-      gender: 'MALE',
-      address: '789 Dairy Street',
-      village: 'Milk Town',
-      district: 'Nashik',
-      pinCode: '422001',
-      bankName: 'ICICI Bank',
-      accountNumber: '5678901234',
-      ifscCode: 'ICIC0001234',
-      aadharNumber: '5678-9012-3456',
-      status: 'INACTIVE',
-      joinDate: '2019-06-10',
-      cattle: 3,
-      totalShares: 5,
-      outstandingLoan: 25000,
-      createdAt: '2019-06-10T00:00:00Z',
-      updatedAt: '2024-01-15T00:00:00Z',
-    },
-  ];
+  const [farmers, setFarmers] = useState<Farmer[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [stats, setStats] = useState({
+    totalFarmers: 0,
+    activeFarmers: 0,
+    totalCattle: 0,
+    totalOutstandingLoans: 0,
+  });
+
+  // Fetch farmers
+  useEffect(() => {
+    fetchFarmers();
+  }, [currentPage, searchQuery, statusFilter]);
+
+  // Fetch stats
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchFarmers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await farmerService.getAll({
+        search: searchQuery || undefined,
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        page: currentPage,
+        pageSize: 10,
+      });
+
+      if (response.success) {
+        setFarmers(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load farmers');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await farmerService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silently fail for stats
+    }
+  };
 
   const columns: Column<Farmer>[] = [
     {
@@ -241,15 +217,24 @@ const FarmersListPage = () => {
     },
   ];
 
-  const handleDelete = () => {
-    // Delete logic here
-    setDeleteDialog({ isOpen: false, farmerId: null });
+  const handleDelete = async () => {
+    if (!deleteDialog.farmerId) return;
+
+    try {
+      const response = await farmerService.delete(deleteDialog.farmerId);
+      if (response.success) {
+        toast.success('Farmer deleted successfully');
+        fetchFarmers();
+        fetchStats();
+      }
+    } catch (error) {
+      toast.error('Failed to delete farmer');
+    } finally {
+      setDeleteDialog({ isOpen: false, farmerId: null });
+    }
   };
 
-  const filteredFarmers =
-    statusFilter === 'all'
-      ? farmers
-      : farmers.filter((f) => f.status === statusFilter);
+  const filteredFarmers = farmers;
 
   return (
     <div className="space-y-6">
@@ -287,24 +272,22 @@ const FarmersListPage = () => {
         {[
           {
             label: 'Total Farmers',
-            value: farmers.length,
+            value: stats.totalFarmers,
             color: 'text-blue-600',
           },
           {
             label: 'Active',
-            value: farmers.filter((f) => f.status === 'ACTIVE').length,
+            value: stats.activeFarmers,
             color: 'text-green-600',
           },
           {
             label: 'Total Cattle',
-            value: farmers.reduce((sum, f) => sum + f.cattle, 0),
+            value: stats.totalCattle,
             color: 'text-purple-600',
           },
           {
             label: 'Outstanding Loans',
-            value: `KSh ${farmers
-              .reduce((sum, f) => sum + f.outstandingLoan, 0)
-              .toLocaleString()}`,
+            value: `KSh ${stats.totalOutstandingLoans.toLocaleString()}`,
             color: 'text-amber-600',
           },
         ].map((stat, index) => (
@@ -354,17 +337,36 @@ const FarmersListPage = () => {
 
       {/* Table */}
       <div className="bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700 overflow-hidden">
-        <Table<Farmer> columns={columns} data={filteredFarmers} hoverable striped />
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          </div>
+        ) : filteredFarmers.length > 0 ? (
+          <Table<Farmer> columns={columns} data={filteredFarmers} hoverable striped />
+        ) : (
+          <div className="flex flex-col items-center justify-center py-12">
+            <p className="text-slate-600 dark:text-slate-400 mb-4">No farmers found</p>
+            <Button
+              variant="primary"
+              onClick={() => navigate('/dashboard/farmers/new')}
+            >
+              <HiPlus className="w-4 h-4 mr-2" />
+              Add First Farmer
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={10}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+      {filteredFarmers.length > 0 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
 
       {/* Delete Confirmation */}
       <ConfirmDialog

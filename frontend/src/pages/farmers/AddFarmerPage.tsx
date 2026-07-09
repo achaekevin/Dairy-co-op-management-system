@@ -15,10 +15,13 @@ import Textarea from '../../components/ui/Textarea';
 import FormField from '../../components/forms/FormField';
 import Card from '../../components/ui/Card';
 import Progress from '../../components/ui/Progress';
+import { farmerService, type CreateFarmerData } from '../../services/farmerService';
+import toast from 'react-hot-toast';
 
 const AddFarmerPage = () => {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     // Personal Info
     firstName: '',
@@ -91,9 +94,40 @@ const AddFarmerPage = () => {
     }
   };
 
-  const handleSubmit = () => {
-    // Submit logic
-    navigate('/dashboard/farmers');
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      const farmerData: CreateFarmerData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email || undefined,
+        dateOfBirth: formData.dateOfBirth,
+        gender: formData.gender as 'MALE' | 'FEMALE' | 'OTHER',
+        address: formData.address,
+        village: formData.village,
+        district: formData.district,
+        pinCode: formData.pinCode,
+        bankName: formData.bankName,
+        accountNumber: formData.accountNumber,
+        ifscCode: formData.ifscCode,
+        aadharNumber: formData.aadharNumber,
+        panNumber: formData.panNumber || undefined,
+        cattle: parseInt(formData.cattle, 10),
+        totalShares: formData.shares ? parseInt(formData.shares, 10) : undefined,
+      };
+
+      const response = await farmerService.create(farmerData);
+      
+      if (response.success) {
+        toast.success('Farmer added successfully!');
+        navigate('/dashboard/farmers');
+      }
+    } catch (error) {
+      toast.error('Failed to add farmer. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderStepContent = () => {
@@ -402,8 +436,12 @@ const AddFarmerPage = () => {
           </Button>
 
           {currentStep === totalSteps ? (
-            <Button variant="primary" onClick={handleSubmit}>
-              Submit
+            <Button 
+              variant="primary" 
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
           ) : (
             <Button variant="primary" onClick={handleNext}>
