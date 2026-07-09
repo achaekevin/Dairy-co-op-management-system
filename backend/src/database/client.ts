@@ -3,8 +3,13 @@ import config from '@config/env.js';
 
 const prismaClientSingleton = () => {
   return new PrismaClient({
-    log: config.env === 'development' ? ['query', 'error', 'warn'] : ['error'],
+    log: config.env === 'development' ? ['error', 'warn'] : ['error'],
     errorFormat: 'minimal',
+    datasources: {
+      db: {
+        url: config.database.url,
+      },
+    },
   });
 };
 
