@@ -1,8 +1,16 @@
 import prisma from '@database/client.js';
-import { User, RefreshToken, UserRole } from '@prisma/client';
+import { User, RefreshToken, UserRole, Tenant } from '@prisma/client';
 import { RegisterData } from './auth.types.js';
 
 class AuthRepository {
+  async findTenantBySubdomain(subdomain: string): Promise<Tenant | null> {
+    return prisma.tenant.findUnique({
+      where: {
+        subdomain,
+      },
+    });
+  }
+
   async createUser(data: RegisterData & { passwordHash: string }): Promise<User> {
     return prisma.user.create({
       data: {

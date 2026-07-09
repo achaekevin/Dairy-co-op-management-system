@@ -76,7 +76,18 @@ class AuthService {
   }
 
   async login(data: LoginData, ipAddress?: string, userAgent?: string): Promise<AuthResponse> {
-    const user = await authRepository.findUserByEmail(data.email, data.tenantId);
+    // If tenantId is provided, use it; otherwise find by subdomain 'default'
+    let tenantId = data.tenantId;
+    
+    if (!tenantId) {
+      const defaultTenant = await authRepository.findTenantBySubdomain('default');
+      if (!defaultTenant) {
+        throw new UnauthorizedError('Tenant not found');
+      }
+      tenantId = defaultTenant.id;
+    }
+    
+    const user = await authRepository.findUserByEmail(data.email, tenantId);
 
     if (!user) {
       throw new UnauthorizedError('Invalid credentials');
