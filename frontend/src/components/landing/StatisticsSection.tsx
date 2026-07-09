@@ -1,15 +1,32 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import api from '../../services/api';
 
 const StatisticsSection = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [farmerCount, setFarmerCount] = useState(10);
+
+  useEffect(() => {
+    const fetchFarmerCount = async () => {
+      try {
+        const response = await api.get('/farmers/statistics');
+        if (response.data.success && response.data.data) {
+          setFarmerCount(response.data.data.totalFarmers || 10);
+        }
+      } catch (error) {
+        console.error('Failed to fetch farmer statistics');
+      }
+    };
+
+    fetchFarmerCount();
+  }, []);
 
   const stats = [
-    { value: 850, label: 'Registered Farmers', suffix: '+', duration: 2 },
-    { value: 2.5, label: 'Million Liters Collected', suffix: 'M', duration: 2.5 },
-    { value: 15, label: 'Collection Centers', suffix: '', duration: 2 },
-    { value: 120, label: 'Monthly Veterinary Visits', suffix: '+', duration: 2.2 },
+    { value: farmerCount, label: 'Registered Farmers', suffix: '', duration: 2 },
+    { value: 50000, label: 'Liters Collected', suffix: '', duration: 2.5 },
+    { value: 10, label: 'Collection Centers', suffix: '', duration: 2 },
+    { value: 25, label: 'Monthly Veterinary Visits', suffix: '+', duration: 2.2 },
   ];
 
   const Counter = ({ value, duration }: { value: number; duration: number }) => {
