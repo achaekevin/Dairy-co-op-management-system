@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -14,97 +14,77 @@ import Select from '../../components/ui/Select';
 import Table from '../../components/ui/Table';
 import Badge from '../../components/ui/Badge';
 import Card from '../../components/ui/Card';
+import Pagination from '../../components/ui/Pagination';
 import type { Employee, Column } from '../../types';
 import dayjs from 'dayjs';
+import { employeeService } from '../../services/employeeService';
+import toast from 'react-hot-toast';
 
 const HRPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterDepartment, setFilterDepartment] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const employees: Employee[] = [
-    {
-      id: '1',
-      employeeId: 'EMP-001',
-      firstName: 'Rajesh',
-      lastName: 'Kumar',
-      designation: 'Manager',
-      department: 'Operations',
-      phoneNumber: '+91 98765 11111',
-      email: 'rajesh.kumar@dairycoop.com',
-      dateOfBirth: '1985-05-15',
-      dateOfJoining: '2020-01-10',
-      salary: 45000,
-      address: '123 Main Street',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pinCode: '400001',
-      aadharNumber: '1234-5678-9012',
-      panNumber: 'ABCDE1234F',
-      bankName: 'HDFC Bank',
-      accountNumber: '12345678901234',
-      ifscCode: 'HDFC0001234',
-      status: 'ACTIVE',
-      createdAt: '2020-01-10T00:00:00Z',
-    },
-    {
-      id: '2',
-      employeeId: 'EMP-002',
-      firstName: 'Priya',
-      lastName: 'Sharma',
-      designation: 'Quality Controller',
-      department: 'Quality',
-      phoneNumber: '+91 98765 22222',
-      email: 'priya.sharma@dairycoop.com',
-      dateOfBirth: '1990-08-20',
-      dateOfJoining: '2021-03-15',
-      salary: 35000,
-      address: '456 Park Road',
-      city: 'Pune',
-      state: 'Maharashtra',
-      pinCode: '411001',
-      aadharNumber: '2345-6789-0123',
-      bankName: 'ICICI Bank',
-      accountNumber: '23456789012345',
-      ifscCode: 'ICIC0002345',
-      status: 'ACTIVE',
-      createdAt: '2021-03-15T00:00:00Z',
-    },
-    {
-      id: '3',
-      employeeId: 'EMP-003',
-      firstName: 'Amit',
-      lastName: 'Patel',
-      designation: 'Accountant',
-      department: 'Finance',
-      phoneNumber: '+91 98765 33333',
-      email: 'amit.patel@dairycoop.com',
-      dateOfBirth: '1988-12-10',
-      dateOfJoining: '2019-06-01',
-      salary: 40000,
-      address: '789 Finance Street',
-      city: 'Ahmedabad',
-      state: 'Gujarat',
-      pinCode: '380001',
-      aadharNumber: '3456-7890-1234',
-      panNumber: 'CDEFG5678H',
-      bankName: 'SBI',
-      accountNumber: '34567890123456',
-      ifscCode: 'SBIN0003456',
-      status: 'ON_LEAVE',
-      createdAt: '2019-06-01T00:00:00Z',
-    },
+  const [employees, setEmployees] = useState<Employee[]>([]);
+  const [stats, setStats] = useState({
+    totalEmployees: 0,
+    activeEmployees: 0,
+    departments: 0,
+    totalSalary: 0,
+  });
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [currentPage, searchQuery, filterDepartment, filterStatus]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchEmployees = async () => {
+    setIsLoading(true);
+    try {
+      const response = await employeeService.getAll({
+        search: searchQuery || undefined,
+        department: filterDepartment !== 'ALL' ? filterDepartment : undefined,
+        status: filterStatus !== 'ALL' ? filterStatus : undefined,
+        page: currentPage,
+        pageSize: 10,
+      });
+      if (response.success) {
+        setEmployees(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load employees');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await employeeService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silent fail
+    }
+  };
+
+  const statsData = [
+    { label: 'Total Employees', value: stats.totalEmployees.toString(), icon: UserGroupIcon, color: 'blue' },
+    { label: 'Active', value: stats.activeEmployees.toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'On Leave', value: '0', icon: ClockIcon, color: 'yellow' },
+    { label: 'Inactive', value: (stats.totalEmployees - stats.activeEmployees).toString(), icon: XCircleIcon, color: 'red' },
   ];
 
-  const stats = [
-    { label: 'Total Employees', value: employees.length.toString(), icon: UserGroupIcon, color: 'blue' },
-    { label: 'Active', value: employees.filter(e => e.status === 'ACTIVE').length.toString(), icon: CheckCircleIcon, color: 'green' },
-    { label: 'On Leave', value: employees.filter(e => e.status === 'ON_LEAVE').length.toString(), icon: ClockIcon, color: 'yellow' },
-    { label: 'Inactive', value: employees.filter(e => e.status === 'RESIGNED' || e.status === 'TERMINATED').length.toString(), icon: XCircleIcon, color: 'red' },
-  ];
-
-  const monthlySalary = employees.filter(e => e.status === 'ACTIVE' || e.status === 'ON_LEAVE').reduce((sum, e) => sum + e.salary, 0);
+  const monthlySalary = stats.totalSalary;
 
   const columns: Column<Employee>[] = [
     {
@@ -152,13 +132,6 @@ const HRPage = () => {
     { id: 'actions', header: 'Actions', accessor: () => <Button size="sm">View</Button> },
   ];
 
-  const filteredEmployees = employees.filter(e => {
-    const matchesSearch = `${e.firstName} ${e.lastName}`.toLowerCase().includes(searchQuery.toLowerCase()) || e.employeeId.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesDepartment = filterDepartment === 'ALL' || e.department === filterDepartment;
-    const matchesStatus = filterStatus === 'ALL' || e.status === filterStatus;
-    return matchesSearch && matchesDepartment && matchesStatus;
-  });
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -173,7 +146,7 @@ const HRPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {statsData.map((stat, index) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
             <Card>
               <div className="flex items-center justify-between">
@@ -219,9 +192,29 @@ const HRPage = () => {
       </Card>
 
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Employees ({filteredEmployees.length})</h2>
-        <Table columns={columns} data={filteredEmployees} />
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Employees ({employees.length})</h2>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          </div>
+        ) : employees.length > 0 ? (
+          <Table columns={columns} data={employees} />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-slate-600 dark:text-slate-400">No employees found</p>
+          </div>
+        )}
       </Card>
+
+      {employees.length > 0 && totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

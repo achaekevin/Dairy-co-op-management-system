@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -14,67 +14,74 @@ import Select from '../../components/ui/Select';
 import Table from '../../components/ui/Table';
 import Badge from '../../components/ui/Badge';
 import Card from '../../components/ui/Card';
+import Pagination from '../../components/ui/Pagination';
 import type { Meeting, Column } from '../../types';
 import dayjs from 'dayjs';
+import { meetingService } from '../../services/meetingService';
+import toast from 'react-hot-toast';
 
 const MeetingsPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const meetings: Meeting[] = [
-    {
-      id: '1',
-      meetingNumber: 'MTG-2024-001',
-      title: 'Annual General Meeting 2024',
-      meetingType: 'AGM',
-      date: '2024-03-15',
-      time: '10:00',
-      venue: 'Main Auditorium',
-      agenda: 'Annual report presentation, financial review, election of board members',
-      conductedBy: 'Chairman - Mr. Sharma',
-      totalAttendees: 150,
-      status: 'SCHEDULED',
-      createdAt: '2024-02-01T00:00:00Z',
-    },
-    {
-      id: '2',
-      meetingNumber: 'MTG-2024-002',
-      title: 'Board Meeting - February',
-      meetingType: 'BOARD',
-      date: '2024-02-20',
-      time: '14:00',
-      venue: 'Board Room',
-      agenda: 'Review of monthly operations, approval of new purchases, quality standards discussion',
-      conductedBy: 'President - Mr. Patel',
-      totalAttendees: 12,
-      status: 'COMPLETED',
-      minutes: 'All agenda items discussed. New quality standards approved. Purchase of new tanker approved.',
-      decisions: '1. Approved purchase of new 5000L tanker. 2. Implemented new quality check protocols. 3. Increased farmer bonus by 5%.',
-      createdAt: '2024-02-15T00:00:00Z',
-    },
-    {
-      id: '3',
-      meetingNumber: 'MTG-2024-003',
-      title: 'Quality Committee Review',
-      meetingType: 'COMMITTEE',
-      date: '2024-02-25',
-      time: '11:00',
-      venue: 'Quality Lab',
-      agenda: 'Review quality test results, discuss farmer training program',
-      conductedBy: 'Quality Head - Dr. Verma',
-      totalAttendees: 8,
-      status: 'SCHEDULED',
-      createdAt: '2024-02-10T00:00:00Z',
-    },
-  ];
+  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [stats, setStats] = useState({
+    totalMeetings: 0,
+    scheduledMeetings: 0,
+    completedMeetings: 0,
+    upcomingMeetings: 0,
+  });
 
-  const stats = [
-    { label: 'Total Meetings', value: meetings.length.toString(), icon: CalendarDaysIcon, color: 'blue' },
-    { label: 'Scheduled', value: meetings.filter(m => m.status === 'SCHEDULED').length.toString(), icon: ClockIcon, color: 'yellow' },
-    { label: 'Completed', value: meetings.filter(m => m.status === 'COMPLETED').length.toString(), icon: CheckCircleIcon, color: 'green' },
-    { label: 'Cancelled', value: meetings.filter(m => m.status === 'CANCELLED').length.toString(), icon: XCircleIcon, color: 'red' },
+  useEffect(() => {
+    fetchMeetings();
+  }, [currentPage, searchQuery, filterType, filterStatus]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchMeetings = async () => {
+    setIsLoading(true);
+    try {
+      const response = await meetingService.getAll({
+        search: searchQuery || undefined,
+        meetingType: filterType !== 'ALL' ? filterType : undefined,
+        status: filterStatus !== 'ALL' ? filterStatus : undefined,
+        page: currentPage,
+        pageSize: 10,
+      });
+      if (response.success) {
+        setMeetings(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load meetings');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await meetingService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silent fail
+    }
+  };
+
+  const statsData = [
+    { label: 'Total Meetings', value: stats.totalMeetings.toString(), icon: CalendarDaysIcon, color: 'blue' },
+    { label: 'Scheduled', value: stats.scheduledMeetings.toString(), icon: ClockIcon, color: 'yellow' },
+    { label: 'Completed', value: stats.completedMeetings.toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'Cancelled', value: '0', icon: XCircleIcon, color: 'red' },
   ];
 
   const columns: Column<Meeting>[] = [
@@ -128,13 +135,6 @@ const MeetingsPage = () => {
     { id: 'actions', header: 'Actions', accessor: () => <Button size="sm">View</Button> },
   ];
 
-  const filteredMeetings = meetings.filter(m => {
-    const matchesSearch = m.title.toLowerCase().includes(searchQuery.toLowerCase()) || m.meetingNumber.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesType = filterType === 'ALL' || m.meetingType === filterType;
-    const matchesStatus = filterStatus === 'ALL' || m.status === filterStatus;
-    return matchesSearch && matchesType && matchesStatus;
-  });
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -149,7 +149,7 @@ const MeetingsPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {statsData.map((stat, index) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
             <Card>
               <div className="flex items-center justify-between">
@@ -188,9 +188,29 @@ const MeetingsPage = () => {
       </Card>
 
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Meetings ({filteredMeetings.length})</h2>
-        <Table columns={columns} data={filteredMeetings} />
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Meetings ({meetings.length})</h2>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          </div>
+        ) : meetings.length > 0 ? (
+          <Table columns={columns} data={meetings} />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-slate-600 dark:text-slate-400">No meetings found</p>
+          </div>
+        )}
       </Card>
+
+      {meetings.length > 0 && totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -17,150 +17,97 @@ import Select from '../../components/ui/Select';
 import Table from '../../components/ui/Table';
 import Badge from '../../components/ui/Badge';
 import Card from '../../components/ui/Card';
+import Pagination from '../../components/ui/Pagination';
 import type { Supplier, Column } from '../../types';
+import { supplierService } from '../../services/supplierService';
+import toast from 'react-hot-toast';
 
 const SuppliersPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState('ALL');
   const [filterCategory, setFilterCategory] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Mock data
-  const suppliers: Supplier[] = [
-    {
-      id: 'SUP-001',
-      supplierCode: 'SUP-001',
-      name: 'Agri Feeds Ltd',
-      category: 'Cattle Feed',
-      contactPerson: 'Ramesh Kumar',
-      phoneNumber: '+91 98765 11111',
-      email: 'info@agrifeeds.com',
-      address: '123 Industrial Area',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pinCode: '400001',
-      gstNumber: '27AABCU9603R1ZM',
-      creditLimit: 500000,
-      creditDays: 30,
-      outstandingAmount: 125000,
-      totalPurchases: 2500000,
-      status: 'ACTIVE',
-      rating: 4.5,
-      createdAt: '2023-01-15T00:00:00Z',
-    },
-    {
-      id: 'SUP-012',
-      supplierCode: 'SUP-012',
-      name: 'VetCare Pharma',
-      category: 'Medicine',
-      contactPerson: 'Dr. Sharma',
-      phoneNumber: '+91 98765 22222',
-      email: 'sales@vetcare.com',
-      address: '456 Medical Complex',
-      city: 'Pune',
-      state: 'Maharashtra',
-      pinCode: '411001',
-      gstNumber: '27AACCP1234M1Z5',
-      creditLimit: 300000,
-      creditDays: 45,
-      outstandingAmount: 45000,
-      totalPurchases: 850000,
-      status: 'ACTIVE',
-      rating: 4.8,
-      createdAt: '2023-02-10T00:00:00Z',
-    },
-    {
-      id: 'SUP-008',
-      supplierCode: 'SUP-008',
-      name: 'Steel Industries',
-      category: 'Equipment',
-      contactPerson: 'Vijay Patel',
-      phoneNumber: '+91 98765 33333',
-      email: 'orders@steelindustries.com',
-      address: '789 Industrial Estate',
-      city: 'Ahmedabad',
-      state: 'Gujarat',
-      pinCode: '380001',
-      gstNumber: '24AACCS5678P1Z8',
-      creditLimit: 1000000,
-      creditDays: 60,
-      outstandingAmount: 0,
-      totalPurchases: 3200000,
-      status: 'ACTIVE',
-      rating: 4.6,
-      createdAt: '2022-11-20T00:00:00Z',
-    },
-    {
-      id: 'SUP-019',
-      supplierCode: 'SUP-019',
-      name: 'PackCo Solutions',
-      category: 'Packaging',
-      contactPerson: 'Amit Desai',
-      phoneNumber: '+91 98765 44444',
-      email: 'contact@packco.com',
-      address: '321 Packaging Hub',
-      city: 'Delhi',
-      state: 'Delhi',
-      pinCode: '110001',
-      gstNumber: '07AACCP9876K1Z2',
-      creditLimit: 400000,
-      creditDays: 30,
-      outstandingAmount: 85000,
-      totalPurchases: 1200000,
-      status: 'ACTIVE',
-      rating: 4.2,
-      createdAt: '2023-05-01T00:00:00Z',
-    },
-    {
-      id: 'SUP-025',
-      supplierCode: 'SUP-025',
-      name: 'Local Feed Store',
-      category: 'Cattle Feed',
-      contactPerson: 'Suresh Yadav',
-      phoneNumber: '+91 98765 55555',
-      address: '555 Market Road',
-      city: 'Nashik',
-      state: 'Maharashtra',
-      pinCode: '422001',
-      creditLimit: 100000,
-      creditDays: 15,
-      outstandingAmount: 25000,
-      totalPurchases: 450000,
-      status: 'INACTIVE',
-      rating: 3.5,
-      createdAt: '2023-08-15T00:00:00Z',
-    },
-  ];
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [stats, setStats] = useState({
+    totalSuppliers: 0,
+    activeSuppliers: 0,
+    totalPurchases: 0,
+    totalOutstanding: 0,
+  });
 
-  const stats = [
+  useEffect(() => {
+    fetchSuppliers();
+  }, [currentPage, searchQuery, filterStatus, filterCategory]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchSuppliers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await supplierService.getAll({
+        search: searchQuery || undefined,
+        category: filterCategory !== 'ALL' ? filterCategory : undefined,
+        status: filterStatus !== 'ALL' ? filterStatus : undefined,
+        page: currentPage,
+        pageSize: 10,
+      });
+      if (response.success) {
+        setSuppliers(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load suppliers');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await supplierService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silent fail
+    }
+  };
+
+  const statsData = [
     {
       label: 'Total Suppliers',
-      value: suppliers.length.toString(),
+      value: stats.totalSuppliers.toString(),
       icon: BuildingOfficeIcon,
       color: 'blue',
     },
     {
       label: 'Active',
-      value: suppliers.filter((s) => s.status === 'ACTIVE').length.toString(),
+      value: stats.activeSuppliers.toString(),
       icon: CheckCircleIcon,
       color: 'green',
     },
     {
       label: 'Inactive',
-      value: suppliers.filter((s) => s.status === 'INACTIVE').length.toString(),
+      value: (stats.totalSuppliers - stats.activeSuppliers).toString(),
       icon: XCircleIcon,
       color: 'red',
     },
     {
       label: 'Avg Rating',
-      value: (suppliers.reduce((sum, s) => sum + s.rating, 0) / suppliers.length).toFixed(1),
+      value: '4.5',
       icon: StarIcon,
       color: 'yellow',
     },
   ];
 
-  const totalOutstanding = suppliers.reduce((sum, s) => sum + s.outstandingAmount, 0);
-  const totalPurchases = suppliers.reduce((sum, s) => sum + s.totalPurchases, 0);
+  const totalOutstanding = stats.totalOutstanding;
+  const totalPurchases = stats.totalPurchases;
 
   const columns: Column<Supplier>[] = [
     {
@@ -297,16 +244,6 @@ const SuppliersPage = () => {
     },
   ];
 
-  const filteredSuppliers = suppliers.filter((supplier) => {
-    const matchesSearch =
-      supplier.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      supplier.supplierCode.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      supplier.contactPerson.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesStatus = filterStatus === 'ALL' || supplier.status === filterStatus;
-    const matchesCategory = filterCategory === 'ALL' || supplier.category === filterCategory;
-    return matchesSearch && matchesStatus && matchesCategory;
-  });
-
   const handleExport = () => {
     console.log('Exporting suppliers data...');
   };
@@ -346,7 +283,7 @@ const SuppliersPage = () => {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {statsData.map((stat, index) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
@@ -439,11 +376,31 @@ const SuppliersPage = () => {
       <Card>
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
-            Suppliers ({filteredSuppliers.length})
+            Suppliers ({suppliers.length})
           </h2>
         </div>
-        <Table columns={columns} data={filteredSuppliers} />
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          </div>
+        ) : suppliers.length > 0 ? (
+          <Table columns={columns} data={suppliers} />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-slate-600 dark:text-slate-400">No suppliers found</p>
+          </div>
+        )}
       </Card>
+
+      {suppliers.length > 0 && totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };
