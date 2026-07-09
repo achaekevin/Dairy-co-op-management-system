@@ -4,7 +4,7 @@ export interface RegisterData {
   firstName: string;
   lastName: string;
   phone?: string;
-  tenantId: string;
+  tenantId?: string;
   role?: string;
 }
 

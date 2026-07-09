@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { sendSuccess, sendCreated } from '@core/response.js';
 import authService from './auth.service.js';
+import prisma from '@database/client.js';
 import {
   RegisterData,
   LoginData,
@@ -14,7 +15,26 @@ import {
 class AuthController {
   async register(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const data: RegisterData = req.body;
+      let data: RegisterData = req.body;
+      
+      // If no tenantId provided, assign default tenant
+      if (!data.tenantId) {
+        const defaultTenant = await prisma.tenant.findFirst({
+          where: { subdomain: 'default' }
+        });
+        
+        if (!defaultTenant) {
+          throw new Error('Default tenant not found');
+        }
+        
+        data.tenantId = defaultTenant.id;
+      }
+      
+      // Default role to FARMER if not provided
+      if (!data.role) {
+        data.role = 'FARMER';
+      }
+      
       const result = await authService.register(data);
 
       res.cookie('accessToken', result.accessToken, {
