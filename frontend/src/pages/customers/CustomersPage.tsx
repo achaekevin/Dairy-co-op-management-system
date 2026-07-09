@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -14,84 +14,76 @@ import Select from '../../components/ui/Select';
 import Table from '../../components/ui/Table';
 import Badge from '../../components/ui/Badge';
 import Card from '../../components/ui/Card';
+import Pagination from '../../components/ui/Pagination';
 import type { Customer, Column } from '../../types';
+import { customerService } from '../../services/customerService';
+import toast from 'react-hot-toast';
 
 const CustomersPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const customers: Customer[] = [
-    {
-      id: '1',
-      customerId: 'CUST-001',
-      customerName: 'Retail Shop - MG Road',
-      businessName: 'Fresh Dairy Store',
-      customerType: 'RETAIL',
-      phoneNumber: '+91 98765 11111',
-      email: 'mgroad@freshdairy.com',
-      address: '123 MG Road',
-      city: 'Mumbai',
-      state: 'Maharashtra',
-      pinCode: '400001',
-      gstNumber: '27AABCU9603R1ZM',
-      creditLimit: 50000,
-      creditDays: 7,
-      outstandingAmount: 12000,
-      totalSales: 850000,
-      status: 'ACTIVE',
-      createdAt: '2023-01-15T00:00:00Z',
-    },
-    {
-      id: '2',
-      customerId: 'CUST-002',
-      customerName: 'Wholesale Distributor',
-      businessName: 'City Dairy Distributors',
-      customerType: 'WHOLESALE',
-      phoneNumber: '+91 98765 22222',
-      email: 'orders@citydairy.com',
-      address: '456 Market Yard',
-      city: 'Pune',
-      state: 'Maharashtra',
-      pinCode: '411001',
-      gstNumber: '27AACCP1234M1Z5',
-      creditLimit: 200000,
-      creditDays: 15,
-      outstandingAmount: 85000,
-      totalSales: 3200000,
-      status: 'ACTIVE',
-      createdAt: '2022-06-10T00:00:00Z',
-    },
-    {
-      id: '3',
-      customerId: 'CUST-003',
-      customerName: 'School Canteen',
-      businessName: 'St. Mary\'s School',
-      customerType: 'INSTITUTION',
-      phoneNumber: '+91 98765 33333',
-      email: 'canteen@stmarys.edu',
-      address: '789 School Road',
-      city: 'Nashik',
-      state: 'Maharashtra',
-      pinCode: '422001',
-      creditLimit: 100000,
-      creditDays: 30,
-      outstandingAmount: 0,
-      totalSales: 560000,
-      status: 'ACTIVE',
-      createdAt: '2023-04-01T00:00:00Z',
-    },
+  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [stats, setStats] = useState({
+    totalCustomers: 0,
+    activeCustomers: 0,
+    totalSales: 0,
+    totalOutstanding: 0,
+  });
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [currentPage, searchQuery, filterType, filterStatus]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchCustomers = async () => {
+    setIsLoading(true);
+    try {
+      const response = await customerService.getAll({
+        search: searchQuery || undefined,
+        customerType: filterType !== 'ALL' ? filterType : undefined,
+        status: filterStatus !== 'ALL' ? filterStatus : undefined,
+        page: currentPage,
+        pageSize: 10,
+      });
+      if (response.success) {
+        setCustomers(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load customers');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await customerService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silent fail
+    }
+  };
+
+  const statsData = [
+    { label: 'Total Customers', value: stats.totalCustomers.toString(), icon: UserGroupIcon, color: 'blue' },
+    { label: 'Active', value: stats.activeCustomers.toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'Inactive', value: (stats.totalCustomers - stats.activeCustomers).toString(), icon: XCircleIcon, color: 'red' },
+    { label: 'Outstanding', value: `KSh ${stats.totalOutstanding.toLocaleString()}`, icon: CurrencyRupeeIcon, color: 'yellow' },
   ];
 
-  const stats = [
-    { label: 'Total Customers', value: customers.length.toString(), icon: UserGroupIcon, color: 'blue' },
-    { label: 'Active', value: customers.filter(c => c.status === 'ACTIVE').length.toString(), icon: CheckCircleIcon, color: 'green' },
-    { label: 'Inactive', value: customers.filter(c => c.status === 'INACTIVE' || c.status === 'BLOCKED').length.toString(), icon: XCircleIcon, color: 'red' },
-    { label: 'Outstanding', value: `KSh ${customers.reduce((sum, c) => sum + c.outstandingAmount, 0).toLocaleString()}`, icon: CurrencyRupeeIcon, color: 'yellow' },
-  ];
-
-  const totalSales = customers.reduce((sum, c) => sum + c.totalSales, 0);
+  const totalSales = stats.totalSales;
 
   const columns: Column<Customer>[] = [
     {
@@ -158,13 +150,6 @@ const CustomersPage = () => {
     { id: 'actions', header: 'Actions', accessor: () => <Button size="sm">View</Button> },
   ];
 
-  const filteredCustomers = customers.filter(c => {
-    const matchesSearch = c.customerName.toLowerCase().includes(searchQuery.toLowerCase()) || c.customerId.toLowerCase().includes(searchQuery.toLowerCase()) || (c.businessName?.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesType = filterType === 'ALL' || c.customerType === filterType;
-    const matchesStatus = filterStatus === 'ALL' || c.status === filterStatus;
-    return matchesSearch && matchesType && matchesStatus;
-  });
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -179,7 +164,7 @@ const CustomersPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {statsData.map((stat, index) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
             <Card>
               <div className="flex items-center justify-between">
@@ -223,9 +208,29 @@ const CustomersPage = () => {
       </Card>
 
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Customers ({filteredCustomers.length})</h2>
-        <Table columns={columns} data={filteredCustomers} />
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Customers ({customers.length})</h2>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          </div>
+        ) : customers.length > 0 ? (
+          <Table columns={columns} data={customers} />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-slate-600 dark:text-slate-400">No customers found</p>
+          </div>
+        )}
       </Card>
+
+      {customers.length > 0 && totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };
