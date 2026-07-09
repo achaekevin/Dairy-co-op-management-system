@@ -41,26 +41,26 @@ const Header = () => {
 
   return (
     <>
-      <header className="h-16 bg-white/80 dark:bg-slate-800/80 backdrop-blur-xl border-b border-slate-200/50 dark:border-slate-700/50 fixed top-0 right-0 left-0 lg:left-auto z-20 shadow-soft">
+      <header className="h-16 bg-white/95 dark:bg-slate-800/95 backdrop-blur-xl border-b border-slate-200 dark:border-slate-700 fixed top-0 right-0 left-0 lg:left-auto z-20 shadow-sm">
         <div className="h-full flex items-center justify-between px-4 lg:px-6 gap-4">
           {/* Left Section */}
           <div className="flex items-center gap-4 flex-1 min-w-0">
             {/* Mobile Menu Button */}
             <button
               onClick={toggleMobile}
-              className="lg:hidden p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0"
+              className="lg:hidden p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0"
               aria-label="Toggle mobile menu"
             >
-              <HiBars3 className="w-6 h-6 text-slate-700 dark:text-slate-300" />
+              <HiBars3 className="w-6 h-6 text-slate-700 dark:text-slate-200" />
             </button>
 
             {/* Desktop Collapse Button */}
             <button
               onClick={toggleCollapse}
-              className="hidden lg:block p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0"
+              className="hidden lg:block p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0"
               aria-label="Toggle sidebar"
             >
-              <HiBars3 className="w-6 h-6 text-slate-700 dark:text-slate-300" />
+              <HiBars3 className="w-6 h-6 text-slate-700 dark:text-slate-200" />
             </button>
 
             {/* Search - Desktop */}
@@ -68,31 +68,31 @@ const Header = () => {
               "hidden md:flex items-center gap-3 rounded-xl px-4 py-2.5 transition-all duration-200",
               "w-96 xl:w-[32rem] flex-shrink border",
               searchFocused 
-                ? "bg-white dark:bg-slate-800 border-primary-500 shadow-card ring-2 ring-primary-500/20" 
-                : "bg-slate-100/80 dark:bg-slate-700/50 border-transparent hover:bg-slate-100 dark:hover:bg-slate-700"
+                ? "bg-white dark:bg-slate-700 border-primary-500 shadow-lg ring-2 ring-primary-500/20" 
+                : "bg-slate-50 dark:bg-slate-700/50 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-700"
             )}>
               <HiMagnifyingGlass className={cn(
                 "w-5 h-5 transition-colors flex-shrink-0",
-                searchFocused ? "text-primary-600 dark:text-primary-400" : "text-slate-400"
+                searchFocused ? "text-primary-600 dark:text-primary-400" : "text-slate-500 dark:text-slate-400"
               )} />
               <input
                 type="text"
                 placeholder="Search anything..."
                 onFocus={() => setSearchFocused(true)}
                 onBlur={() => setSearchFocused(false)}
-                className="bg-transparent border-none outline-none w-full text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-400 min-w-0"
+                className="bg-transparent border-none outline-none w-full text-sm text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400 font-medium min-w-0"
               />
-              <kbd className="hidden xl:inline-flex items-center gap-1 px-2 py-1 text-xs font-mono bg-slate-200 dark:bg-slate-600 rounded-lg flex-shrink-0 font-semibold">
+              <kbd className="hidden xl:inline-flex items-center gap-1 px-2 py-1 text-xs font-mono bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 rounded-lg flex-shrink-0 font-semibold">
                 ⌘K
               </kbd>
             </div>
 
             {/* Search Button - Mobile Only */}
             <button
-              className="md:hidden p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0"
+              className="md:hidden p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0"
               aria-label="Search"
             >
-              <HiMagnifyingGlass className="w-5 h-5 text-slate-700 dark:text-slate-300" />
+              <HiMagnifyingGlass className="w-5 h-5 text-slate-700 dark:text-slate-200" />
             </button>
           </div>
 
@@ -101,13 +101,13 @@ const Header = () => {
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
-              className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0 group"
+              className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0 group"
               aria-label="Toggle theme"
             >
               {resolvedTheme === 'dark' ? (
-                <HiSparkles className="w-5 h-5 text-accent-400 group-hover:rotate-12 transition-transform" />
+                <HiSparkles className="w-5 h-5 text-yellow-400 group-hover:rotate-12 transition-transform" />
               ) : (
-                <HiMoon className="w-5 h-5 text-slate-600 group-hover:rotate-12 transition-transform" />
+                <HiMoon className="w-5 h-5 text-slate-700 group-hover:rotate-12 transition-transform" />
               )}
             </button>
 
@@ -115,11 +115,11 @@ const Header = () => {
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
-                className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all duration-200 hover:scale-110 relative group"
+                className="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-110 relative group"
                 aria-label="Notifications"
               >
-                <HiBell className="w-5 h-5 text-slate-700 dark:text-slate-300 group-hover:animate-pulse-soft" />
-                <span className="absolute top-2 right-2 w-2 h-2 bg-error-500 rounded-full animate-pulse" />
+                <HiBell className="w-5 h-5 text-slate-700 dark:text-slate-200 group-hover:animate-pulse-soft" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-pulse" />
               </button>
             </div>
 
@@ -127,20 +127,20 @@ const Header = () => {
             <div className="relative flex-shrink-0">
               <button
                 onClick={() => setShowProfileMenu(!showProfileMenu)}
-                className="flex items-center gap-2 p-1.5 pr-3 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-xl transition-all duration-200 hover:scale-105 group"
+                className="flex items-center gap-2 p-1.5 pr-3 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-105 group"
               >
-                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center flex-shrink-0 shadow-soft group-hover:shadow-glow transition-shadow">
+                <div className="w-9 h-9 bg-gradient-to-br from-primary-500 to-primary-700 rounded-xl flex items-center justify-center flex-shrink-0 shadow-sm group-hover:shadow-md transition-shadow">
                   <span className="text-white text-sm font-bold">
                     {user?.firstName?.[0]}{user?.lastName?.[0]}
                   </span>
                 </div>
                 <div className="hidden lg:block text-left min-w-0">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white truncate max-w-[120px] xl:max-w-[160px]">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-slate-100 truncate max-w-[120px] xl:max-w-[160px]">
                     {user?.firstName} {user?.lastName}
                   </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 truncate capitalize">{user?.role?.toLowerCase()}</p>
+                  <p className="text-xs text-slate-600 dark:text-slate-400 truncate capitalize font-medium">{user?.role?.toLowerCase()}</p>
                 </div>
-                <HiChevronDown className="w-4 h-4 text-slate-400 hidden sm:block flex-shrink-0 group-hover:text-slate-600 dark:group-hover:text-slate-300 transition-colors" />
+                <HiChevronDown className="w-4 h-4 text-slate-500 dark:text-slate-400 hidden sm:block flex-shrink-0 group-hover:text-slate-700 dark:group-hover:text-slate-200 transition-colors" />
               </button>
 
               <AnimatePresence>
@@ -155,35 +155,35 @@ const Header = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-elevated border border-slate-200/50 dark:border-slate-700/50 z-40 overflow-hidden"
+                      className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-40 overflow-hidden"
                     >
                       <div className="p-2 space-y-1">
                         <Link
                           to="/dashboard/profile"
-                          className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-all duration-200 group"
+                          className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-all duration-200 group"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <HiUser className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                            <HiUser className="w-4 h-4 text-slate-700 dark:text-slate-200" />
                           </div>
-                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Profile</span>
+                          <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Profile</span>
                         </Link>
                         <Link
                           to="/dashboard/settings"
-                          className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700/50 rounded-lg transition-all duration-200 group"
+                          className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-all duration-200 group"
                           onClick={() => setShowProfileMenu(false)}
                         >
                           <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center group-hover:scale-110 transition-transform">
-                            <HiCog className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                            <HiCog className="w-4 h-4 text-slate-700 dark:text-slate-200" />
                           </div>
-                          <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Settings</span>
+                          <span className="text-sm font-medium text-slate-900 dark:text-slate-100">Settings</span>
                         </Link>
                         <div className="my-1 h-px bg-slate-200 dark:bg-slate-700" />
                         <button
                           onClick={handleLogout}
-                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-error-50 dark:hover:bg-error-900/20 rounded-lg transition-all duration-200 text-error-600 dark:text-error-400 group"
+                          className="w-full flex items-center gap-3 px-3 py-2.5 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-all duration-200 text-red-600 dark:text-red-400 group"
                         >
-                          <div className="w-8 h-8 rounded-lg bg-error-100 dark:bg-error-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          <div className="w-8 h-8 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <HiArrowRightOnRectangle className="w-4 h-4" />
                           </div>
                           <span className="text-sm font-medium">Logout</span>

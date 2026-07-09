@@ -81,16 +81,16 @@ const Sidebar = () => {
             className={cn(
               'w-full flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 min-h-[44px] group',
               'hover:bg-primary-50 dark:hover:bg-primary-900/20',
-              'text-slate-700 dark:text-slate-300 hover:text-primary-700 dark:hover:text-primary-400',
+              'text-slate-900 dark:text-slate-100 hover:text-primary-700 dark:hover:text-primary-400',
               isCollapsed && 'justify-center'
             )}
           >
             <div className={cn(
               "flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200",
-              "bg-slate-100 dark:bg-slate-800 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30",
+              "bg-slate-100 dark:bg-slate-700 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30",
               "group-hover:scale-110"
             )}>
-              <Icon className="w-5 h-5" />
+              <Icon className="w-5 h-5 text-slate-700 dark:text-slate-200" />
             </div>
             {!isCollapsed && (
               <>
@@ -130,8 +130,8 @@ const Sidebar = () => {
         className={cn(
           'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 min-h-[44px] group relative',
           active
-            ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-soft'
-            : 'hover:bg-primary-50 dark:hover:bg-primary-900/20 text-slate-700 dark:text-slate-300 hover:text-primary-700 dark:hover:text-primary-400',
+            ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-md'
+            : 'hover:bg-primary-50 dark:hover:bg-primary-900/20 text-slate-900 dark:text-slate-100 hover:text-primary-700 dark:hover:text-primary-400',
           isCollapsed && 'justify-center',
           level > 0 && !isCollapsed && 'pl-6'
         )}
@@ -147,10 +147,10 @@ const Sidebar = () => {
           "flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center transition-all duration-200",
           active 
             ? "bg-white/20" 
-            : "bg-slate-100 dark:bg-slate-800 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30",
+            : "bg-slate-100 dark:bg-slate-700 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30",
           "group-hover:scale-110"
         )}>
-          <Icon className="w-5 h-5" />
+          <Icon className={cn("w-5 h-5", active ? "text-white" : "text-slate-700 dark:text-slate-200")} />
         </div>
         {!isCollapsed && (
           <>
