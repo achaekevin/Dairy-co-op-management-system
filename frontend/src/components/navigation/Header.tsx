@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useSidebarStore } from '../../store/sidebarStore';
 import { useThemeStore } from '../../store/themeStore';
 import { useAuthStore } from '../../store/authStore';
+import { authService } from '../../services/authService';
 import NotificationPanel from './NotificationPanel';
 import {
   HiBars3,
@@ -26,9 +27,15 @@ const Header = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
 
-  const handleLogout = () => {
-    clearAuth();
-    window.location.href = '/login';
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      // Ignore logout errors, clear anyway
+    } finally {
+      clearAuth();
+      window.location.href = '/login';
+    }
   };
 
   return (

@@ -15,8 +15,8 @@ import {
   HiChartBar,
 } from 'react-icons/hi2';
 import { useAuthStore } from '../../store/authStore';
+import { authService } from '../../services/authService';
 import toast from 'react-hot-toast';
-import { UserRole } from '../../types';
 import { cn } from '../../utils/cn';
 
 const loginSchema = z.object({
@@ -47,30 +47,19 @@ const LoginPage = () => {
   const onSubmit = async (data: LoginFormData) => {
     setIsLoading(true);
     try {
-      const mockUser = {
-        id: '1',
-        email: data.email,
-        firstName: 'Admin',
-        lastName: 'User',
-        role: UserRole.ADMIN,
-        tenantId: '1',
-        avatar: '',
-        phoneNumber: '+91 9876543210',
-        isActive: true,
-        lastLogin: new Date().toISOString(),
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      };
+      const response = await authService.login(data);
       
-      const mockToken = 'mock-jwt-token-' + Date.now();
-      const mockRefreshToken = 'mock-refresh-token-' + Date.now();
-      
-      setAuth(mockUser, mockToken, mockRefreshToken);
-      toast.success('Login successful!');
-      
-      navigate('/dashboard', { replace: true });
-    } catch (error) {
-      toast.error('Invalid email or password');
+      if (response.success) {
+        const { user, token, refreshToken } = response.data;
+        setAuth(user, token, refreshToken);
+        toast.success('Login successful!');
+        navigate('/dashboard', { replace: true });
+      } else {
+        toast.error(response.message || 'Login failed');
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || 'Invalid email or password';
+      toast.error(errorMessage);
     } finally {
       setIsLoading(false);
     }

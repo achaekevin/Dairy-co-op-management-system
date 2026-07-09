@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { HiCamera, HiPencil } from 'react-icons/hi2';
 import { motion } from 'framer-motion';
 import Button from '../../components/ui/Button';
@@ -11,21 +11,65 @@ import FormField from '../../components/forms/FormField';
 import Card from '../../components/ui/Card';
 import Divider from '../../components/ui/Divider';
 import { useAuthStore } from '../../store/authStore';
+import { authService } from '../../services/authService';
+import toast from 'react-hot-toast';
 
 const ProfilePage = () => {
-  const { user } = useAuthStore();
+  const { user, updateUser } = useAuthStore();
   const [isEditing, setIsEditing] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
-    firstName: user?.firstName || 'Admin',
-    lastName: user?.lastName || 'User',
-    email: user?.email || 'admin@dairycoop.com',
-    phoneNumber: user?.phoneNumber || '+91 98765 43210',
-    address: '123 Main Street, Mumbai, Maharashtra',
-    bio: 'Managing dairy cooperative operations and farmer welfare.',
+    firstName: user?.firstName || '',
+    lastName: user?.lastName || '',
+    email: user?.email || '',
+    phoneNumber: user?.phoneNumber || '',
+    address: '',
+    bio: '',
   });
 
-  const handleSave = () => {
-    setIsEditing(false);
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  const fetchProfile = async () => {
+    setIsLoading(true);
+    try {
+      const response = await authService.getProfile();
+      if (response.success) {
+        const profileData = response.data;
+        updateUser(profileData);
+        setFormData({
+          firstName: profileData.firstName || '',
+          lastName: profileData.lastName || '',
+          email: profileData.email || '',
+          phoneNumber: profileData.phoneNumber || '',
+          address: '',
+          bio: '',
+        });
+      }
+    } catch (error) {
+      toast.error('Failed to load profile');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await authService.updateProfile({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        phoneNumber: formData.phoneNumber,
+      });
+      
+      if (response.success) {
+        updateUser(response.data);
+        toast.success('Profile updated successfully');
+        setIsEditing(false);
+      }
+    } catch (error) {
+      toast.error('Failed to update profile');
+    }
   };
 
   const handleChange = (
@@ -33,6 +77,14 @@ const ProfilePage = () => {
   ) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-12">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    );
+  }
 
   const personalInfoTab = (
     <div className="space-y-6">
