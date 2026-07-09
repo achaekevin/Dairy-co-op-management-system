@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSidebarStore } from '../../store/sidebarStore';
 import { useThemeStore } from '../../store/themeStore';
@@ -20,6 +20,7 @@ import {
 import { cn } from '../../utils/cn';
 
 const Header = () => {
+  const navigate = useNavigate();
   const { toggleCollapse, toggleMobile } = useSidebarStore();
   const { resolvedTheme, toggleTheme } = useThemeStore();
   const { user, clearAuth } = useAuthStore();
@@ -34,7 +35,7 @@ const Header = () => {
       // Ignore logout errors, clear anyway
     } finally {
       clearAuth();
-      window.location.href = '/';
+      navigate('/', { replace: true });
     }
   };
 
