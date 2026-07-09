@@ -17,8 +17,9 @@ const startServer = async () => {
     cleanupInterval = sessionCleanupService.startScheduledCleanup(60);
     logger.info('Session cleanup service started (runs every 60 minutes)');
 
-    server.listen(config.port, () => {
+    server.listen(config.port, '0.0.0.0', () => {
       logger.info(`Server running on port ${config.port} in ${config.env} mode`);
+      logger.info(`Server accessible at http://192.168.100.211:${config.port}`);
       logger.info(`API version: ${config.apiVersion}`);
     });
   } catch (error) {
