@@ -76,7 +76,7 @@ const LandingPage = () => {
       {/* Navigation Bar */}
       <motion.nav
         style={{ backgroundColor: navBg as any }}
-        className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-lg"
+        className="fixed top-0 left-0 right-0 z-50 border-b border-white/10 backdrop-blur-lg shadow-lg"
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -91,8 +91,8 @@ const LandingPage = () => {
                 <HiBeaker className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-lg font-bold text-slate-900">DairyCoop</h1>
-                <p className="text-xs text-slate-600 font-medium">Management Suite</p>
+                <h1 className="text-lg font-bold text-white drop-shadow-lg">DairyCoop</h1>
+                <p className="text-xs text-white/90 font-medium drop-shadow">Management Suite</p>
               </div>
             </motion.div>
 
@@ -102,10 +102,10 @@ const LandingPage = () => {
                 <button
                   key={item.id}
                   onClick={() => scrollToSection(item.id)}
-                  className={`text-sm font-semibold transition-colors ${
+                  className={`text-sm font-semibold transition-all ${
                     activeSection === item.id
-                      ? 'text-primary-600'
-                      : 'text-slate-700 hover:text-primary-600'
+                      ? 'text-white scale-110'
+                      : 'text-white/80 hover:text-white hover:scale-105'
                   }`}
                 >
                   {item.label}
@@ -118,19 +118,19 @@ const LandingPage = () => {
               {/* Theme Toggle */}
               <button
                 onClick={() => setIsDark(!isDark)}
-                className="p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                className="p-2 rounded-lg hover:bg-white/10 transition-colors"
               >
                 {isDark ? (
-                  <HiSun className="w-5 h-5 text-slate-700" />
+                  <HiSun className="w-5 h-5 text-white" />
                 ) : (
-                  <HiMoon className="w-5 h-5 text-slate-700" />
+                  <HiMoon className="w-5 h-5 text-white" />
                 )}
               </button>
 
               {/* Desktop Login Button */}
               <button
                 onClick={() => setShowLoginModal(true)}
-                className="hidden lg:block px-6 py-2.5 bg-gradient-to-r from-primary-600 to-primary-700 hover:from-primary-700 hover:to-primary-800 text-white font-semibold rounded-xl shadow-lg transition-all hover:scale-105"
+                className="hidden lg:block px-6 py-2.5 bg-white text-primary-700 hover:bg-white/90 font-semibold rounded-xl shadow-lg transition-all hover:scale-105"
               >
                 Sign In
               </button>
@@ -138,12 +138,12 @@ const LandingPage = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="lg:hidden p-2 rounded-lg hover:bg-slate-100 transition-colors"
+                className="lg:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
               >
                 {showMobileMenu ? (
-                  <HiXMark className="w-6 h-6 text-slate-700" />
+                  <HiXMark className="w-6 h-6 text-white" />
                 ) : (
-                  <HiBars3 className="w-6 h-6 text-slate-700" />
+                  <HiBars3 className="w-6 h-6 text-white" />
                 )}
               </button>
             </div>
