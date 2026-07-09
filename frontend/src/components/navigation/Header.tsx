@@ -34,7 +34,7 @@ const Header = () => {
       // Ignore logout errors, clear anyway
     } finally {
       clearAuth();
-      window.location.href = '/login';
+      window.location.href = '/';
     }
   };
 

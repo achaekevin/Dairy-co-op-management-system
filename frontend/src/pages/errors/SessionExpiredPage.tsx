@@ -10,7 +10,7 @@ const SessionExpiredPage = () => {
 
   const handleLogin = () => {
     clearAuth();
-    navigate('/login');
+    navigate('/');
   };
 
   return (
