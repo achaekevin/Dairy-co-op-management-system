@@ -43,10 +43,11 @@ type SignupFormData = z.infer<typeof signupSchema>;
 const AVAILABLE_ROLES = [
   { value: 'FARMER', label: 'Farmer', description: 'Dairy farmer delivering milk' },
   { value: 'CUSTOMER', label: 'Customer', description: 'Purchase dairy products' },
-  { value: 'SUPPLIER', label: 'Supplier', description: 'Supply goods and services' },
-  { value: 'DRIVER', label: 'Driver', description: 'Transport and logistics' },
-  { value: 'LAB_TECHNICIAN', label: 'Lab Technician', description: 'Quality testing' },
-  { value: 'VETERINARIAN', label: 'Veterinarian', description: 'Animal health services' },
+  { value: 'OPERATOR', label: 'Milk Collection Officer', description: 'Milk collection operations' },
+  { value: 'ACCOUNTANT', label: 'Accountant', description: 'Financial management' },
+  { value: 'STORE_MANAGER', label: 'Store Officer', description: 'Store and inventory management' },
+  { value: 'VETERINARIAN', label: 'Veterinary Officer', description: 'Animal health services' },
+  { value: 'MANAGER', label: 'Manager', description: 'Operations management' },
 ];
 
 const SignupPage = () => {
@@ -174,7 +175,7 @@ const SignupPage = () => {
                 {/* First Name */}
                 <div>
                   <label htmlFor="firstName" className="block text-sm font-semibold text-slate-700 mb-2">
-                    First Name
+                    First Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -200,7 +201,7 @@ const SignupPage = () => {
                 {/* Last Name */}
                 <div>
                   <label htmlFor="lastName" className="block text-sm font-semibold text-slate-700 mb-2">
-                    Last Name
+                    Last Name <span className="text-red-500">*</span>
                   </label>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -227,7 +228,7 @@ const SignupPage = () => {
               {/* Email */}
               <div>
                 <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
-                  Email Address
+                  Email Address <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -253,7 +254,7 @@ const SignupPage = () => {
               {/* Phone */}
               <div>
                 <label htmlFor="phone" className="block text-sm font-semibold text-slate-700 mb-2">
-                  Phone Number
+                  Phone Number <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -279,7 +280,7 @@ const SignupPage = () => {
               {/* Role Selection */}
               <div>
                 <label htmlFor="role" className="block text-sm font-semibold text-slate-700 mb-2">
-                  I am a
+                  I am a <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10">
@@ -316,7 +317,7 @@ const SignupPage = () => {
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
-                  Password
+                  Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -344,12 +345,17 @@ const SignupPage = () => {
                 {errors.password && (
                   <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
                 )}
+                {!errors.password && (
+                  <p className="mt-1 text-xs text-slate-500">
+                    Must contain uppercase, lowercase, number, and special character
+                  </p>
+                )}
               </div>
 
               {/* Confirm Password */}
               <div>
                 <label htmlFor="confirmPassword" className="block text-sm font-semibold text-slate-700 mb-2">
-                  Confirm Password
+                  Confirm Password <span className="text-red-500">*</span>
                 </label>
                 <div className="relative">
                   <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
@@ -383,11 +389,30 @@ const SignupPage = () => {
               <Button
                 type="submit"
                 isLoading={isLoading}
+                disabled={isLoading || Object.keys(errors).length > 0}
                 className="w-full"
                 size="lg"
               >
                 {isLoading ? 'Creating Account...' : 'Create Account'}
               </Button>
+
+              {/* Validation Summary */}
+              {Object.keys(errors).length > 0 && (
+                <div className="p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl">
+                  <p className="text-sm font-semibold text-red-900 dark:text-red-200 mb-2">
+                    Please fill in all required fields:
+                  </p>
+                  <ul className="text-sm text-red-700 dark:text-red-300 space-y-1 list-disc list-inside">
+                    {errors.firstName && <li>First name is required</li>}
+                    {errors.lastName && <li>Last name is required</li>}
+                    {errors.email && <li>Valid email is required</li>}
+                    {errors.phone && <li>Phone number is required</li>}
+                    {errors.role && <li>Please select your role</li>}
+                    {errors.password && <li>Password must meet requirements</li>}
+                    {errors.confirmPassword && <li>Passwords must match</li>}
+                  </ul>
+                </div>
+              )}
             </form>
 
             {/* Footer */}
