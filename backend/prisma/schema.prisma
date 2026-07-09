@@ -112,12 +112,11 @@ model RefreshToken {
   id        String   @id @default(uuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
+  token     String   @unique @db.VarChar(500)
   expiresAt DateTime
   createdAt DateTime @default(now())
 
   @@index([userId])
-  @@index([token])
   @@map("refresh_tokens")
 }
 
@@ -125,9 +124,9 @@ model Session {
   id        String   @id @default(uuid())
   userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  token     String   @unique
+  token     String   @unique @db.VarChar(500)
   ipAddress String?
-  userAgent String?
+  userAgent String?  @db.Text
   expiresAt DateTime
   createdAt DateTime @default(now())
 
