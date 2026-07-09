@@ -176,6 +176,19 @@ class AuthController {
       next(error);
     }
   }
+
+  async updateProfile(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const userId = req.user!.userId;
+      const data = req.body;
+      
+      const user = await authService.updateUserProfile(userId, data);
+      
+      sendSuccess(res, user, 'Profile updated successfully');
+    } catch (error) {
+      next(error);
+    }
+  }
 }
 
 export default new AuthController();

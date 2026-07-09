@@ -35,4 +35,6 @@ router.post('/logout-all', authenticate, authController.logoutAll);
 
 router.get('/me', authenticate, authController.me);
 
+router.put('/me', authenticate, authController.updateProfile);
+
 export default router;

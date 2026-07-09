@@ -261,6 +261,48 @@ class AuthService {
       isEmailVerified: user.isEmailVerified,
     };
   }
+
+  async updateUserProfile(userId: string, data: {
+    firstName?: string;
+    lastName?: string;
+    phoneNumber?: string;
+    avatar?: string;
+  }): Promise<{
+    id: string;
+    email: string;
+    firstName: string;
+    lastName: string;
+    phoneNumber: string | null;
+    avatar: string | null;
+    role: string;
+    tenantId: string;
+    isEmailVerified: boolean;
+  }> {
+    const user = await authRepository.findUserById(userId);
+
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+
+    const updatedUser = await authRepository.updateUser(userId, {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      phoneNumber: data.phoneNumber,
+      avatar: data.avatar,
+    });
+
+    return {
+      id: updatedUser.id,
+      email: updatedUser.email,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      phoneNumber: updatedUser.phoneNumber,
+      avatar: updatedUser.avatar,
+      role: updatedUser.role,
+      tenantId: updatedUser.tenantId,
+      isEmailVerified: updatedUser.isEmailVerified,
+    };
+  }
 }
 
 export default new AuthService();
