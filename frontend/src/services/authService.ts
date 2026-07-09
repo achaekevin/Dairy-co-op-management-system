@@ -60,4 +60,9 @@ export const authService = {
     const response = await api.put('/auth/me', data);
     return response.data;
   },
+
+  verifyEmail: async (token: string): Promise<ApiResponse<{ message: string }>> => {
+    const response = await api.post('/auth/verify-email', { token });
+    return response.data;
+  },
 };

@@ -8,6 +8,8 @@ import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import VerifyOtpPage from '../pages/auth/VerifyOtpPage';
 import MfaPage from '../pages/auth/MfaPage';
 import ChangePasswordPage from '../pages/auth/ChangePasswordPage';
+import EmailVerificationPage from '../pages/auth/EmailVerificationPage';
+import AccountLockedPage from '../pages/auth/AccountLockedPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';
 import FarmersListPage from '../pages/farmers/FarmersListPage';
 import AddFarmerPage from '../pages/farmers/AddFarmerPage';
@@ -49,6 +51,7 @@ import NotFoundPage from '../pages/errors/NotFoundPage';
 import UnauthorizedPage from '../pages/errors/UnauthorizedPage';
 import ServerErrorPage from '../pages/errors/ServerErrorPage';
 import SessionExpiredPage from '../pages/errors/SessionExpiredPage';
+import MaintenancePage from '../pages/errors/MaintenancePage';
 import ProtectedRoute from './ProtectedRoute';
 
 export const router = createBrowserRouter([
@@ -217,6 +220,14 @@ export const router = createBrowserRouter([
         <ChangePasswordPage />
       </AuthLayout>
     ),
+  },
+  {
+    path: '/verify-email',
+    element: <EmailVerificationPage />,
+  },
+  {
+    path: '/account-locked',
+    element: <AccountLockedPage />,
   },
   // Dashboard Routes
   {
@@ -409,6 +420,10 @@ export const router = createBrowserRouter([
   {
     path: '/session-expired',
     element: <SessionExpiredPage />,
+  },
+  {
+    path: '/maintenance',
+    element: <MaintenancePage />,
   },
   {
     path: '*',
