@@ -12,6 +12,7 @@ interface StatsCardProps {
   };
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
   className?: string;
+  onClick?: () => void;
 }
 
 const StatsCard = ({
@@ -21,6 +22,7 @@ const StatsCard = ({
   trend,
   color = 'primary',
   className,
+  onClick,
 }: StatsCardProps) => {
   const colors = {
     primary: 'from-primary-500 to-primary-700',
@@ -32,7 +34,11 @@ const StatsCard = ({
   };
 
   return (
-    <Card hover className={cn('p-6', className)}>
+    <Card 
+      hover 
+      className={cn('p-6', onClick && 'cursor-pointer', className)}
+      onClick={onClick}
+    >
       <div className="flex items-start justify-between">
         <div className="flex-1">
           <p className="text-sm font-medium text-slate-600 dark:text-slate-400 mb-1">

@@ -1,5 +1,6 @@
 ﻿import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import StatsCard from '../../components/cards/StatsCard';
 import Card, { CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -32,6 +33,7 @@ import {
 const DashboardPage = () => {
   const [refreshing, setRefreshing] = useState(false);
   const { user } = useAuthStore();
+  const navigate = useNavigate();
   const userRole = user?.role || UserRole.VIEWER;
 
   const handleRefresh = () => {
@@ -65,6 +67,7 @@ const DashboardPage = () => {
       trend: { value: 8.2, isPositive: true },
       color: 'primary' as const,
       roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER],
+      onClick: () => navigate('/dashboard/farmers'),
     },
     {
       title: 'Milk Collected Today',
@@ -73,6 +76,7 @@ const DashboardPage = () => {
       trend: { value: 5.4, isPositive: true },
       color: 'secondary' as const,
       roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      onClick: () => navigate('/dashboard/milk-collection'),
     },
     {
       title: 'Revenue Today',
@@ -81,6 +85,7 @@ const DashboardPage = () => {
       trend: { value: 12.5, isPositive: true },
       color: 'success' as const,
       roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT],
+      onClick: () => navigate('/dashboard/reports'),
     },
     {
       title: 'Outstanding Loans',
@@ -89,6 +94,7 @@ const DashboardPage = () => {
       trend: { value: 3.2, isPositive: false },
       color: 'warning' as const,
       roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT],
+      onClick: () => navigate('/dashboard/loans'),
     },
     {
       title: 'Quality Score',
@@ -97,6 +103,7 @@ const DashboardPage = () => {
       trend: { value: 2.1, isPositive: true },
       color: 'info' as const,
       roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      onClick: () => navigate('/dashboard/quality'),
     },
     {
       title: 'Rejected Milk',
@@ -105,6 +112,7 @@ const DashboardPage = () => {
       trend: { value: 15.3, isPositive: false },
       color: 'error' as const,
       roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      onClick: () => navigate('/dashboard/quality'),
     },
     {
       title: 'My Collections',
@@ -113,6 +121,7 @@ const DashboardPage = () => {
       trend: { value: 4.2, isPositive: true },
       color: 'primary' as const,
       roles: [UserRole.OPERATOR],
+      onClick: () => navigate('/dashboard/milk-collection'),
     },
     {
       title: 'Pending Tasks',
@@ -121,6 +130,7 @@ const DashboardPage = () => {
       trend: { value: 2, isPositive: false },
       color: 'warning' as const,
       roles: [UserRole.OPERATOR, UserRole.MANAGER],
+      onClick: () => navigate('/dashboard/notifications'),
     },
   ];
 
