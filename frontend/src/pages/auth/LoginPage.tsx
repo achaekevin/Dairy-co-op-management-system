@@ -102,12 +102,12 @@ const LoginPage = () => {
         <div className="relative z-10 w-full p-12 xl:p-16 flex flex-col">
           {/* Logo */}
           <div className="flex items-center gap-3 mb-16">
-            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
               <HiBeaker className="w-7 h-7 text-white" />
             </div>
             <div>
               <h1 className="text-2xl font-bold text-white">DairyCoop</h1>
-              <p className="text-sm text-slate-400">Management Suite</p>
+              <p className="text-sm text-slate-300 font-medium">Management Suite</p>
             </div>
           </div>
 
@@ -117,7 +117,7 @@ const LoginPage = () => {
               Empower Your<br />
               Dairy's Journey.
             </h2>
-            <p className="text-lg text-slate-400 max-w-md">
+            <p className="text-lg text-slate-200 max-w-md font-medium">
               Join leading dairy cooperatives in streamlining operations, managing farmers, and achieving sustainable growth.
             </p>
           </div>
@@ -130,22 +130,22 @@ const LoginPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="bg-slate-800/50 backdrop-blur-sm rounded-2xl p-6 border border-slate-700/50 hover:bg-slate-800/70 transition-all duration-300"
+                className="bg-slate-800/60 backdrop-blur-sm rounded-2xl p-6 border border-slate-600/50 hover:bg-slate-700/60 transition-all duration-300"
               >
-                <div className="w-12 h-12 bg-primary-500/10 rounded-xl flex items-center justify-center mb-4">
-                  <feature.icon className="w-6 h-6 text-primary-400" />
+                <div className="w-12 h-12 bg-primary-500/20 rounded-xl flex items-center justify-center mb-4">
+                  <feature.icon className="w-6 h-6 text-primary-300" />
                 </div>
-                <h3 className="text-white font-semibold mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-400">{feature.description}</p>
+                <h3 className="text-white font-semibold mb-2 text-base">{feature.title}</h3>
+                <p className="text-sm text-slate-300 leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
 
           {/* Footer Links */}
-          <div className="flex items-center gap-6 text-sm text-slate-400 mt-8">
-            <Link to="/about" className="hover:text-white transition-colors">About DairyCoop</Link>
-            <Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
-            <Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
+          <div className="flex items-center gap-6 text-sm text-slate-300 mt-8">
+            <Link to="/about" className="hover:text-white transition-colors font-medium">About DairyCoop</Link>
+            <Link to="/terms" className="hover:text-white transition-colors font-medium">Terms of Service</Link>
+            <Link to="/privacy" className="hover:text-white transition-colors font-medium">Privacy Policy</Link>
           </div>
         </div>
       </div>
@@ -164,12 +164,12 @@ const LoginPage = () => {
 
         {/* Mobile Logo (shown only on mobile) */}
         <div className="lg:hidden absolute top-8 left-8 flex items-center gap-3 z-20">
-          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center">
+          <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl flex items-center justify-center shadow-lg">
             <HiBeaker className="w-6 h-6 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold text-white drop-shadow-lg">DairyCoop</h1>
-            <p className="text-xs text-white/80 drop-shadow">Management Suite</p>
+            <p className="text-xs text-slate-100 drop-shadow font-semibold">Management Suite</p>
           </div>
         </div>
 
@@ -196,7 +196,7 @@ const LoginPage = () => {
               <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
                 Member Login
               </h2>
-              <p className="text-slate-300">
+              <p className="text-slate-200 font-medium">
                 Sign in to access your secure dashboard.
               </p>
             </div>
@@ -205,11 +205,11 @@ const LoginPage = () => {
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
               {/* Email Input */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-slate-100 mb-2">
                   Member Email
                 </label>
                 <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
                     <HiEnvelope className="w-5 h-5" />
                   </div>
                   <input
@@ -220,27 +220,27 @@ const LoginPage = () => {
                     placeholder="email@yourdairy.com"
                     className={cn(
                       'w-full pl-12 pr-4 py-3.5 rounded-xl border transition-all duration-200',
-                      'bg-slate-800/50 text-white',
-                      'placeholder:text-slate-500',
+                      'bg-slate-800/80 text-white font-medium',
+                      'placeholder:text-slate-400',
                       'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent focus:bg-slate-800',
                       errors.email 
                         ? 'border-red-500 focus:ring-red-500' 
-                        : 'border-slate-700'
+                        : 'border-slate-600'
                     )}
                   />
                 </div>
                 {errors.email && (
-                  <p className="mt-2 text-sm text-red-400">{errors.email.message}</p>
+                  <p className="mt-2 text-sm text-red-300 font-medium">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Password Input */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-slate-300 mb-2">
+                <label htmlFor="password" className="block text-sm font-semibold text-slate-100 mb-2">
                   Access PIN / Password
                 </label>
                 <div className="relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400">
+                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300">
                     <HiLockClosed className="w-5 h-5" />
                   </div>
                   <input
@@ -251,18 +251,18 @@ const LoginPage = () => {
                     placeholder="••••••••"
                     className={cn(
                       'w-full pl-12 pr-12 py-3.5 rounded-xl border transition-all duration-200',
-                      'bg-slate-800/50 text-white',
-                      'placeholder:text-slate-500',
+                      'bg-slate-800/80 text-white font-medium',
+                      'placeholder:text-slate-400',
                       'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent focus:bg-slate-800',
                       errors.password 
                         ? 'border-red-500 focus:ring-red-500' 
-                        : 'border-slate-700'
+                        : 'border-slate-600'
                     )}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-300 transition-colors"
+                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-white transition-colors"
                   >
                     {showPassword ? (
                       <HiEyeSlash className="w-5 h-5" />
@@ -272,7 +272,7 @@ const LoginPage = () => {
                   </button>
                 </div>
                 {errors.password && (
-                  <p className="mt-2 text-sm text-red-400">{errors.password.message}</p>
+                  <p className="mt-2 text-sm text-red-300 font-medium">{errors.password.message}</p>
                 )}
               </div>
 
@@ -280,7 +280,7 @@ const LoginPage = () => {
               <div className="flex items-center justify-end">
                 <Link
                   to="/forgot-password"
-                  className="text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
+                  className="text-sm font-semibold text-primary-300 hover:text-primary-200 transition-colors"
                 >
                   Forgot PIN/Password?
                 </Link>
