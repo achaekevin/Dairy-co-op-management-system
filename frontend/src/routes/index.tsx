@@ -3,6 +3,7 @@ import DashboardLayout from '../layouts/DashboardLayout';
 import AuthLayout from '../layouts/AuthLayout';
 import LandingPage from '../pages/auth/LandingPage';
 import LoginPage from '../pages/auth/LoginPage';
+import SignupPage from '../pages/auth/SignupPage';
 import ForgotPasswordPage from '../pages/auth/ForgotPasswordPage';
 import ResetPasswordPage from '../pages/auth/ResetPasswordPage';
 import VerifyOtpPage from '../pages/auth/VerifyOtpPage';
@@ -47,6 +48,7 @@ import NotificationsPage from '../pages/notifications/NotificationsPage';
 import ProfilePage from '../pages/profile/ProfilePage';
 import SettingsPage from '../pages/settings/SettingsPage';
 import SearchPage from '../pages/search/SearchPage';
+import ComponentLibraryPage from '../pages/ComponentLibraryPage';
 import NotFoundPage from '../pages/errors/NotFoundPage';
 import UnauthorizedPage from '../pages/errors/UnauthorizedPage';
 import ServerErrorPage from '../pages/errors/ServerErrorPage';
@@ -180,6 +182,14 @@ export const router = createBrowserRouter([
         <LoginPage />
       </AuthLayout>
     ),
+  },
+  {
+    path: '/signup',
+    element: <SignupPage />,
+  },
+  {
+    path: '/register',
+    element: <Navigate to="/signup" replace />,
   },
   {
     path: '/forgot-password',
@@ -405,6 +415,10 @@ export const router = createBrowserRouter([
       {
         path: 'search',
         element: <SearchPage />,
+      },
+      {
+        path: 'components',
+        element: <ComponentLibraryPage />,
       },
     ],
   },

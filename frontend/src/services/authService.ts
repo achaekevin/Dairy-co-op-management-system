@@ -7,6 +7,14 @@ export interface LoginCredentials {
   rememberMe?: boolean;
 }
 
+export interface RegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+}
+
 export interface LoginResponse {
   user: User;
   accessToken: string;
@@ -14,6 +22,11 @@ export interface LoginResponse {
 }
 
 export const authService = {
+  register: async (data: RegisterData): Promise<ApiResponse<LoginResponse>> => {
+    const response = await api.post('/auth/register', data);
+    return response.data;
+  },
+
   login: async (credentials: LoginCredentials): Promise<ApiResponse<LoginResponse>> => {
     const response = await api.post('/auth/login', credentials);
     return response.data;

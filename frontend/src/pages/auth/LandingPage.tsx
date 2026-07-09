@@ -127,13 +127,21 @@ const LandingPage = () => {
                 )}
               </button>
 
-              {/* Desktop Login Button */}
-              <button
-                onClick={() => setShowLoginModal(true)}
-                className="hidden lg:block px-6 py-2.5 bg-white text-primary-700 hover:bg-white/90 font-semibold rounded-xl shadow-lg transition-all hover:scale-105"
-              >
-                Sign In
-              </button>
+              {/* Desktop Buttons */}
+              <div className="hidden lg:flex items-center gap-3">
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="px-6 py-2.5 bg-white/10 text-white hover:bg-white/20 font-semibold rounded-xl backdrop-blur-sm transition-all hover:scale-105"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => window.location.href = '/signup'}
+                  className="px-6 py-2.5 bg-white text-primary-700 hover:bg-white/90 font-semibold rounded-xl shadow-lg transition-all hover:scale-105"
+                >
+                  Sign Up
+                </button>
+              </div>
 
               {/* Mobile Menu Button */}
               <button
@@ -176,9 +184,18 @@ const LandingPage = () => {
                   setShowMobileMenu(false);
                   setShowLoginModal(true);
                 }}
-                className="block w-full px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-lg shadow-lg"
+                className="block w-full px-4 py-3 bg-white border-2 border-primary-600 text-primary-600 font-semibold rounded-lg"
               >
                 Sign In
+              </button>
+              <button
+                onClick={() => {
+                  setShowMobileMenu(false);
+                  window.location.href = '/signup';
+                }}
+                className="block w-full px-4 py-3 bg-gradient-to-r from-primary-600 to-primary-700 text-white font-semibold rounded-lg shadow-lg"
+              >
+                Sign Up
               </button>
             </div>
           </motion.div>

@@ -189,7 +189,10 @@ const LoginCard = ({ onClose }: LoginCardProps) => {
             <div className="flex items-center justify-end">
               <button
                 type="button"
-                onClick={onClose}
+                onClick={() => {
+                  onClose();
+                  navigate('/forgot-password');
+                }}
                 className="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors"
               >
                 Forgot Password?
@@ -219,8 +222,14 @@ const LoginCard = ({ onClose }: LoginCardProps) => {
           {/* Footer */}
           <p className="mt-6 text-center text-sm text-slate-600">
             New to DairyCoop?{' '}
-            <button className="font-semibold text-primary-600 hover:text-primary-700 transition-colors">
-              Contact Us
+            <button 
+              onClick={() => {
+                onClose();
+                window.location.href = '/signup';
+              }}
+              className="font-semibold text-primary-600 hover:text-primary-700 transition-colors"
+            >
+              Create Account
             </button>
           </p>
         </motion.div>
