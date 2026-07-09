@@ -18,8 +18,8 @@ class AuthRepository {
         passwordHash: data.passwordHash,
         firstName: data.firstName,
         lastName: data.lastName,
-        phoneNumber: data.phone,
-        tenantId: data.tenantId,
+        phoneNumber: data.phone || null,
+        tenantId: data.tenantId as string,
         role: (data.role as UserRole) || UserRole.VIEWER,
       },
     });

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { redisClient } from '@database/redis.js';
+import redis from '@database/redis.js';
 
 const DEFAULT_CACHE_TTL = 60;
 
@@ -14,13 +14,13 @@ export const cacheMiddleware = (options: CacheOptions = {}) => {
       return next();
     }
 
-    if (!redisClient?.isOpen) {
+    if (!redis || redis.status !== 'ready') {
       return next();
     }
 
     try {
       const cacheKey = options.key || `cache:${req.originalUrl}:${req.user?.tenantId || 'public'}`;
-      const cachedData = await redisClient.get(cacheKey);
+      const cachedData = await redis.get(cacheKey);
 
       if (cachedData) {
         return res.json(JSON.parse(cachedData));
@@ -29,7 +29,7 @@ export const cacheMiddleware = (options: CacheOptions = {}) => {
       const originalJson = res.json.bind(res);
       res.json = (body: unknown) => {
         if (res.statusCode === 200) {
-          redisClient.setex(
+          redis.setex(
             cacheKey,
             options.ttl || DEFAULT_CACHE_TTL,
             JSON.stringify(body)
@@ -46,14 +46,14 @@ export const cacheMiddleware = (options: CacheOptions = {}) => {
 };
 
 export const clearCache = async (pattern: string) => {
-  if (!redisClient?.isOpen) {
+  if (!redis || redis.status !== 'ready') {
     return;
   }
 
   try {
-    const keys = await redisClient.keys(pattern);
+    const keys = await redis.keys(pattern);
     if (keys.length > 0) {
-      await redisClient.del(...keys);
+      await redis.del(...keys);
     }
   } catch (error) {}
 };
