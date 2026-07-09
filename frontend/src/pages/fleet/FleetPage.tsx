@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -14,94 +14,74 @@ import Select from '../../components/ui/Select';
 import Table from '../../components/ui/Table';
 import Badge from '../../components/ui/Badge';
 import Card from '../../components/ui/Card';
+import Pagination from '../../components/ui/Pagination';
 import type { Vehicle, Column } from '../../types';
 import dayjs from 'dayjs';
+import { vehicleService } from '../../services/vehicleService';
+import toast from 'react-hot-toast';
 
 const FleetPage = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('ALL');
   const [filterStatus, setFilterStatus] = useState('ALL');
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const vehicles: Vehicle[] = [
-    {
-      id: '1',
-      vehicleNumber: 'MH-12-AB-1234',
-      vehicleType: 'MILK_TANKER',
-      brand: 'Tata',
-      model: 'LPT 1613',
-      capacity: 5000,
-      fuelType: 'DIESEL',
-      purchaseDate: '2022-01-15',
-      insuranceExpiry: '2025-01-14',
-      fitnessExpiry: '2025-06-30',
-      lastService: '2024-01-10',
-      nextService: '2024-04-10',
-      currentMileage: 45000,
-      driverName: 'Ramesh Kumar',
-      status: 'ACTIVE',
-      createdAt: '2022-01-15T00:00:00Z',
-    },
-    {
-      id: '2',
-      vehicleNumber: 'MH-12-CD-5678',
-      vehicleType: 'DELIVERY_VAN',
-      brand: 'Mahindra',
-      model: 'Supro',
-      capacity: 1000,
-      fuelType: 'DIESEL',
-      purchaseDate: '2023-03-20',
-      insuranceExpiry: '2025-03-19',
-      fitnessExpiry: '2026-03-19',
-      lastService: '2024-02-01',
-      nextService: '2024-05-01',
-      currentMileage: 28000,
-      driverName: 'Suresh Patil',
-      status: 'ACTIVE',
-      createdAt: '2023-03-20T00:00:00Z',
-    },
-    {
-      id: '3',
-      vehicleNumber: 'MH-12-EF-9012',
-      vehicleType: 'TRUCK',
-      brand: 'Ashok Leyland',
-      model: 'Dost+',
-      capacity: 1500,
-      fuelType: 'DIESEL',
-      purchaseDate: '2021-06-10',
-      insuranceExpiry: '2024-06-09',
-      fitnessExpiry: '2024-12-31',
-      lastService: '2024-01-20',
-      nextService: '2024-04-20',
-      currentMileage: 62000,
-      driverName: 'Vijay Singh',
-      status: 'MAINTENANCE',
-      createdAt: '2021-06-10T00:00:00Z',
-    },
-    {
-      id: '4',
-      vehicleNumber: 'MH-12-GH-3456',
-      vehicleType: 'CAR',
-      brand: 'Maruti',
-      model: 'Swift Dzire',
-      capacity: 0,
-      fuelType: 'PETROL',
-      purchaseDate: '2023-08-15',
-      insuranceExpiry: '2025-08-14',
-      fitnessExpiry: '2028-08-14',
-      lastService: '2024-02-05',
-      nextService: '2024-08-05',
-      currentMileage: 12000,
-      status: 'ACTIVE',
-      createdAt: '2023-08-15T00:00:00Z',
-    },
-  ];
+  const [vehicles, setVehicles] = useState<Vehicle[]>([]);
+  const [stats, setStats] = useState({
+    totalVehicles: 0,
+    activeVehicles: 0,
+    maintenanceVehicles: 0,
+    expiringInsurance: 0,
+  });
 
-  const stats = [
-    { label: 'Total Vehicles', value: vehicles.length.toString(), icon: TruckIcon, color: 'blue' },
-    { label: 'Active', value: vehicles.filter(v => v.status === 'ACTIVE').length.toString(), icon: CheckCircleIcon, color: 'green' },
-    { label: 'In Maintenance', value: vehicles.filter(v => v.status === 'MAINTENANCE').length.toString(), icon: WrenchScrewdriverIcon, color: 'yellow' },
-    { label: 'Service Due', value: vehicles.filter(v => dayjs(v.nextService).diff(dayjs(), 'days') <= 7).length.toString(), icon: ExclamationTriangleIcon, color: 'red' },
+  useEffect(() => {
+    fetchVehicles();
+  }, [currentPage, searchQuery, filterType, filterStatus]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchVehicles = async () => {
+    setIsLoading(true);
+    try {
+      const response = await vehicleService.getAll({
+        search: searchQuery || undefined,
+        vehicleType: filterType !== 'ALL' ? filterType : undefined,
+        status: filterStatus !== 'ALL' ? filterStatus : undefined,
+        page: currentPage,
+        pageSize: 10,
+      });
+      if (response.success) {
+        setVehicles(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load vehicles');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await vehicleService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silent fail
+    }
+  };
+
+  const statsData = [
+    { label: 'Total Vehicles', value: stats.totalVehicles.toString(), icon: TruckIcon, color: 'blue' },
+    { label: 'Active', value: stats.activeVehicles.toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'In Maintenance', value: stats.maintenanceVehicles.toString(), icon: WrenchScrewdriverIcon, color: 'yellow' },
+    { label: 'Service Due', value: stats.expiringInsurance.toString(), icon: ExclamationTriangleIcon, color: 'red' },
   ];
 
   const columns: Column<Vehicle>[] = [
@@ -157,13 +137,6 @@ const FleetPage = () => {
     },
   ];
 
-  const filteredVehicles = vehicles.filter(v => {
-    const matchesSearch = v.vehicleNumber.toLowerCase().includes(searchQuery.toLowerCase()) || (v.driverName?.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesType = filterType === 'ALL' || v.vehicleType === filterType;
-    const matchesStatus = filterStatus === 'ALL' || v.status === filterStatus;
-    return matchesSearch && matchesType && matchesStatus;
-  });
-
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -178,7 +151,7 @@ const FleetPage = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat, index) => (
+        {statsData.map((stat, index) => (
           <motion.div key={stat.label} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: index * 0.1 }}>
             <Card>
               <div className="flex items-center justify-between">
@@ -216,9 +189,29 @@ const FleetPage = () => {
       </Card>
 
       <Card>
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Vehicles ({filteredVehicles.length})</h2>
-        <Table columns={columns} data={filteredVehicles} />
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Vehicles ({vehicles.length})</h2>
+        {isLoading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+          </div>
+        ) : vehicles.length > 0 ? (
+          <Table columns={columns} data={vehicles} />
+        ) : (
+          <div className="text-center py-12">
+            <p className="text-slate-600 dark:text-slate-400">No vehicles found</p>
+          </div>
+        )}
       </Card>
+
+      {vehicles.length > 0 && totalPages > 1 && (
+        <div className="flex justify-center">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </div>
   );
 };
