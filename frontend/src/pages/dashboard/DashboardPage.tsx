@@ -59,7 +59,15 @@ const DashboardPage = () => {
   };
 
   // All available stats
-  const allStats = [
+  const allStats: Array<{
+    title: string;
+    value: string;
+    icon: React.ReactNode;
+    trend: { value: number; isPositive: boolean };
+    color: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
+    roles: UserRole[];
+    onClick: () => void;
+  }> = [
     {
       title: 'Total Farmers',
       value: '1,234',
@@ -140,13 +148,13 @@ const DashboardPage = () => {
   }, [userRole]);
 
   // Check if user can see financial data
-  const canSeeFinancials = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT].includes(userRole);
+  const canSeeFinancials = ([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT] as UserRole[]).includes(userRole);
   
   // Check if user can see operational data
-  const canSeeOperations = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR].includes(userRole);
+  const canSeeOperations = ([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR] as UserRole[]).includes(userRole);
   
   // Check if user can export
-  const canExport = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.ACCOUNTANT].includes(userRole);
+  const canExport = ([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.ACCOUNTANT] as UserRole[]).includes(userRole);
 
   const milkCollectionDataChart = [
     { date: 'Mon', Morning: 4200, Evening: 3800 },
