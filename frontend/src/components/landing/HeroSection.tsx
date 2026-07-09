@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { HiArrowRight, HiPlay } from 'react-icons/hi2';
+import VideoModal from '../ui/VideoModal';
 
 interface HeroSectionProps {
   onLoginClick: () => void;
 }
 
 const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
+  const [showVideoModal, setShowVideoModal] = useState(false);
   const { scrollY } = useScroll();
   const y = useTransform(scrollY, [0, 500], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300], [1, 0]);
@@ -110,7 +113,10 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
               Get Started
               <HiArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
             </button>
-            <button className="group px-8 py-4 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-bold rounded-xl border border-white/20 transition-all flex items-center gap-2">
+            <button
+              onClick={() => setShowVideoModal(true)}
+              className="group px-8 py-4 bg-white/10 backdrop-blur-md hover:bg-white/20 text-white font-bold rounded-xl border border-white/20 transition-all hover:scale-105 flex items-center gap-2"
+            >
               <HiPlay className="w-5 h-5" />
               Watch Demo
             </button>
@@ -184,6 +190,8 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
           />
         </svg>
       </div>
+
+      <VideoModal isOpen={showVideoModal} onClose={() => setShowVideoModal(false)} />
     </section>
   );
 };
