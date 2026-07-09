@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -22,15 +22,13 @@ import { cn } from '../../utils/cn';
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
-  rememberMe: z.boolean().optional(),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { setAuth, rememberedEmail, setRememberedEmail } = useAuthStore();
+  const { setAuth } = useAuthStore();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,9 +39,8 @@ const LoginPage = () => {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: rememberedEmail || '',
+      email: '',
       password: '',
-      rememberMe: !!rememberedEmail,
     },
   });
 
@@ -68,17 +65,10 @@ const LoginPage = () => {
       const mockToken = 'mock-jwt-token-' + Date.now();
       const mockRefreshToken = 'mock-refresh-token-' + Date.now();
       
-      if (data.rememberMe) {
-        setRememberedEmail(data.email);
-      } else {
-        setRememberedEmail(null);
-      }
-      
-      setAuth(mockUser, mockToken, mockRefreshToken, data.rememberMe ? data.email : undefined);
+      setAuth(mockUser, mockToken, mockRefreshToken);
       toast.success('Login successful!');
       
-      const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
+      navigate('/dashboard', { replace: true });
     } catch (error) {
       toast.error('Invalid email or password');
     } finally {
@@ -297,19 +287,8 @@ const LoginPage = () => {
                 )}
               </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer group">
-                  <input
-                    {...register('rememberMe')}
-                    type="checkbox"
-                    className="w-4 h-4 text-primary-600 bg-slate-800 border-slate-600 rounded focus:ring-primary-500 focus:ring-2 cursor-pointer"
-                  />
-                  <span className="text-sm text-slate-300 group-hover:text-white transition-colors">
-                    Remember me
-                  </span>
-                </label>
-
+              {/* Forgot Password */}
+              <div className="flex items-center justify-end">
                 <Link
                   to="/forgot-password"
                   className="text-sm font-medium text-primary-400 hover:text-primary-300 transition-colors"
