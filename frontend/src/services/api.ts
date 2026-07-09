@@ -15,11 +15,13 @@ const API_BASE_URL = getApiBaseUrl();
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     'Content-Type': 'application/json',
   },
   withCredentials: true,
+  maxRedirects: 5,
+  validateStatus: (status) => status >= 200 && status < 500,
 });
 
 // Request interceptor
