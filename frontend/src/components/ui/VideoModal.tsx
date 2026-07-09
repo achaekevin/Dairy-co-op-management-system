@@ -19,23 +19,23 @@ interface VideoModalProps {
 const dairyVideos: Video[] = [
   {
     id: '1',
-    title: 'Modern Dairy Farming Technology',
-    description: 'Discover how technology is revolutionizing dairy farming with automated milking systems and smart farm management.',
-    embedUrl: 'https://www.youtube.com/embed/WvZ0F7vLzDs',
+    title: 'Modern Dairy Farming & Milk Collection',
+    description: 'Discover modern dairy farming practices, milk collection processes, and cooperative management systems.',
+    embedUrl: 'https://www.youtube.com/embed/Vr031wKl8eU',
     thumbnail: 'https://images.unsplash.com/photo-1530587191325-3db32d826c18?w=400',
   },
   {
     id: '2',
-    title: 'Dairy Farm Management Best Practices',
-    description: 'Learn essential practices for managing a successful dairy cooperative including milk quality control and collection.',
-    embedUrl: 'https://www.youtube.com/embed/1JUhkuGnFVE',
+    title: 'Dairy Cooperative Management',
+    description: 'Learn about successful dairy cooperative models and how they empower farmers through collective management.',
+    embedUrl: 'https://www.youtube.com/embed/xPW0AMXKeCc',
     thumbnail: 'https://images.unsplash.com/photo-1500595046743-cd271d694d30?w=400',
   },
   {
     id: '3',
-    title: 'Dairy Cooperative Success Stories',
-    description: 'Watch how dairy cooperatives are empowering farmers and transforming rural communities worldwide.',
-    embedUrl: 'https://www.youtube.com/embed/3yXzXOG5fkY',
+    title: 'Smart Dairy Farm Technology',
+    description: 'Explore cutting-edge technology in dairy farming including automated systems and digital management tools.',
+    embedUrl: 'https://www.youtube.com/embed/qNVktzGtrW8',
     thumbnail: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=400',
   },
 ];
@@ -104,9 +104,9 @@ const VideoModal = ({ isOpen, onClose }: VideoModalProps) => {
                 <div className="relative aspect-video">
                   {isPlaying ? (
                     <iframe
-                      src={`${selectedVideo.embedUrl}?autoplay=1&rel=0`}
+                      src={`${selectedVideo.embedUrl}?autoplay=1&mute=0&controls=1&rel=0&modestbranding=1`}
                       title={selectedVideo.title}
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                       allowFullScreen
                       className="absolute inset-0 w-full h-full"
                     />
