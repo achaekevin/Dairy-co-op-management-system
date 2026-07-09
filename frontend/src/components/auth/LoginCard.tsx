@@ -14,6 +14,7 @@ import {
 } from 'react-icons/hi2';
 import { useAuthStore } from '../../store/authStore';
 import { authService } from '../../services/authService';
+import { getRoleDashboardRoute, getRoleDisplayName } from '../../utils/roleNavigation';
 import toast from 'react-hot-toast';
 import { cn } from '../../utils/cn';
 
@@ -54,9 +55,14 @@ const LoginCard = ({ onClose }: LoginCardProps) => {
       if (response.success) {
         const { user, accessToken, refreshToken } = response.data;
         setAuth(user, accessToken, refreshToken);
-        toast.success('Login successful!');
+        
+        // Get role-based dashboard route
+        const dashboardRoute = getRoleDashboardRoute(user.role);
+        const roleDisplayName = getRoleDisplayName(user.role);
+        
+        toast.success(`Welcome back, ${roleDisplayName}!`);
         onClose();
-        navigate('/dashboard', { replace: true });
+        navigate(dashboardRoute, { replace: true });
       } else {
         toast.error(response.message || 'Login failed');
       }
