@@ -1,5 +1,5 @@
 ﻿import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import StatsCard from '../../components/cards/StatsCard';
 import Card, { CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
@@ -12,6 +12,8 @@ import LineChart from '../../components/charts/LineChart';
 import BarChart from '../../components/charts/BarChart';
 import PieChart from '../../components/charts/PieChart';
 import { exportToExcel } from '../../utils/export';
+import { useAuthStore } from '../../store/authStore';
+import { UserRole } from '../../types';
 import toast from 'react-hot-toast';
 import {
   HiUsers,
@@ -23,10 +25,14 @@ import {
   HiArrowDownTray,
   HiArrowPath,
   HiEllipsisVertical,
+  HiCheckCircle,
+  HiClock,
 } from 'react-icons/hi2';
 
 const DashboardPage = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const { user } = useAuthStore();
+  const userRole = user?.role || UserRole.VIEWER;
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -35,8 +41,7 @@ const DashboardPage = () => {
 
   const handleExport = () => {
     try {
-      // Prepare export data
-      const exportStats = stats.map(stat => ({
+      const exportStats = filteredStats.map(stat => ({
         Metric: stat.title,
         Value: stat.value,
         Trend: `${stat.trend.isPositive ? '+' : '-'}${stat.trend.value}%`,
@@ -50,14 +55,16 @@ const DashboardPage = () => {
       console.error('Export error:', error);
     }
   };
-  // Mock data
-  const stats = [
+
+  // All available stats
+  const allStats = [
     {
       title: 'Total Farmers',
       value: '1,234',
       icon: <HiUsers className="w-6 h-6" />,
       trend: { value: 8.2, isPositive: true },
       color: 'primary' as const,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER],
     },
     {
       title: 'Milk Collected Today',
@@ -65,6 +72,7 @@ const DashboardPage = () => {
       icon: <HiBeaker className="w-6 h-6" />,
       trend: { value: 5.4, isPositive: true },
       color: 'secondary' as const,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
     },
     {
       title: 'Revenue Today',
@@ -72,6 +80,7 @@ const DashboardPage = () => {
       icon: <HiCurrencyRupee className="w-6 h-6" />,
       trend: { value: 12.5, isPositive: true },
       color: 'success' as const,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT],
     },
     {
       title: 'Outstanding Loans',
@@ -79,6 +88,7 @@ const DashboardPage = () => {
       icon: <HiBanknotes className="w-6 h-6" />,
       trend: { value: 3.2, isPositive: false },
       color: 'warning' as const,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT],
     },
     {
       title: 'Quality Score',
@@ -86,6 +96,7 @@ const DashboardPage = () => {
       icon: <HiChartBar className="w-6 h-6" />,
       trend: { value: 2.1, isPositive: true },
       color: 'info' as const,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
     },
     {
       title: 'Rejected Milk',
@@ -93,8 +104,39 @@ const DashboardPage = () => {
       icon: <HiExclamationTriangle className="w-6 h-6" />,
       trend: { value: 15.3, isPositive: false },
       color: 'error' as const,
+      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+    },
+    {
+      title: 'My Collections',
+      value: '342 L',
+      icon: <HiCheckCircle className="w-6 h-6" />,
+      trend: { value: 4.2, isPositive: true },
+      color: 'primary' as const,
+      roles: [UserRole.OPERATOR],
+    },
+    {
+      title: 'Pending Tasks',
+      value: '12',
+      icon: <HiClock className="w-6 h-6" />,
+      trend: { value: 2, isPositive: false },
+      color: 'warning' as const,
+      roles: [UserRole.OPERATOR, UserRole.MANAGER],
     },
   ];
+
+  // Filter stats based on user role
+  const filteredStats = useMemo(() => {
+    return allStats.filter(stat => stat.roles.includes(userRole));
+  }, [userRole]);
+
+  // Check if user can see financial data
+  const canSeeFinancials = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT].includes(userRole);
+  
+  // Check if user can see operational data
+  const canSeeOperations = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR].includes(userRole);
+  
+  // Check if user can export
+  const canExport = [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.ACCOUNTANT].includes(userRole);
 
   const milkCollectionDataChart = [
     { date: 'Mon', Morning: 4200, Evening: 3800 },
@@ -171,10 +213,12 @@ const DashboardPage = () => {
             />
             <span className="text-xs sm:text-sm">Refresh</span>
           </Button>
-          <Button variant="primary" size="sm" onClick={handleExport} className="flex-1 sm:flex-none">
-            <HiArrowDownTray className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-            <span className="text-xs sm:text-sm">Export</span>
-          </Button>
+          {canExport && (
+            <Button variant="primary" size="sm" onClick={handleExport} className="flex-1 sm:flex-none">
+              <HiArrowDownTray className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
+              <span className="text-xs sm:text-sm">Export</span>
+            </Button>
+          )}
         </div>
       </motion.div>
 
@@ -185,15 +229,16 @@ const DashboardPage = () => {
         animate="visible"
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
       >
-        {stats.map((stat) => (
+        {filteredStats.map((stat) => (
           <motion.div key={stat.title} variants={itemVariants}>
             <StatsCard {...stat} />
           </motion.div>
         ))}
       </motion.div>
 
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+      {/* Charts Grid - Only for users with operational access */}
+      {canSeeOperations && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Milk Collection Chart */}
         <motion.div
           initial={{ opacity: 0, x: -20 }}
@@ -233,13 +278,14 @@ const DashboardPage = () => {
           </Card>
         </motion.div>
 
-        {/* Revenue Chart */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-        >
-          <Card>
+        {/* Revenue Chart - Only for financial access */}
+        {canSeeFinancials && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.5, delay: 0.7 }}
+          >
+            <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle>Monthly Revenue Trend</CardTitle>
@@ -264,10 +310,13 @@ const DashboardPage = () => {
             </CardContent>
           </Card>
         </motion.div>
+        )}
       </div>
+      )}
 
-      {/* Bottom Row - Widgets */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+      {/* Bottom Row - Widgets - Only operational data */}
+      {canSeeOperations && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {/* Quality Distribution */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -359,6 +408,7 @@ const DashboardPage = () => {
           </Card>
         </motion.div>
       </div>
+      )}
 
       {/* Additional Widgets Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
