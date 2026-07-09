@@ -15,6 +15,7 @@ import Autocomplete from '../../components/ui/Autocomplete';
 import Badge from '../../components/ui/Badge';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
+import { shareService } from '../../services/shareService';
 
 const PurchaseSharesPage = () => {
   const navigate = useNavigate();
@@ -52,6 +53,11 @@ const PurchaseSharesPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!formData.farmerId) {
+      toast.error('Please select a farmer');
+      return;
+    }
+
     const count = parseInt(formData.shareCount);
     if (count < 5) {
       toast.error('Minimum purchase is 5 shares');
@@ -65,11 +71,18 @@ const PurchaseSharesPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const shareData = {
+        farmerId: formData.farmerId,
+        shareCount: count,
+        shareValue: 500,
+        purchaseDate: formData.purchaseDate,
+      };
 
-      toast.success('Share purchase successful!');
-      navigate('/dashboard/shares');
+      const response = await shareService.create(shareData);
+      if (response.success) {
+        toast.success('Share purchase successful!');
+        navigate('/dashboard/shares');
+      }
     } catch (error) {
       toast.error('Failed to purchase shares');
     } finally {
