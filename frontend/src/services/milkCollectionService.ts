@@ -65,7 +65,7 @@ export const milkCollectionService = {
     averageQuality: number;
     rejectionRate: number;
   }>> => {
-    const response = await api.get('/milk-collections/stats/summary');
+    const response = await api.get('/milk-collections/stats');
     return response.data;
   },
 };

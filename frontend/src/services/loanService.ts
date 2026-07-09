@@ -60,7 +60,7 @@ export const loanService = {
     totalOutstanding: number;
     totalPaid: number;
   }>> => {
-    const response = await api.get('/loans/stats/summary');
+    const response = await api.get('/loans/stats');
     return response.data;
   },
 };

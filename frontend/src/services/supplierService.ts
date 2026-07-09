@@ -81,7 +81,7 @@ export const supplierService = {
     totalPurchases: number;
     totalOutstanding: number;
   }>> => {
-    const response = await api.get('/suppliers/stats/summary');
+    const response = await api.get('/suppliers/stats');
     return response.data;
   },
 };

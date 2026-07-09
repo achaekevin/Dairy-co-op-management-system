@@ -61,7 +61,7 @@ export const paymentService = {
     totalAmount: number;
     paidAmount: number;
   }>> => {
-    const response = await api.get('/payments/stats/summary');
+    const response = await api.get('/payments/stats');
     return response.data;
   },
 };

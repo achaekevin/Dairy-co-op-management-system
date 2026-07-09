@@ -57,7 +57,7 @@ export const vehicleService = {
     maintenanceVehicles: number;
     expiringInsurance: number;
   }>> => {
-    const response = await api.get('/vehicles/stats/summary');
+    const response = await api.get('/vehicles/stats');
     return response.data;
   },
 };

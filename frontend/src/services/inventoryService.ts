@@ -75,7 +75,7 @@ export const inventoryService = {
     outOfStockItems: number;
     totalValue: number;
   }>> => {
-    const response = await api.get('/inventory/stats/summary');
+    const response = await api.get('/inventory/stats');
     return response.data;
   },
 };

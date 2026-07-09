@@ -64,7 +64,7 @@ export const employeeService = {
     departments: number;
     totalSalary: number;
   }>> => {
-    const response = await api.get('/employees/stats/summary');
+    const response = await api.get('/employees/stats');
     return response.data;
   },
 };

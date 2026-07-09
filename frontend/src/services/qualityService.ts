@@ -70,7 +70,7 @@ export const qualityService = {
     failRate: number;
     retestRate: number;
   }>> => {
-    const response = await api.get('/quality-tests/stats/summary');
+    const response = await api.get('/quality-tests/stats');
     return response.data;
   },
 };

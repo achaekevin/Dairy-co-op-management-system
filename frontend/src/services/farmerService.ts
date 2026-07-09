@@ -70,7 +70,7 @@ export const farmerService = {
     totalShares: number;
     totalOutstandingLoans: number;
   }>> => {
-    const response = await api.get('/farmers/stats/summary');
+    const response = await api.get('/farmers/stats');
     return response.data;
   },
 

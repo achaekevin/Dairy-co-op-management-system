@@ -58,7 +58,7 @@ export const shareService = {
     totalValue: number;
     totalShareholders: number;
   }>> => {
-    const response = await api.get('/shares/stats/summary');
+    const response = await api.get('/shares/stats');
     return response.data;
   },
 };

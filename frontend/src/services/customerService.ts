@@ -61,7 +61,7 @@ export const customerService = {
     totalSales: number;
     totalOutstanding: number;
   }>> => {
-    const response = await api.get('/customers/stats/summary');
+    const response = await api.get('/customers/stats');
     return response.data;
   },
 };

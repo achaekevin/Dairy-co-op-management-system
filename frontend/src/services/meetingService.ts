@@ -58,7 +58,7 @@ export const meetingService = {
     completedMeetings: number;
     upcomingMeetings: number;
   }>> => {
-    const response = await api.get('/meetings/stats/summary');
+    const response = await api.get('/meetings/stats');
     return response.data;
   },
 };
