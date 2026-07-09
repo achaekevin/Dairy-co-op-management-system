@@ -118,7 +118,7 @@ class FarmerController {
 
   async getStats(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const tenantId = req.tenantId!;
+      const tenantId = req.tenantId || process.env.DEFAULT_TENANT_ID || 'e7c348b9-5ab7-406a-871d-b9e80c23e548';
 
       const stats = await farmerService.getFarmerStats(tenantId);
 

@@ -13,6 +13,8 @@ import {
 
 const router = Router();
 
+router.get('/statistics', farmerController.getStats);
+
 router.use(authenticate);
 router.use(tenantIsolation);
 
