@@ -34,7 +34,7 @@ export interface CreateStockTransactionData {
 }
 
 export const inventoryService = {
-  getAll: async (filters?: InventoryFilters): Promise<ApiResponse<PaginatedResponse<InventoryItem>>> => {
+  getAll: async (filters?: InventoryFilters): Promise<ApiResponse<InventoryItem[]>> => {
     const response = await api.get('/inventory', { params: filters });
     return response.data;
   },

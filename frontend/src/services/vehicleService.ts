@@ -26,7 +26,7 @@ export interface VehicleFilters {
 }
 
 export const vehicleService = {
-  getAll: async (filters?: VehicleFilters): Promise<ApiResponse<PaginatedResponse<Vehicle>>> => {
+  getAll: async (filters?: VehicleFilters): Promise<ApiResponse<Vehicle[]>> => {
     const response = await api.get('/vehicles', { params: filters });
     return response.data;
   },

@@ -33,7 +33,7 @@ export interface EmployeeFilters {
 }
 
 export const employeeService = {
-  getAll: async (filters?: EmployeeFilters): Promise<ApiResponse<PaginatedResponse<Employee>>> => {
+  getAll: async (filters?: EmployeeFilters): Promise<ApiResponse<Employee[]>> => {
     const response = await api.get('/employees', { params: filters });
     return response.data;
   },

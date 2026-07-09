@@ -25,7 +25,7 @@ export interface CustomerFilters {
 }
 
 export const customerService = {
-  getAll: async (filters?: CustomerFilters): Promise<ApiResponse<PaginatedResponse<Customer>>> => {
+  getAll: async (filters?: CustomerFilters): Promise<ApiResponse<Customer[]>> => {
     const response = await api.get('/customers', { params: filters });
     return response.data;
   },

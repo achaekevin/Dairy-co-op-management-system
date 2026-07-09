@@ -56,12 +56,13 @@ const MilkCollectionListPage = () => {
         page: currentPage,
         pageSize: 10,
       });
-      if (response.success) {
-        setCollections(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setCollections(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load collections');
+      setCollections([]);
     } finally {
       setIsLoading(false);
     }

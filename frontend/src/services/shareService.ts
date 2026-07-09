@@ -17,7 +17,7 @@ export interface ShareFilters {
 }
 
 export const shareService = {
-  getAll: async (filters?: ShareFilters): Promise<ApiResponse<PaginatedResponse<Share>>> => {
+  getAll: async (filters?: ShareFilters): Promise<ApiResponse<Share[]>> => {
     const response = await api.get('/shares', { params: filters });
     return response.data;
   },

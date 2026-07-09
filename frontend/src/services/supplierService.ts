@@ -40,7 +40,7 @@ export interface CreatePurchaseOrderData {
 }
 
 export const supplierService = {
-  getAll: async (filters?: SupplierFilters): Promise<ApiResponse<PaginatedResponse<Supplier>>> => {
+  getAll: async (filters?: SupplierFilters): Promise<ApiResponse<Supplier[]>> => {
     const response = await api.get('/suppliers', { params: filters });
     return response.data;
   },
@@ -65,7 +65,7 @@ export const supplierService = {
     return response.data;
   },
 
-  getPurchaseOrders: async (supplierId?: string): Promise<ApiResponse<PaginatedResponse<PurchaseOrder>>> => {
+  getPurchaseOrders: async (supplierId?: string): Promise<ApiResponse<PurchaseOrder[]>> => {
     const response = await api.get('/purchase-orders', { params: { supplierId } });
     return response.data;
   },

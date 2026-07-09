@@ -55,12 +55,13 @@ const HRPage = () => {
         page: currentPage,
         pageSize: 10,
       });
-      if (response.success) {
-        setEmployees(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setEmployees(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load employees');
+      setEmployees([]);
     } finally {
       setIsLoading(false);
     }

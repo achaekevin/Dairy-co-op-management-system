@@ -24,7 +24,7 @@ export interface PaymentFilters {
 }
 
 export const paymentService = {
-  getAll: async (filters?: PaymentFilters): Promise<ApiResponse<PaginatedResponse<Payment>>> => {
+  getAll: async (filters?: PaymentFilters): Promise<ApiResponse<Payment[]>> => {
     const response = await api.get('/payments', { params: filters });
     return response.data;
   },

@@ -22,7 +22,7 @@ export interface MeetingFilters {
 }
 
 export const meetingService = {
-  getAll: async (filters?: MeetingFilters): Promise<ApiResponse<PaginatedResponse<Meeting>>> => {
+  getAll: async (filters?: MeetingFilters): Promise<ApiResponse<Meeting[]>> => {
     const response = await api.get('/meetings', { params: filters });
     return response.data;
   },

@@ -32,7 +32,7 @@ export interface MilkCollectionFilters {
 }
 
 export const milkCollectionService = {
-  getAll: async (filters?: MilkCollectionFilters): Promise<ApiResponse<PaginatedResponse<MilkCollection>>> => {
+  getAll: async (filters?: MilkCollectionFilters): Promise<ApiResponse<MilkCollection[]>> => {
     const response = await api.get('/milk-collections', { params: filters });
     return response.data;
   },

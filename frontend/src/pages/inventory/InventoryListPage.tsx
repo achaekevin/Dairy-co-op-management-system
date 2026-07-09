@@ -57,12 +57,13 @@ const InventoryListPage = () => {
         page: currentPage,
         pageSize: 10,
       });
-      if (response.success) {
-        setItems(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setItems(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load inventory');
+      setItems([]);
     } finally {
       setIsLoading(false);
     }

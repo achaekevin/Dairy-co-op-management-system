@@ -54,12 +54,13 @@ const CustomersPage = () => {
         page: currentPage,
         pageSize: 10,
       });
-      if (response.success) {
-        setCustomers(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setCustomers(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load customers');
+      setCustomers([]);
     } finally {
       setIsLoading(false);
     }

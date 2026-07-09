@@ -57,12 +57,13 @@ const SuppliersPage = () => {
         page: currentPage,
         pageSize: 10,
       });
-      if (response.success) {
-        setSuppliers(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setSuppliers(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load suppliers');
+      setSuppliers([]);
     } finally {
       setIsLoading(false);
     }

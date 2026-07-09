@@ -55,12 +55,13 @@ const FleetPage = () => {
         page: currentPage,
         pageSize: 10,
       });
-      if (response.success) {
-        setVehicles(response.data.data);
-        setTotalPages(response.data.totalPages);
+      if (response.success && response.data) {
+        setVehicles(Array.isArray(response.data) ? response.data : []);
+        setTotalPages(response.meta?.totalPages || 1);
       }
     } catch (error) {
       toast.error('Failed to load vehicles');
+      setVehicles([]);
     } finally {
       setIsLoading(false);
     }

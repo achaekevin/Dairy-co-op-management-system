@@ -18,7 +18,7 @@ export interface LoanFilters {
 }
 
 export const loanService = {
-  getAll: async (filters?: LoanFilters): Promise<ApiResponse<PaginatedResponse<Loan>>> => {
+  getAll: async (filters?: LoanFilters): Promise<ApiResponse<Loan[]>> => {
     const response = await api.get('/loans', { params: filters });
     return response.data;
   },

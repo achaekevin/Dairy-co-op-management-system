@@ -34,7 +34,7 @@ export interface QualityTestFilters {
 }
 
 export const qualityService = {
-  getAll: async (filters?: QualityTestFilters): Promise<ApiResponse<PaginatedResponse<QualityTest>>> => {
+  getAll: async (filters?: QualityTestFilters): Promise<ApiResponse<QualityTest[]>> => {
     const response = await api.get('/quality-tests', { params: filters });
     return response.data;
   },
