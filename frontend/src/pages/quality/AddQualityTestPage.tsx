@@ -16,6 +16,7 @@ import Autocomplete from '../../components/ui/Autocomplete';
 import Badge from '../../components/ui/Badge';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
+import { qualityService } from '../../services/qualityService';
 
 const AddQualityTestPage = () => {
   const navigate = useNavigate();
@@ -160,11 +161,33 @@ const AddQualityTestPage = () => {
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const testData = {
+        date: formData.date,
+        time: formData.time,
+        sampleType: formData.sampleType as any,
+        batchNumber: formData.batchNumber || undefined,
+        farmerId: formData.farmerId || undefined,
+        fat: parseFloat(formData.fat),
+        snf: parseFloat(formData.snf),
+        protein: parseFloat(formData.protein),
+        lactose: parseFloat(formData.lactose),
+        temperature: parseFloat(formData.temperature),
+        ph: parseFloat(formData.ph),
+        acidity: parseFloat(formData.acidity),
+        density: parseFloat(formData.density),
+        alcoholTest: formData.alcoholTest as 'PASS' | 'FAIL',
+        cob: formData.cob as 'PASS' | 'FAIL',
+        mbrt: parseFloat(formData.mbrt),
+        coliformCount: parseFloat(formData.coliformCount),
+        overallResult: 'PASS' as any,
+        remarks: formData.remarks || undefined,
+      };
 
-      toast.success('Quality test recorded successfully!');
-      navigate('/dashboard/quality');
+      const response = await qualityService.create(testData);
+      if (response.success) {
+        toast.success('Quality test recorded successfully!');
+        navigate('/dashboard/quality');
+      }
     } catch (error) {
       toast.error('Failed to record quality test');
     } finally {
