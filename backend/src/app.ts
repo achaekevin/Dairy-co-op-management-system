@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import compression from 'compression';
 import cookieParser from 'cookie-parser';
 import config from '@config/env.js';
 import { errorHandler, notFoundHandler } from '@middlewares/errorHandler.js';
@@ -10,6 +11,8 @@ import logger from '@core/logger.js';
 import routes from '@routes/index.js';
 
 const app: Express = express();
+
+app.use(compression());
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -24,7 +27,7 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: config.cors.origin,
+  origin: config.cors.origin === '*' ? '*' : config.cors.origin,
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
