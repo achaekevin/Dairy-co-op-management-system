@@ -13,6 +13,7 @@ import {
   HiUser,
   HiPhone,
   HiCheckCircle,
+  HiUserGroup,
 } from 'react-icons/hi2';
 import { authService } from '../../services/authService';
 import toast from 'react-hot-toast';
@@ -24,6 +25,7 @@ const signupSchema = z.object({
   lastName: z.string().min(2, 'Last name must be at least 2 characters'),
   email: z.string().email('Invalid email address'),
   phone: z.string().min(10, 'Phone number must be at least 10 digits'),
+  role: z.string().min(1, 'Please select a role'),
   password: z.string().min(8, 'Password must be at least 8 characters')
     .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
     .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
@@ -36,6 +38,16 @@ const signupSchema = z.object({
 });
 
 type SignupFormData = z.infer<typeof signupSchema>;
+
+// Available roles for public signup (excluding admin roles)
+const AVAILABLE_ROLES = [
+  { value: 'FARMER', label: 'Farmer', description: 'Dairy farmer delivering milk' },
+  { value: 'CUSTOMER', label: 'Customer', description: 'Purchase dairy products' },
+  { value: 'SUPPLIER', label: 'Supplier', description: 'Supply goods and services' },
+  { value: 'DRIVER', label: 'Driver', description: 'Transport and logistics' },
+  { value: 'LAB_TECHNICIAN', label: 'Lab Technician', description: 'Quality testing' },
+  { value: 'VETERINARIAN', label: 'Veterinarian', description: 'Animal health services' },
+];
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -61,11 +73,12 @@ const SignupPage = () => {
       
       if (response.success) {
         setShowSuccessModal(true);
-        toast.success('Account created successfully!');
+        toast.success('Account created successfully! Redirecting to login...');
         
+        // Redirect to login after showing success modal
         setTimeout(() => {
-          navigate('/login');
-        }, 3000);
+          navigate('/login', { replace: true });
+        }, 2000);
       } else {
         toast.error(response.message || 'Registration failed');
       }
@@ -263,6 +276,43 @@ const SignupPage = () => {
                 )}
               </div>
 
+              {/* Role Selection */}
+              <div>
+                <label htmlFor="role" className="block text-sm font-semibold text-slate-700 mb-2">
+                  I am a
+                </label>
+                <div className="relative">
+                  <div className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 z-10">
+                    <HiUserGroup className="w-5 h-5" />
+                  </div>
+                  <select
+                    {...register('role')}
+                    id="role"
+                    className={cn(
+                      'w-full pl-10 pr-4 py-3 rounded-xl border-2 transition-all appearance-none bg-white',
+                      'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+                      'cursor-pointer',
+                      errors.role ? 'border-red-500' : 'border-slate-200'
+                    )}
+                  >
+                    <option value="">Select your role...</option>
+                    {AVAILABLE_ROLES.map((role) => (
+                      <option key={role.value} value={role.value}>
+                        {role.label} - {role.description}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
+                {errors.role && (
+                  <p className="mt-1 text-sm text-red-600">{errors.role.message}</p>
+                )}
+              </div>
+
               {/* Password */}
               <div>
                 <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
@@ -369,10 +419,10 @@ const SignupPage = () => {
               Account Created Successfully!
             </h3>
             <p className="text-slate-600 mb-6">
-              Your account has been created. You will be redirected to the login page shortly.
+              Your account has been created. You will be redirected to the login page to sign in.
             </p>
             <Button
-              onClick={() => navigate('/login')}
+              onClick={() => navigate('/login', { replace: true })}
               className="w-full"
             >
               Go to Login
