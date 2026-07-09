@@ -15,6 +15,7 @@ import Autocomplete from '../../components/ui/Autocomplete';
 import Badge from '../../components/ui/Badge';
 import toast from 'react-hot-toast';
 import dayjs from 'dayjs';
+import { paymentService } from '../../services/paymentService';
 
 const GeneratePaymentPage = () => {
   const navigate = useNavigate();
@@ -79,14 +80,30 @@ const GeneratePaymentPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.farmerId) {
+      toast.error('Please select a farmer');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const paymentData = {
+        farmerId: formData.farmerId,
+        period: formData.period,
+        totalQuantity: parseFloat(formData.totalQuantity),
+        totalAmount: parseFloat(formData.totalAmount),
+        bonusAmount: formData.bonusAmount ? parseFloat(formData.bonusAmount) : 0,
+        deductionAmount: formData.deductionAmount ? parseFloat(formData.deductionAmount) : 0,
+        netAmount: netAmount,
+      };
 
-      toast.success('Payment generated successfully!');
-      navigate('/dashboard/payments');
+      const response = await paymentService.create(paymentData);
+      if (response.success) {
+        toast.success('Payment generated successfully!');
+        navigate('/dashboard/payments');
+      }
     } catch (error) {
       toast.error('Failed to generate payment');
     } finally {

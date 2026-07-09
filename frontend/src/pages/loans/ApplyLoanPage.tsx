@@ -16,6 +16,7 @@ import Card from '../../components/ui/Card';
 import Autocomplete from '../../components/ui/Autocomplete';
 import Badge from '../../components/ui/Badge';
 import toast from 'react-hot-toast';
+import { loanService } from '../../services/loanService';
 
 const ApplyLoanPage = () => {
   const navigate = useNavigate();
@@ -64,14 +65,28 @@ const ApplyLoanPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!formData.farmerId) {
+      toast.error('Please select a farmer');
+      return;
+    }
+    
     setIsSubmitting(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const loanData = {
+        farmerId: formData.farmerId,
+        amount: parseFloat(formData.amount),
+        interestRate: parseFloat(formData.interestRate),
+        tenure: parseInt(formData.tenure),
+        purpose: formData.purpose,
+      };
 
-      toast.success('Loan application submitted successfully!');
-      navigate('/dashboard/loans');
+      const response = await loanService.create(loanData);
+      if (response.success) {
+        toast.success('Loan application submitted successfully!');
+        navigate('/dashboard/loans');
+      }
     } catch (error) {
       toast.error('Failed to submit loan application');
     } finally {
