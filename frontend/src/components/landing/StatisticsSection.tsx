@@ -6,10 +6,10 @@ const StatisticsSection = () => {
   const isInView = useInView(ref, { once: true });
 
   const stats = [
-    { value: 10543, label: 'Registered Farmers', suffix: '+', duration: 2 },
-    { value: 52.8, label: 'Million Liters Collected', suffix: 'M', duration: 2.5 },
-    { value: 234, label: 'Collection Centers', suffix: '+', duration: 2 },
-    { value: 1250, label: 'Daily Veterinary Visits', suffix: '+', duration: 2.2 },
+    { value: 850, label: 'Registered Farmers', suffix: '+', duration: 2 },
+    { value: 2.5, label: 'Million Liters Collected', suffix: 'M', duration: 2.5 },
+    { value: 15, label: 'Collection Centers', suffix: '', duration: 2 },
+    { value: 120, label: 'Monthly Veterinary Visits', suffix: '+', duration: 2.2 },
   ];
 
   const Counter = ({ value, duration }: { value: number; duration: number }) => {

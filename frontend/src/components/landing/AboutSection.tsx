@@ -93,15 +93,15 @@ const AboutSection = () => {
                 <div className="bg-white/90 backdrop-blur-md rounded-2xl p-6">
                   <div className="grid grid-cols-3 gap-4 text-center">
                     <div>
-                      <div className="text-3xl font-bold text-primary-600">25+</div>
+                      <div className="text-3xl font-bold text-primary-600">8</div>
                       <div className="text-sm text-slate-600 font-medium">Years</div>
                     </div>
                     <div>
-                      <div className="text-3xl font-bold text-primary-600">10K+</div>
+                      <div className="text-3xl font-bold text-primary-600">850+</div>
                       <div className="text-sm text-slate-600 font-medium">Farmers</div>
                     </div>
                     <div>
-                      <div className="text-3xl font-bold text-primary-600">50M+</div>
+                      <div className="text-3xl font-bold text-primary-600">2.5M+</div>
                       <div className="text-sm text-slate-600 font-medium">Liters</div>
                     </div>
                   </div>
@@ -121,7 +121,7 @@ const AboutSection = () => {
               className="absolute -top-6 -right-6 w-32 h-32 bg-gradient-to-br from-primary-500 to-primary-600 rounded-3xl shadow-2xl flex items-center justify-center"
             >
               <div className="text-center text-white">
-                <div className="text-2xl font-bold">99%</div>
+                <div className="text-2xl font-bold">96%</div>
                 <div className="text-xs font-medium">Satisfaction</div>
               </div>
             </motion.div>

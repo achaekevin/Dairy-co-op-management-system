@@ -68,7 +68,7 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
             className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md rounded-full border border-white/20"
           >
             <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-            <span className="text-white text-sm font-semibold">Trusted by 10,000+ Farmers</span>
+            <span className="text-white text-sm font-semibold">Trusted by 850+ Farmers</span>
           </motion.div>
 
           {/* Main Heading */}
@@ -124,10 +124,10 @@ const HeroSection = ({ onLoginClick }: HeroSectionProps) => {
             className="grid grid-cols-2 md:grid-cols-4 gap-8 pt-16"
           >
             {[
-              { value: '10K+', label: 'Active Farmers' },
-              { value: '50M+', label: 'Liters Collected' },
-              { value: '200+', label: 'Collection Centers' },
-              { value: '99%', label: 'Satisfaction Rate' },
+              { value: '850+', label: 'Active Farmers' },
+              { value: '2.5M+', label: 'Liters Collected' },
+              { value: '15', label: 'Collection Centers' },
+              { value: '96%', label: 'Satisfaction Rate' },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}

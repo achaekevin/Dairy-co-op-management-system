@@ -8,18 +8,18 @@ const TestimonialsSection = () => {
       role: 'Dairy Farmer',
       location: 'Kiambu County',
       image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200',
-      quote: 'Since joining this cooperative, my monthly income has increased by 60%. The transparent payment system and fair prices have transformed my livelihood.',
+      quote: 'Since joining this cooperative, my monthly income has increased by 45%. The transparent payment system and fair prices have transformed my livelihood.',
       rating: 5,
-      increase: '+60%',
+      increase: '+45%',
     },
     {
       name: 'Mary Wanjiku',
       role: 'Smallholder Farmer',
       location: 'Nakuru County',
       image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200',
-      quote: 'The veterinary services and training programs have helped me improve milk quality. I now produce 30% more milk per cow.',
+      quote: 'The veterinary services and training programs have helped me improve milk quality. I now produce 25% more milk per cow.',
       rating: 5,
-      increase: '+30%',
+      increase: '+25%',
     },
     {
       name: 'Peter Ochieng',
@@ -28,7 +28,7 @@ const TestimonialsSection = () => {
       image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200',
       quote: 'The digital platform makes everything easy. I can track my deliveries, payments, and even apply for loans online. Truly revolutionary!',
       rating: 5,
-      increase: '+45%',
+      increase: '+35%',
     },
   ];
 
