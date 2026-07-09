@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, InventoryItem, StockTransaction } from '../types';
+import type { ApiResponse, InventoryItem, StockTransaction } from '../types';
 
 export interface CreateInventoryItemData {
   itemName: string;

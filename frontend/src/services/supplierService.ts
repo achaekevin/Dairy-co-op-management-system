@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Supplier, PurchaseOrder } from '../types';
+import type { ApiResponse, Supplier, PurchaseOrder } from '../types';
 
 export interface CreateSupplierData {
   name: string;

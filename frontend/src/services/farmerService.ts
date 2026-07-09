@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Farmer } from '../types';
+import type { ApiResponse, Farmer } from '../types';
 
 export interface CreateFarmerData {
   firstName: string;

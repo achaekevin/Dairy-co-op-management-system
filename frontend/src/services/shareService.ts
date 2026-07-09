@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Share } from '../types';
+import type { ApiResponse, Share } from '../types';
 
 export interface CreateShareData {
   farmerId: string;

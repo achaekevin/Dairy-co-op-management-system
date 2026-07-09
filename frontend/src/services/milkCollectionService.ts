@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, MilkCollection } from '../types';
+import type { ApiResponse, MilkCollection } from '../types';
 
 export interface CreateMilkCollectionData {
   farmerId: string;

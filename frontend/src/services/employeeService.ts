@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Employee } from '../types';
+import type { ApiResponse, Employee } from '../types';
 
 export interface CreateEmployeeData {
   firstName: string;

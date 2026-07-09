@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Meeting } from '../types';
+import type { ApiResponse, Meeting } from '../types';
 
 export interface CreateMeetingData {
   title: string;

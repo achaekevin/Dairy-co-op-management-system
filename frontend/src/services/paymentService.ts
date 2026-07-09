@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Payment } from '../types';
+import type { ApiResponse, Payment } from '../types';
 
 export interface CreatePaymentData {
   farmerId: string;

@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Vehicle } from '../types';
+import type { ApiResponse, Vehicle } from '../types';
 
 export interface CreateVehicleData {
   vehicleNumber: string;

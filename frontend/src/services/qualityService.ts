@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, QualityTest, QualityStandard } from '../types';
+import type { ApiResponse, QualityTest, QualityStandard } from '../types';
 
 export interface CreateQualityTestData {
   date: string;

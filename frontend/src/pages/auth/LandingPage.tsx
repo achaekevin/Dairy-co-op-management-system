@@ -1,14 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { 
   HiBeaker,
-  HiUsers,
-  HiChartBar,
-  HiCurrencyDollar,
-  HiTruck,
-  HiShieldCheck,
-  HiHeart,
   HiSparkles,
   HiBars3,
   HiXMark,

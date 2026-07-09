@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Loan } from '../types';
+import type { ApiResponse, Loan } from '../types';
 
 export interface CreateLoanData {
   farmerId: string;

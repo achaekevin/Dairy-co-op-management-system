@@ -1,5 +1,5 @@
 import api from './api';
-import type { ApiResponse, PaginatedResponse, Customer, Sale } from '../types';
+import type { ApiResponse, Customer, Sale } from '../types';
 
 export interface CreateCustomerData {
   customerName: string;
