@@ -10,9 +10,12 @@ import Card from '../../components/ui/Card';
 import Autocomplete from '../../components/ui/Autocomplete';
 import Alert from '../../components/ui/Alert';
 import Badge from '../../components/ui/Badge';
+import { milkCollectionService } from '../../services/milkCollectionService';
+import toast from 'react-hot-toast';
 
 const AddCollectionPage = () => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     farmerId: '',
     shift: 'MORNING',
@@ -73,9 +76,36 @@ const AddCollectionPage = () => {
     setQualityResult({ quality, rate, amount });
   };
 
-  const handleSubmit = () => {
-    // Submit logic
-    navigate('/dashboard/milk-collection');
+  const handleSubmit = async () => {
+    if (!selectedFarmer) {
+      toast.error('Please select a farmer');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const collectionData = {
+        farmerId: selectedFarmer,
+        date: new Date().toISOString(),
+        shift: formData.shift as 'MORNING' | 'EVENING',
+        quantity: parseFloat(formData.quantity),
+        fat: parseFloat(formData.fat),
+        snf: parseFloat(formData.snf),
+        temperature: parseFloat(formData.temperature),
+        quality: (qualityResult?.quality || 'GOOD') as 'EXCELLENT' | 'GOOD' | 'AVERAGE' | 'POOR',
+        status: 'ACCEPTED' as const,
+      };
+
+      const response = await milkCollectionService.create(collectionData);
+      if (response.success) {
+        toast.success('Milk collection recorded successfully!');
+        navigate('/dashboard/milk-collection');
+      }
+    } catch (error) {
+      toast.error('Failed to record collection');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -212,10 +242,10 @@ const AddCollectionPage = () => {
                 <Button
                   variant="primary"
                   onClick={handleSubmit}
-                  disabled={!qualityResult}
+                  disabled={!qualityResult || isSubmitting}
                 >
                   <HiCheckCircle className="w-4 h-4 mr-2" />
-                  Save Collection
+                  {isSubmitting ? 'Saving...' : 'Save Collection'}
                 </Button>
               </div>
             </div>

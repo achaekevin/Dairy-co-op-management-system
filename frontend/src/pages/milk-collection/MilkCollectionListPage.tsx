@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -17,6 +17,8 @@ import Pagination from '../../components/ui/Pagination';
 import Card from '../../components/ui/Card';
 import DatePicker from '../../components/ui/DatePicker';
 import type { MilkCollection, Column } from '../../types';
+import { milkCollectionService } from '../../services/milkCollectionService';
+import toast from 'react-hot-toast';
 
 const MilkCollectionListPage = () => {
   const navigate = useNavigate();
@@ -25,61 +27,56 @@ const MilkCollectionListPage = () => {
   const [statusFilter, setStatusFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
 
-  // Mock data
-  const collections: MilkCollection[] = [
-    {
-      id: '1',
-      farmerId: 'FM001',
-      farmerName: 'Ramesh Kumar',
-      date: new Date().toISOString(),
-      shift: 'MORNING',
-      quantity: 25,
-      fat: 4.5,
-      snf: 8.5,
-      temperature: 4,
-      quality: 'EXCELLENT',
-      status: 'ACCEPTED',
-      collectedBy: 'John Doe',
-      centerId: 'C001',
-      amount: 1250,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      farmerId: 'FM002',
-      farmerName: 'Suresh Patel',
-      date: new Date().toISOString(),
-      shift: 'MORNING',
-      quantity: 30,
-      fat: 4.8,
-      snf: 8.8,
-      temperature: 4,
-      quality: 'EXCELLENT',
-      status: 'ACCEPTED',
-      collectedBy: 'John Doe',
-      centerId: 'C001',
-      amount: 1560,
-      createdAt: new Date().toISOString(),
-    },
-    {
-      id: '3',
-      farmerId: 'FM003',
-      farmerName: 'Mahesh Singh',
-      date: new Date().toISOString(),
-      shift: 'MORNING',
-      quantity: 20,
-      fat: 3.8,
-      snf: 7.9,
-      temperature: 6,
-      quality: 'AVERAGE',
-      status: 'REJECTED',
-      reason: 'High temperature',
-      collectedBy: 'John Doe',
-      centerId: 'C001',
-      amount: 0,
-      createdAt: new Date().toISOString(),
-    },
-  ];
+  const [collections, setCollections] = useState<MilkCollection[]>([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [stats, setStats] = useState({
+    totalCollections: 0,
+    todayCollections: 0,
+    totalQuantity: 0,
+    todayQuantity: 0,
+  });
+
+  useEffect(() => {
+    fetchCollections();
+  }, [currentPage, shiftFilter, statusFilter, selectedDate]);
+
+  useEffect(() => {
+    fetchStats();
+  }, []);
+
+  const fetchCollections = async () => {
+    setIsLoading(true);
+    try {
+      const response = await milkCollectionService.getAll({
+        shift: shiftFilter !== 'all' ? shiftFilter : undefined,
+        status: statusFilter !== 'all' ? statusFilter : undefined,
+        startDate: selectedDate?.toISOString(),
+        endDate: selectedDate?.toISOString(),
+        page: currentPage,
+        pageSize: 10,
+      });
+      if (response.success) {
+        setCollections(response.data.data);
+        setTotalPages(response.data.totalPages);
+      }
+    } catch (error) {
+      toast.error('Failed to load collections');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const fetchStats = async () => {
+    try {
+      const response = await milkCollectionService.getStats();
+      if (response.success) {
+        setStats(response.data);
+      }
+    } catch (error) {
+      // Silent fail
+    }
+  };
 
   const columns: Column<MilkCollection>[] = [
     {
@@ -222,15 +219,6 @@ const MilkCollectionListPage = () => {
     },
   ];
 
-  const stats = {
-    totalQuantity: collections.reduce((sum, c) => sum + c.quantity, 0),
-    accepted: collections.filter((c) => c.status === 'ACCEPTED').length,
-    rejected: collections.filter((c) => c.status === 'REJECTED').length,
-    totalAmount: collections
-      .filter((c) => c.status === 'ACCEPTED')
-      .reduce((sum, c) => sum + c.amount, 0),
-  };
-
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -262,27 +250,27 @@ const MilkCollectionListPage = () => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         {[
           {
-            label: 'Total Quantity',
-            value: `${stats.totalQuantity} L`,
+            label: "Today's Collections",
+            value: stats.todayCollections,
             color: 'text-blue-600',
             icon: <HiClock className="w-5 h-5" />,
           },
           {
-            label: 'Accepted',
-            value: stats.accepted,
+            label: "Today's Quantity",
+            value: `${stats.todayQuantity} L`,
             color: 'text-green-600',
             icon: <HiCheckCircle className="w-5 h-5" />,
           },
           {
-            label: 'Rejected',
-            value: stats.rejected,
-            color: 'text-red-600',
-            icon: <HiXCircle className="w-5 h-5" />,
+            label: 'Total Collections',
+            value: stats.totalCollections,
+            color: 'text-purple-600',
+            icon: <HiCheckCircle className="w-5 h-5" />,
           },
           {
-            label: 'Total Amount',
-            value: `KSh ${stats.totalAmount.toLocaleString()}`,
-            color: 'text-green-600',
+            label: 'Total Quantity',
+            value: `${stats.totalQuantity} L`,
+            color: 'text-amber-600',
           },
         ].map((stat, index) => (
           <motion.div
@@ -358,11 +346,26 @@ const MilkCollectionListPage = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-              {collections.map((collection) => (
-                <tr
-                  key={collection.id}
-                  className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
-                >
+              {isLoading ? (
+                <tr>
+                  <td colSpan={columns.length} className="px-6 py-12 text-center">
+                    <div className="flex items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"></div>
+                    </div>
+                  </td>
+                </tr>
+              ) : collections.length === 0 ? (
+                <tr>
+                  <td colSpan={columns.length} className="px-6 py-12 text-center">
+                    <p className="text-slate-600 dark:text-slate-400">No collections found</p>
+                  </td>
+                </tr>
+              ) : (
+                collections.map((collection) => (
+                  <tr
+                    key={collection.id}
+                    className="hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors"
+                  >
                   {columns.map((col) => (
                     <td
                       key={col.id}
@@ -380,7 +383,8 @@ const MilkCollectionListPage = () => {
                     </td>
                   ))}
                 </tr>
-              ))}
+              ))
+              )}
             </tbody>
           </table>
         </div>
@@ -390,7 +394,7 @@ const MilkCollectionListPage = () => {
       <div className="flex justify-center">
         <Pagination
           currentPage={currentPage}
-          totalPages={10}
+          totalPages={totalPages}
           onPageChange={setCurrentPage}
         />
       </div>
