@@ -71,7 +71,7 @@ export default {
     from: env.SMTP_FROM,
   },
   cors: {
-    origin: env.CORS_ORIGIN,
+    origin: env.CORS_ORIGIN.split(',').map(origin => origin.trim()),
   },
   rateLimit: {
     windowMs: parseInt(env.RATE_LIMIT_WINDOW_MS, 10),
