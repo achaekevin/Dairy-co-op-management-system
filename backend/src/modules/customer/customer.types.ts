@@ -5,9 +5,9 @@ export interface CreateCustomerData {
   customerType: 'RETAIL' | 'WHOLESALE' | 'DISTRIBUTOR' | 'INSTITUTION';
   phoneNumber: string;
   email?: string;
-  address?: string;
-  city?: string;
-  state?: string;
+  address: string;
+  city: string;
+  state: string;
   pinCode?: string;
   gstNumber?: string;
   creditLimit?: number;

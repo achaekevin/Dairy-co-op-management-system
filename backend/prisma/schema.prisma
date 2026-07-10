@@ -531,9 +531,9 @@ model Customer {
   customerType       CustomerType
   phoneNumber        String
   email              String?
-  address            String?
-  city               String?
-  state              String?
+  address            String
+  city               String
+  state              String
   pinCode            String?
   gstNumber          String?
   creditLimit        Decimal        @default(0) @db.Decimal(10, 2)
