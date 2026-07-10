@@ -5,10 +5,8 @@ import StatsCard from '../../components/cards/StatsCard';
 import Card, { CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
 import Button from '../../components/ui/Button';
 import Badge from '../../components/ui/Badge';
-import WeatherWidget from '../../components/dashboard/WeatherWidget';
 import QuickActionsWidget from '../../components/dashboard/QuickActionsWidget';
 import UpcomingEventsWidget from '../../components/dashboard/UpcomingEventsWidget';
-import TasksWidget from '../../components/dashboard/TasksWidget';
 import LineChart from '../../components/charts/LineChart';
 import BarChart from '../../components/charts/BarChart';
 import PieChart from '../../components/charts/PieChart';
@@ -564,43 +562,15 @@ const DashboardPage = () => {
       </div>
       )}
 
-      {/* Additional Widgets Row - Role-based */}
-      {(canSeeOperations || canSeeFinancials) && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-          {/* Weather Widget - All authenticated users */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 1.0 }}
-          >
-            <WeatherWidget />
-          </motion.div>
-
-          {/* Tasks Widget - Only for users with operational or managerial access */}
-          {(userRole === UserRole.ADMIN || 
-            userRole === UserRole.MANAGER || 
-            userRole === UserRole.OPERATOR) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.1 }}
-            >
-              <TasksWidget />
-            </motion.div>
-          )}
-
-          {/* Quick Actions Widget - Only for admins and managers */}
-          {(userRole === UserRole.ADMIN || 
-            userRole === UserRole.MANAGER) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 1.2 }}
-            >
-              <QuickActionsWidget />
-            </motion.div>
-          )}
-        </div>
+      {/* Quick Actions Widget - Only for admins and managers */}
+      {(userRole === UserRole.ADMIN || userRole === UserRole.MANAGER) && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.0 }}
+        >
+          <QuickActionsWidget />
+        </motion.div>
       )}
 
       {/* Upcoming Events - Only for users with operational or financial access */}
@@ -608,7 +578,7 @@ const DashboardPage = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 1.3 }}
+          transition={{ duration: 0.5, delay: 1.1 }}
         >
           <UpcomingEventsWidget />
         </motion.div>
