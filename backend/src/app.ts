@@ -39,9 +39,15 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: typeof config.cors.origin === 'string' && config.cors.origin === '*' 
-    ? '*' 
-    : config.cors.origin,
+  origin: (origin, callback) => {
+    const allowedOrigins = config.cors.origin;
+    
+    if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(null, true);
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
