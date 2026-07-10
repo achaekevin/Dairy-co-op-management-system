@@ -79,9 +79,9 @@ const MeetingsPage = () => {
   };
 
   const statsData = [
-    { label: 'Total Meetings', value: stats.totalMeetings.toString(), icon: CalendarDaysIcon, color: 'blue' },
-    { label: 'Scheduled', value: stats.scheduledMeetings.toString(), icon: ClockIcon, color: 'yellow' },
-    { label: 'Completed', value: stats.completedMeetings.toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'Total Meetings', value: (stats.totalMeetings ?? 0).toString(), icon: CalendarDaysIcon, color: 'blue' },
+    { label: 'Scheduled', value: (stats.scheduledMeetings ?? 0).toString(), icon: ClockIcon, color: 'yellow' },
+    { label: 'Completed', value: (stats.completedMeetings ?? 0).toString(), icon: CheckCircleIcon, color: 'green' },
     { label: 'Cancelled', value: '0', icon: XCircleIcon, color: 'red' },
   ];
 

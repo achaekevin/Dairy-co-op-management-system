@@ -83,19 +83,19 @@ const SuppliersPage = () => {
   const statsData = [
     {
       label: 'Total Suppliers',
-      value: stats.totalSuppliers.toString(),
+      value: (stats.totalSuppliers ?? 0).toString(),
       icon: BuildingOfficeIcon,
       color: 'blue',
     },
     {
       label: 'Active',
-      value: stats.activeSuppliers.toString(),
+      value: (stats.activeSuppliers ?? 0).toString(),
       icon: CheckCircleIcon,
       color: 'green',
     },
     {
       label: 'Inactive',
-      value: (stats.totalSuppliers - stats.activeSuppliers).toString(),
+      value: ((stats.totalSuppliers ?? 0) - (stats.activeSuppliers ?? 0)).toString(),
       icon: XCircleIcon,
       color: 'red',
     },

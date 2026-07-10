@@ -78,10 +78,10 @@ const CustomersPage = () => {
   };
 
   const statsData = [
-    { label: 'Total Customers', value: stats.totalCustomers.toString(), icon: UserGroupIcon, color: 'blue' },
-    { label: 'Active', value: stats.activeCustomers.toString(), icon: CheckCircleIcon, color: 'green' },
-    { label: 'Inactive', value: (stats.totalCustomers - stats.activeCustomers).toString(), icon: XCircleIcon, color: 'red' },
-    { label: 'Outstanding', value: `KSh ${stats.totalOutstanding.toLocaleString()}`, icon: CurrencyRupeeIcon, color: 'yellow' },
+    { label: 'Total Customers', value: (stats.totalCustomers ?? 0).toString(), icon: UserGroupIcon, color: 'blue' },
+    { label: 'Active', value: (stats.activeCustomers ?? 0).toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'Inactive', value: ((stats.totalCustomers ?? 0) - (stats.activeCustomers ?? 0)).toString(), icon: XCircleIcon, color: 'red' },
+    { label: 'Outstanding', value: `KSh ${(stats.totalOutstanding ?? 0).toLocaleString()}`, icon: CurrencyRupeeIcon, color: 'yellow' },
   ];
 
   const totalSales = stats.totalSales;

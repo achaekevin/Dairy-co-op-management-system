@@ -79,10 +79,10 @@ const HRPage = () => {
   };
 
   const statsData = [
-    { label: 'Total Employees', value: stats.totalEmployees.toString(), icon: UserGroupIcon, color: 'blue' },
-    { label: 'Active', value: stats.activeEmployees.toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'Total Employees', value: (stats.totalEmployees ?? 0).toString(), icon: UserGroupIcon, color: 'blue' },
+    { label: 'Active', value: (stats.activeEmployees ?? 0).toString(), icon: CheckCircleIcon, color: 'green' },
     { label: 'On Leave', value: '0', icon: ClockIcon, color: 'yellow' },
-    { label: 'Inactive', value: (stats.totalEmployees - stats.activeEmployees).toString(), icon: XCircleIcon, color: 'red' },
+    { label: 'Inactive', value: ((stats.totalEmployees ?? 0) - (stats.activeEmployees ?? 0)).toString(), icon: XCircleIcon, color: 'red' },
   ];
 
   const monthlySalary = stats.totalSalary;

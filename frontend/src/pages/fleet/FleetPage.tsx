@@ -79,10 +79,10 @@ const FleetPage = () => {
   };
 
   const statsData = [
-    { label: 'Total Vehicles', value: stats.totalVehicles.toString(), icon: TruckIcon, color: 'blue' },
-    { label: 'Active', value: stats.activeVehicles.toString(), icon: CheckCircleIcon, color: 'green' },
-    { label: 'In Maintenance', value: stats.maintenanceVehicles.toString(), icon: WrenchScrewdriverIcon, color: 'yellow' },
-    { label: 'Service Due', value: stats.expiringInsurance.toString(), icon: ExclamationTriangleIcon, color: 'red' },
+    { label: 'Total Vehicles', value: (stats.totalVehicles ?? 0).toString(), icon: TruckIcon, color: 'blue' },
+    { label: 'Active', value: (stats.activeVehicles ?? 0).toString(), icon: CheckCircleIcon, color: 'green' },
+    { label: 'In Maintenance', value: (stats.maintenanceVehicles ?? 0).toString(), icon: WrenchScrewdriverIcon, color: 'yellow' },
+    { label: 'Service Due', value: (stats.expiringInsurance ?? 0).toString(), icon: ExclamationTriangleIcon, color: 'red' },
   ];
 
   const columns: Column<Vehicle>[] = [

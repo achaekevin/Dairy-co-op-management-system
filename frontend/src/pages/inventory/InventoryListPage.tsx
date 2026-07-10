@@ -83,7 +83,7 @@ const InventoryListPage = () => {
   const statsData = [
     {
       label: 'Total Items',
-      value: stats.totalItems.toString(),
+      value: (stats.totalItems ?? 0).toString(),
       change: 'active',
       changeType: 'neutral' as const,
       icon: CubeIcon,
@@ -91,7 +91,7 @@ const InventoryListPage = () => {
     },
     {
       label: 'In Stock',
-      value: (stats.totalItems - stats.lowStockItems - stats.outOfStockItems).toString(),
+      value: ((stats.totalItems ?? 0) - (stats.lowStockItems ?? 0) - (stats.outOfStockItems ?? 0)).toString(),
       change: 'healthy',
       changeType: 'positive' as const,
       icon: CheckCircleIcon,
@@ -99,7 +99,7 @@ const InventoryListPage = () => {
     },
     {
       label: 'Low Stock',
-      value: stats.lowStockItems.toString(),
+      value: (stats.lowStockItems ?? 0).toString(),
       change: 'needs attention',
       changeType: 'neutral' as const,
       icon: ExclamationTriangleIcon,
@@ -107,7 +107,7 @@ const InventoryListPage = () => {
     },
     {
       label: 'Out of Stock',
-      value: stats.outOfStockItems.toString(),
+      value: (stats.outOfStockItems ?? 0).toString(),
       change: 'critical',
       changeType: 'negative' as const,
       icon: XCircleIcon,
