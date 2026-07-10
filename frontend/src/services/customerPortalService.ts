@@ -93,4 +93,62 @@ export const customerPortalService = {
     const response = await api.get(`/customer-portal/orders/${orderNumber}/track`);
     return response.data;
   },
+
+  cancelOrder: async (orderId: string): Promise<ApiResponse<any>> => {
+    const response = await api.post(`/customer-portal/orders/${orderId}/cancel`);
+    return response.data;
+  },
+
+  getInvoice: async (orderId: string): Promise<ApiResponse<any>> => {
+    const response = await api.get(`/customer-portal/invoices/${orderId}`);
+    return response.data;
+  },
+
+  getPaymentHistory: async (params?: {
+    page?: number;
+    limit?: number;
+  }): Promise<ApiResponse<any[]>> => {
+    const response = await api.get('/customer-portal/payments', { params });
+    return response.data;
+  },
+
+  makePayment: async (data: {
+    orderId: string;
+    amount: number;
+    paymentMethod: 'CASH' | 'BANK_TRANSFER' | 'MOBILE_MONEY' | 'CHEQUE';
+    transactionId?: string;
+  }): Promise<ApiResponse<any>> => {
+    const response = await api.post('/customer-portal/payments', data);
+    return response.data;
+  },
+
+  getProfile: async (): Promise<ApiResponse<any>> => {
+    const response = await api.get('/customer-portal/profile');
+    return response.data;
+  },
+
+  updateProfile: async (data: any): Promise<ApiResponse<any>> => {
+    const response = await api.put('/customer-portal/profile', data);
+    return response.data;
+  },
+
+  getDeliveryAddresses: async (): Promise<ApiResponse<any[]>> => {
+    const response = await api.get('/customer-portal/delivery-addresses');
+    return response.data;
+  },
+
+  saveDeliveryAddress: async (data: any): Promise<ApiResponse<any>> => {
+    const response = await api.post('/customer-portal/delivery-addresses', data);
+    return response.data;
+  },
+
+  getSavedPaymentMethods: async (): Promise<ApiResponse<any[]>> => {
+    const response = await api.get('/customer-portal/payment-methods');
+    return response.data;
+  },
+
+  savePaymentMethod: async (data: any): Promise<ApiResponse<any>> => {
+    const response = await api.post('/customer-portal/payment-methods', data);
+    return response.data;
+  },
 };
