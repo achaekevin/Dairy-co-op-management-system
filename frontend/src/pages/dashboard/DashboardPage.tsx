@@ -1,4 +1,4 @@
-﻿import { motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatsCard from '../../components/cards/StatsCard';
@@ -74,7 +74,7 @@ const DashboardPage = () => {
       icon: <HiUsers className="w-6 h-6" />,
       trend: { value: 8.2, isPositive: true },
       color: 'primary' as const,
-      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER],
+      roles: [UserRole.ADMIN, UserRole.MANAGER],
       onClick: () => navigate('/dashboard/farmers'),
     },
     {
@@ -83,7 +83,7 @@ const DashboardPage = () => {
       icon: <HiBeaker className="w-6 h-6" />,
       trend: { value: 5.4, isPositive: true },
       color: 'secondary' as const,
-      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
       onClick: () => navigate('/dashboard/milk-collection'),
     },
     {
@@ -92,7 +92,7 @@ const DashboardPage = () => {
       icon: <HiCurrencyRupee className="w-6 h-6" />,
       trend: { value: 12.5, isPositive: true },
       color: 'success' as const,
-      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT],
+      roles: [UserRole.ADMIN, UserRole.ACCOUNTANT],
       onClick: () => navigate('/dashboard/reports'),
     },
     {
@@ -101,7 +101,7 @@ const DashboardPage = () => {
       icon: <HiBanknotes className="w-6 h-6" />,
       trend: { value: 3.2, isPositive: false },
       color: 'warning' as const,
-      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT],
+      roles: [UserRole.ADMIN, UserRole.ACCOUNTANT],
       onClick: () => navigate('/dashboard/loans'),
     },
     {
@@ -110,7 +110,7 @@ const DashboardPage = () => {
       icon: <HiChartBar className="w-6 h-6" />,
       trend: { value: 2.1, isPositive: true },
       color: 'info' as const,
-      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
       onClick: () => navigate('/dashboard/quality'),
     },
     {
@@ -119,7 +119,7 @@ const DashboardPage = () => {
       icon: <HiExclamationTriangle className="w-6 h-6" />,
       trend: { value: 15.3, isPositive: false },
       color: 'error' as const,
-      roles: [UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
       onClick: () => navigate('/dashboard/quality'),
     },
     {
@@ -148,13 +148,13 @@ const DashboardPage = () => {
   }, [userRole]);
 
   // Check if user can see financial data
-  const canSeeFinancials = ([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.ACCOUNTANT] as UserRole[]).includes(userRole);
+  const canSeeFinancials = ([UserRole.ADMIN, UserRole.ACCOUNTANT] as UserRole[]).includes(userRole);
   
   // Check if user can see operational data
-  const canSeeOperations = ([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR] as UserRole[]).includes(userRole);
+  const canSeeOperations = ([UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR] as UserRole[]).includes(userRole);
   
   // Check if user can export
-  const canExport = ([UserRole.SUPER_ADMIN, UserRole.ADMIN, UserRole.MANAGER, UserRole.ACCOUNTANT] as UserRole[]).includes(userRole);
+  const canExport = ([UserRole.ADMIN, UserRole.MANAGER, UserRole.ACCOUNTANT] as UserRole[]).includes(userRole);
 
   const milkCollectionDataChart = [
     { date: 'Mon', Morning: 4200, Evening: 3800 },
@@ -428,7 +428,7 @@ const DashboardPage = () => {
                         {activity.action}
                       </p>
                       <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 mt-0.5 sm:mt-1 truncate">
-                        {activity.user} • {activity.time}
+                        {activity.user} � {activity.time}
                       </p>
                     </div>
                   </div>
@@ -453,8 +453,7 @@ const DashboardPage = () => {
           </motion.div>
 
           {/* Tasks Widget - Only for users with operational or managerial access */}
-          {(userRole === UserRole.SUPER_ADMIN || 
-            userRole === UserRole.ADMIN || 
+          {(userRole === UserRole.ADMIN || 
             userRole === UserRole.MANAGER || 
             userRole === UserRole.OPERATOR) && (
             <motion.div
@@ -467,8 +466,7 @@ const DashboardPage = () => {
           )}
 
           {/* Quick Actions Widget - Only for admins and managers */}
-          {(userRole === UserRole.SUPER_ADMIN || 
-            userRole === UserRole.ADMIN || 
+          {(userRole === UserRole.ADMIN || 
             userRole === UserRole.MANAGER) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}

@@ -17,20 +17,12 @@ async function main() {
 
   const users = [
     {
-      email: 'superadmin@dairycoop.com',
-      password: 'SuperAdmin@123',
-      firstName: 'Super',
-      lastName: 'Administrator',
-      role: 'SUPER_ADMIN',
-      phoneNumber: '+254700000001',
-    },
-    {
       email: 'admin@dairycoop.com',
       password: 'Admin@123',
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
-      phoneNumber: '+254700000009',
+      phoneNumber: '+254700000001',
     },
     {
       email: 'manager@dairycoop.com',

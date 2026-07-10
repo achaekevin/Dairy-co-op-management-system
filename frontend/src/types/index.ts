@@ -14,7 +14,6 @@ export interface User {
 }
 
 export const UserRole = {
-  SUPER_ADMIN: 'SUPER_ADMIN',
   ADMIN: 'ADMIN',
   MANAGER: 'MANAGER',
   OPERATOR: 'OPERATOR',

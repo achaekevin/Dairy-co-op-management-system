@@ -20,7 +20,7 @@ export const menuItems: MenuItem[] = [
     label: 'Farmer Management',
     icon: 'users',
     path: '/dashboard/farmers',
-    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR, UserRole.FARMER],
   },
   {
     id: 'milk-collection',
