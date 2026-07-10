@@ -1,8 +1,10 @@
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSidebarStore } from '../../store/sidebarStore';
+import { useAuthStore } from '../../store/authStore';
 import { menuItems } from '../../constants/menu';
 import { cn } from '../../utils/cn';
+import type { MenuItem } from '../../types';
 import {
   HiHome,
   HiUsers,
@@ -54,7 +56,32 @@ const iconMap: Record<string, React.ElementType> = {
 const Sidebar = () => {
   const location = useLocation();
   const { isCollapsed, isMobileOpen, setMobileOpen } = useSidebarStore();
+  const { user } = useAuthStore();
   const [openMenus, setOpenMenus] = useState<string[]>([]);
+
+  const hasPermission = (item: MenuItem): boolean => {
+    if (!item.permissions || item.permissions.length === 0) {
+      return true;
+    }
+    if (!user?.role) {
+      return false;
+    }
+    return item.permissions.includes(user.role);
+  };
+
+  const filterMenuItems = (items: MenuItem[]): MenuItem[] => {
+    return items.filter(item => {
+      if (!hasPermission(item)) {
+        return false;
+      }
+      if (item.children) {
+        item.children = filterMenuItems(item.children);
+      }
+      return true;
+    });
+  };
+
+  const filteredMenuItems = filterMenuItems([...menuItems]);
 
   const toggleSubmenu = (id: string) => {
     setOpenMenus((prev) =>
@@ -198,7 +225,7 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto scrollbar-thin px-3 space-y-1">
-        {menuItems.map((item) => renderMenuItem(item))}
+        {filteredMenuItems.map((item) => renderMenuItem(item))}
       </nav>
 
       {/* Footer */}

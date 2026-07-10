@@ -9,6 +9,13 @@ export const menuItems: MenuItem[] = [
     path: '/dashboard',
   },
   {
+    id: 'customer-portal',
+    label: 'Customer Portal',
+    icon: 'shopping-bag',
+    path: '/dashboard/customer-portal',
+    permissions: [UserRole.CUSTOMER],
+  },
+  {
     id: 'farmers',
     label: 'Farmer Management',
     icon: 'users',
@@ -20,12 +27,14 @@ export const menuItems: MenuItem[] = [
     label: 'Milk Collection',
     icon: 'droplet',
     path: '/dashboard/milk-collection',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
   },
   {
     id: 'quality',
     label: 'Milk Quality',
     icon: 'award',
     path: '/dashboard/quality',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
   },
   {
     id: 'payments',
@@ -46,17 +55,20 @@ export const menuItems: MenuItem[] = [
     label: 'Share Management',
     icon: 'trending-up',
     path: '/dashboard/shares',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.FARMER],
   },
   {
     id: 'veterinary',
     label: 'Veterinary',
     icon: 'heart-pulse',
     path: '/dashboard/veterinary',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.VETERINARIAN, UserRole.FARMER],
   },
   {
     id: 'inventory',
     label: 'Inventory',
     icon: 'package',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STORE_MANAGER],
     children: [
       {
         id: 'feed-store',
@@ -90,6 +102,7 @@ export const menuItems: MenuItem[] = [
     label: 'Fleet Management',
     icon: 'truck',
     path: '/dashboard/fleet',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER],
   },
   {
     id: 'hr',
@@ -110,24 +123,28 @@ export const menuItems: MenuItem[] = [
     label: 'Customers',
     icon: 'user-circle',
     path: '/dashboard/customers',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER],
   },
   {
     id: 'meetings',
     label: 'Meetings',
     icon: 'calendar',
     path: '/dashboard/meetings',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER],
   },
   {
     id: 'reports',
     label: 'Reports',
     icon: 'file-text',
     path: '/dashboard/reports',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER, UserRole.ACCOUNTANT],
   },
   {
     id: 'analytics',
     label: 'Analytics',
     icon: 'bar-chart',
     path: '/dashboard/analytics',
+    permissions: [UserRole.ADMIN, UserRole.MANAGER],
   },
   {
     id: 'settings',
