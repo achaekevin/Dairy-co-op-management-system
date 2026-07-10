@@ -117,7 +117,7 @@ const CustomerDashboardPage = () => {
       )}
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <Card className="p-6">
           <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
             Browse Products
@@ -146,6 +146,54 @@ const CustomerDashboardPage = () => {
             onClick={() => navigate('/dashboard/customer-portal/orders')}
           >
             View Orders
+            <HiArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+            Invoices
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            View and download your invoices
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/dashboard/customer-portal/invoices')}
+          >
+            View Invoices
+            <HiArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+            Payments
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            Make payments and view payment history
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/dashboard/customer-portal/payments')}
+          >
+            Manage Payments
+            <HiArrowRight className="w-5 h-5 ml-2" />
+          </Button>
+        </Card>
+
+        <Card className="p-6">
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+            My Profile
+          </h2>
+          <p className="text-slate-600 dark:text-slate-400 mb-4">
+            Manage your profile and delivery addresses
+          </p>
+          <Button
+            variant="outline"
+            onClick={() => navigate('/dashboard/customer-portal/profile')}
+          >
+            View Profile
             <HiArrowRight className="w-5 h-5 ml-2" />
           </Button>
         </Card>
