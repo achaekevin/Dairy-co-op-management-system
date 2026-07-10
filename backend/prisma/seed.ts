@@ -131,6 +131,7 @@ async function main() {
       maxStock: 1000,
       unitPrice: 60,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1550583724-b2692b85b150?w=400',
     },
     {
       itemCode: 'MILK-002',
@@ -142,6 +143,7 @@ async function main() {
       maxStock: 600,
       unitPrice: 55,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=400',
     },
     {
       itemCode: 'MILK-003',
@@ -153,6 +155,7 @@ async function main() {
       maxStock: 500,
       unitPrice: 58,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1628088062854-d1870b4553da?w=400',
     },
     {
       itemCode: 'YOGURT-001',
@@ -164,6 +167,7 @@ async function main() {
       maxStock: 300,
       unitPrice: 120,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400',
     },
     {
       itemCode: 'YOGURT-002',
@@ -175,6 +179,7 @@ async function main() {
       maxStock: 200,
       unitPrice: 150,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1571212515416-fca5ec2c9490?w=400',
     },
     {
       itemCode: 'YOGURT-003',
@@ -186,6 +191,7 @@ async function main() {
       maxStock: 200,
       unitPrice: 150,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1623948001761-76c4fe0b9ec6?w=400',
     },
     {
       itemCode: 'BUTTER-001',
@@ -197,6 +203,7 @@ async function main() {
       maxStock: 150,
       unitPrice: 450,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1589985270826-4b7bb135bc9d?w=400',
     },
     {
       itemCode: 'BUTTER-002',
@@ -208,6 +215,7 @@ async function main() {
       maxStock: 120,
       unitPrice: 450,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1596040008861-5f635c9c7261?w=400',
     },
     {
       itemCode: 'CHEESE-001',
@@ -219,6 +227,7 @@ async function main() {
       maxStock: 100,
       unitPrice: 800,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1552767059-ce182ead6c1b?w=400',
     },
     {
       itemCode: 'CHEESE-002',
@@ -230,6 +239,7 @@ async function main() {
       maxStock: 80,
       unitPrice: 850,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1618164436241-4473940d1f5c?w=400',
     },
     {
       itemCode: 'CHEESE-003',
@@ -241,6 +251,7 @@ async function main() {
       maxStock: 60,
       unitPrice: 900,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1486297678162-eb2a19b0a32d?w=400',
     },
     {
       itemCode: 'GHEE-001',
@@ -252,6 +263,7 @@ async function main() {
       maxStock: 100,
       unitPrice: 650,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1614967270507-45e0c4e0a3da?w=400',
     },
     {
       itemCode: 'CREAM-001',
@@ -263,6 +275,7 @@ async function main() {
       maxStock: 100,
       unitPrice: 250,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1628337162723-cb0f5c138c64?w=400',
     },
     {
       itemCode: 'CREAM-002',
@@ -274,6 +287,7 @@ async function main() {
       maxStock: 90,
       unitPrice: 280,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1594005305639-2f16b2d4fcaa?w=400',
     },
     {
       itemCode: 'PANEER-001',
@@ -285,6 +299,7 @@ async function main() {
       maxStock: 80,
       unitPrice: 350,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1631452180539-96aca7d48617?w=400',
     },
     {
       itemCode: 'CURD-001',
@@ -296,6 +311,7 @@ async function main() {
       maxStock: 200,
       unitPrice: 80,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1625081063176-a45e2e5e2c33?w=400',
     },
     {
       itemCode: 'LASSI-001',
@@ -307,6 +323,7 @@ async function main() {
       maxStock: 120,
       unitPrice: 70,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1569418110787-2b06209a2945?w=400',
     },
     {
       itemCode: 'LASSI-002',
@@ -318,6 +335,7 @@ async function main() {
       maxStock: 100,
       unitPrice: 90,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1577805947697-89e18249d767?w=400',
     },
     {
       itemCode: 'ICECREAM-001',
@@ -329,6 +347,7 @@ async function main() {
       maxStock: 100,
       unitPrice: 350,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=400',
     },
     {
       itemCode: 'ICECREAM-002',
@@ -340,6 +359,7 @@ async function main() {
       maxStock: 90,
       unitPrice: 380,
       status: 'IN_STOCK',
+      imageUrl: 'https://images.unsplash.com/photo-1570197788417-0e82375c9371?w=400',
     },
   ];
 

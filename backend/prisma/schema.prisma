@@ -624,6 +624,7 @@ model InventoryItem {
   expiryDate    DateTime?
   batchNumber   String?
   lastRestocked DateTime?
+  imageUrl      String?
   status        ItemStatus
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt

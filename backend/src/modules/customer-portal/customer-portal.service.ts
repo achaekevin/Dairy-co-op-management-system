@@ -78,6 +78,7 @@ export class CustomerPortalService {
       unitPrice: Number(item.unitPrice),
       unit: item.unit,
       availableStock: Number(item.currentStock),
+      imageUrl: item.imageUrl || undefined,
       status: Number(item.currentStock) > 0 ? 'AVAILABLE' : 'OUT_OF_STOCK',
     }));
 
