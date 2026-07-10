@@ -43,7 +43,10 @@ class AuthService {
       verificationExpires
     );
 
-    await emailService.sendVerificationEmail(user.email, verificationToken);
+    try {
+      await emailService.sendVerificationEmail(user.email, verificationToken);
+    } catch (emailError) {
+    }
 
     const jwtPayload = {
       userId: user.id,
