@@ -49,7 +49,7 @@ const ProductsPage = () => {
         limit: 50,
       });
       if (response.success && response.data) {
-        const productsData = response.data.data || response.data;
+        const productsData = (response.data as any).data || response.data;
         setProducts(Array.isArray(productsData) ? productsData : []);
       }
     } catch (error) {
