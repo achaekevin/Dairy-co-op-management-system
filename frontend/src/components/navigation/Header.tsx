@@ -147,7 +147,7 @@ const Header = () => {
                 {showProfileMenu && (
                   <>
                     <div
-                      className="fixed inset-0 z-30"
+                      className="fixed inset-0 z-40"
                       onClick={() => setShowProfileMenu(false)}
                     />
                     <motion.div
@@ -155,7 +155,7 @@ const Header = () => {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -10, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-40 overflow-hidden"
+                      className="absolute right-0 mt-2 w-56 bg-white dark:bg-slate-800 rounded-xl shadow-xl border border-slate-200 dark:border-slate-700 z-50 overflow-hidden"
                     >
                       <div className="p-2 space-y-1">
                         <Link
