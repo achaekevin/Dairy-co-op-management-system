@@ -34,7 +34,7 @@ const QualityTestDetailPage = () => {
     time: '09:30 AM',
     sampleType: 'INCOMING_MILK',
     farmerId: 'F-001',
-    farmerName: 'Rajesh Kumar',
+    farmerName: 'James Kariuki',
     testedBy: 'Lab Technician 1',
     fat: 4.2,
     snf: 8.5,

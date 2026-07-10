@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -29,7 +29,7 @@ const PaymentsListPage = () => {
     {
       id: '1',
       farmerId: 'F-001',
-      farmerName: 'Rajesh Kumar',
+      farmerName: 'James Kariuki',
       period: 'January 2024',
       totalQuantity: 1250,
       totalAmount: 62500,
@@ -46,7 +46,7 @@ const PaymentsListPage = () => {
     {
       id: '2',
       farmerId: 'F-012',
-      farmerName: 'Suresh Patel',
+      farmerName: 'John Mwangi',
       period: 'January 2024',
       totalQuantity: 980,
       totalAmount: 47040,
@@ -60,7 +60,7 @@ const PaymentsListPage = () => {
     {
       id: '3',
       farmerId: 'F-023',
-      farmerName: 'Amit Singh',
+      farmerName: 'Peter Ochieng',
       period: 'January 2024',
       totalQuantity: 1450,
       totalAmount: 69600,
@@ -86,7 +86,7 @@ const PaymentsListPage = () => {
     {
       id: '5',
       farmerId: 'F-067',
-      farmerName: 'Ramesh Verma',
+      farmerName: 'Samuel Njoroge',
       period: 'January 2024',
       totalQuantity: 890,
       totalAmount: 42720,

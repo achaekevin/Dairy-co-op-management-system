@@ -268,7 +268,7 @@ const AddFarmerPage = () => {
                   name="bankName"
                   value={formData.bankName}
                   onChange={handleChange}
-                  placeholder="State Bank of India"
+                  placeholder="Kenya Commercial Bank (KCB)"
                 />
               </FormField>
 

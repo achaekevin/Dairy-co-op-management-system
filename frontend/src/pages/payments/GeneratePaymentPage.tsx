@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -37,11 +37,11 @@ const GeneratePaymentPage = () => {
 
   // Mock farmers data
   const farmers = [
-    { id: 'F-001', name: 'Rajesh Kumar', avgQuantity: 42 },
-    { id: 'F-002', name: 'Amit Patel', avgQuantity: 38 },
-    { id: 'F-003', name: 'Vijay Singh', avgQuantity: 45 },
-    { id: 'F-004', name: 'Ramesh Sharma', avgQuantity: 35 },
-    { id: 'F-005', name: 'Suresh Verma', avgQuantity: 40 },
+    { id: 'F-001', name: 'James Kariuki', avgQuantity: 42 },
+    { id: 'F-002', name: 'John Mwangi', avgQuantity: 38 },
+    { id: 'F-003', name: 'Peter Ochieng', avgQuantity: 45 },
+    { id: 'F-004', name: 'David Mutua', avgQuantity: 35 },
+    { id: 'F-005', name: 'Samuel Njoroge', avgQuantity: 40 },
   ];
 
   // Calculate net amount whenever amounts change

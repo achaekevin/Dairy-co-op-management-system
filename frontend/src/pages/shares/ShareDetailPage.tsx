@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -37,7 +37,7 @@ const ShareDetailPage = () => {
     id: id || '1',
     shareNumber: 'SH-2024-001',
     farmerId: 'F-001',
-    farmerName: 'Rajesh Kumar',
+    farmerName: 'James Kariuki',
     shareCount: 10,
     shareValue: 1000,
     totalValue: 10000,
@@ -49,10 +49,10 @@ const ShareDetailPage = () => {
 
   // Mock eligible farmers for transfer
   const eligibleFarmers = [
-    { id: 'F-012', name: 'Suresh Patel' },
-    { id: 'F-023', name: 'Amit Singh' },
-    { id: 'F-045', name: 'Vijay Sharma' },
-    { id: 'F-067', name: 'Ramesh Verma' },
+    { id: 'F-012', name: 'John Mwangi' },
+    { id: 'F-023', name: 'Peter Ochieng' },
+    { id: 'F-045', name: 'David Mutua' },
+    { id: 'F-067', name: 'Samuel Njoroge' },
   ];
 
   const handlePrint = () => {

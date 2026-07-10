@@ -511,25 +511,25 @@ const DashboardPage = () => {
                 {[
                   {
                     action: 'Milk collection completed',
-                    user: 'Ramesh Kumar',
+                    user: 'Joseph Kamau',
                     time: '5 minutes ago',
                     type: 'success',
                   },
                   {
                     action: 'Payment processed',
-                    user: 'Suresh Patel',
+                    user: 'Mary Wanjiku',
                     time: '15 minutes ago',
                     type: 'info',
                   },
                   {
                     action: 'Quality test rejected',
-                    user: 'Mahesh Singh',
+                    user: 'Peter Omondi',
                     time: '1 hour ago',
                     type: 'error',
                   },
                   {
                     action: 'New farmer registered',
-                    user: 'Dinesh Yadav',
+                    user: 'Grace Akinyi',
                     time: '2 hours ago',
                     type: 'success',
                   },

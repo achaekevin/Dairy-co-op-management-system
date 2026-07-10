@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -37,11 +37,11 @@ const ApplyLoanPage = () => {
 
   // Mock farmers data
   const farmers = [
-    { id: 'F-001', name: 'Rajesh Kumar', eligible: true },
-    { id: 'F-002', name: 'Amit Patel', eligible: true },
-    { id: 'F-003', name: 'Vijay Singh', eligible: false },
-    { id: 'F-004', name: 'Ramesh Sharma', eligible: true },
-    { id: 'F-005', name: 'Suresh Verma', eligible: true },
+    { id: 'F-001', name: 'James Kariuki', eligible: true },
+    { id: 'F-002', name: 'John Mwangi', eligible: true },
+    { id: 'F-003', name: 'Peter Ochieng', eligible: false },
+    { id: 'F-004', name: 'David Mutua', eligible: true },
+    { id: 'F-005', name: 'Samuel Njoroge', eligible: true },
   ];
 
   // Calculate EMI whenever amount, rate, or tenure changes
@@ -149,10 +149,10 @@ const ApplyLoanPage = () => {
                       <div className="text-sm text-blue-900 dark:text-blue-100">
                         <p className="font-medium mb-1">Farmer Eligibility</p>
                         <ul className="space-y-1 text-xs">
-                          <li>✓ Active member for 6+ months</li>
-                          <li>✓ Regular milk supply record</li>
-                          <li>✓ No pending loan defaults</li>
-                          <li>✓ Eligible for loan up to KSh 1,00,000</li>
+                          <li>? Active member for 6+ months</li>
+                          <li>? Regular milk supply record</li>
+                          <li>? No pending loan defaults</li>
+                          <li>? Eligible for loan up to KSh 1,00,000</li>
                         </ul>
                       </div>
                     </div>

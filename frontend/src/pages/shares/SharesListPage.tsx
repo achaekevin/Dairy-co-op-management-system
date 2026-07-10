@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -30,7 +30,7 @@ const SharesListPage = () => {
       id: '1',
       shareNumber: 'SH-2024-001',
       farmerId: 'F-001',
-      farmerName: 'Rajesh Kumar',
+      farmerName: 'James Kariuki',
       shareCount: 10,
       shareValue: 1000,
       totalValue: 10000,
@@ -43,7 +43,7 @@ const SharesListPage = () => {
       id: '2',
       shareNumber: 'SH-2024-002',
       farmerId: 'F-012',
-      farmerName: 'Suresh Patel',
+      farmerName: 'John Mwangi',
       shareCount: 15,
       shareValue: 1000,
       totalValue: 15000,
@@ -56,7 +56,7 @@ const SharesListPage = () => {
       id: '3',
       shareNumber: 'SH-2024-003',
       farmerId: 'F-023',
-      farmerName: 'Amit Singh',
+      farmerName: 'Peter Ochieng',
       shareCount: 20,
       shareValue: 1000,
       totalValue: 20000,
@@ -84,7 +84,7 @@ const SharesListPage = () => {
       id: '5',
       shareNumber: 'SH-2023-012',
       farmerId: 'F-089',
-      farmerName: 'Ramesh Verma',
+      farmerName: 'Samuel Njoroge',
       shareCount: 5,
       shareValue: 1000,
       totalValue: 5000,

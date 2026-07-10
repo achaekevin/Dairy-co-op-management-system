@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -30,7 +30,7 @@ const LoansListPage = () => {
       id: '1',
       loanNumber: 'LN-2024-001',
       farmerId: 'F-001',
-      farmerName: 'Rajesh Kumar',
+      farmerName: 'James Kariuki',
       amount: 50000,
       interestRate: 8.5,
       tenure: 12,
@@ -48,7 +48,7 @@ const LoansListPage = () => {
       id: '2',
       loanNumber: 'LN-2024-002',
       farmerId: 'F-012',
-      farmerName: 'Suresh Patel',
+      farmerName: 'John Mwangi',
       amount: 75000,
       interestRate: 8.5,
       tenure: 18,
@@ -64,7 +64,7 @@ const LoansListPage = () => {
       id: '3',
       loanNumber: 'LN-2024-003',
       farmerId: 'F-023',
-      farmerName: 'Amit Singh',
+      farmerName: 'Peter Ochieng',
       amount: 100000,
       interestRate: 8.5,
       tenure: 24,
@@ -97,7 +97,7 @@ const LoansListPage = () => {
       id: '5',
       loanNumber: 'LN-2023-045',
       farmerId: 'F-067',
-      farmerName: 'Ramesh Verma',
+      farmerName: 'Samuel Njoroge',
       amount: 40000,
       interestRate: 8.5,
       tenure: 12,

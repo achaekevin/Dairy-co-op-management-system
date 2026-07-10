@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { HiArrowLeft, HiCheckCircle } from 'react-icons/hi2';
@@ -34,9 +34,9 @@ const AddCollectionPage = () => {
 
   // Mock farmers for autocomplete
   const farmers = [
-    { value: 'FM001', label: 'Ramesh Kumar (FM001)' },
-    { value: 'FM002', label: 'Suresh Patel (FM002)' },
-    { value: 'FM003', label: 'Mahesh Singh (FM003)' },
+    { value: 'FM001', label: 'Joseph Kamau (FM001)' },
+    { value: 'FM002', label: 'Mary Wanjiku (FM002)' },
+    { value: 'FM003', label: 'Peter Omondi (FM003)' },
   ];
 
   const handleChange = (
@@ -343,17 +343,17 @@ const AddCollectionPage = () => {
             <div className="space-y-2 text-xs">
               <QualityStandard
                 grade="Excellent"
-                criteria="Fat ≥ 4.5%, SNF ≥ 8.5%, Temp ≤ 4°C"
+                criteria="Fat = 4.5%, SNF = 8.5%, Temp = 4°C"
                 rate="KSh 50/L"
               />
               <QualityStandard
                 grade="Good"
-                criteria="Fat ≥ 4.0%, SNF ≥ 8.0%, Temp ≤ 5°C"
+                criteria="Fat = 4.0%, SNF = 8.0%, Temp = 5°C"
                 rate="KSh 48/L"
               />
               <QualityStandard
                 grade="Average"
-                criteria="Fat ≥ 3.5%, SNF ≥ 7.5%, Temp ≤ 6°C"
+                criteria="Fat = 3.5%, SNF = 7.5%, Temp = 6°C"
                 rate="KSh 45/L"
               />
               <QualityStandard

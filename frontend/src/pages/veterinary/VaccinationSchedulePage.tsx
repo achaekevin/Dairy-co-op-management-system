@@ -31,7 +31,7 @@ const VaccinationSchedulePage = () => {
     {
       id: '1',
       farmerId: 'F-001',
-      farmerName: 'Rajesh Kumar',
+      farmerName: 'James Kariuki',
       cattleId: 'C-001',
       cattleTag: 'RK-001',
       vaccineType: 'FMD',
@@ -45,7 +45,7 @@ const VaccinationSchedulePage = () => {
     {
       id: '2',
       farmerId: 'F-012',
-      farmerName: 'Suresh Patel',
+      farmerName: 'John Mwangi',
       cattleId: 'C-045',
       cattleTag: 'SP-003',
       vaccineType: 'HS',
@@ -59,7 +59,7 @@ const VaccinationSchedulePage = () => {
     {
       id: '3',
       farmerId: 'F-023',
-      farmerName: 'Amit Singh',
+      farmerName: 'Peter Ochieng',
       cattleId: 'C-089',
       cattleTag: 'AS-002',
       vaccineType: 'Rabies',
@@ -87,7 +87,7 @@ const VaccinationSchedulePage = () => {
     {
       id: '5',
       farmerId: 'F-067',
-      farmerName: 'Ramesh Verma',
+      farmerName: 'Samuel Njoroge',
       cattleId: 'C-156',
       cattleTag: 'RV-004',
       vaccineType: 'BQ',

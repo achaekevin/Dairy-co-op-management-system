@@ -1,4 +1,4 @@
-﻿import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   HiArrowLeft,
@@ -20,7 +20,7 @@ const CollectionDetailPage = () => {
   const collection: MilkCollection = {
     id: id || '1',
     farmerId: 'FM001',
-    farmerName: 'Ramesh Kumar',
+    farmerName: 'Joseph Kamau',
     date: new Date().toISOString(),
     shift: 'MORNING',
     quantity: 25,

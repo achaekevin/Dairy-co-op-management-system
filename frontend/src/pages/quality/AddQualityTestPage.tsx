@@ -48,11 +48,11 @@ const AddQualityTestPage = () => {
 
   // Mock farmers data
   const farmers = [
-    { id: 'F-001', name: 'Rajesh Kumar' },
-    { id: 'F-002', name: 'Amit Patel' },
-    { id: 'F-003', name: 'Vijay Singh' },
-    { id: 'F-004', name: 'Ramesh Sharma' },
-    { id: 'F-005', name: 'Suresh Verma' },
+    { id: 'F-001', name: 'James Kariuki' },
+    { id: 'F-002', name: 'John Mwangi' },
+    { id: 'F-003', name: 'Peter Ochieng' },
+    { id: 'F-004', name: 'David Mutua' },
+    { id: 'F-005', name: 'Samuel Njoroge' },
   ];
 
   // Calculate overall result based on parameters

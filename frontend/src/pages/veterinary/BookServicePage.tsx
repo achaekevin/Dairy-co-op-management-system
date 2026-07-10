@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -65,11 +65,11 @@ const BookServicePage = () => {
 
   // Mock data
   const farmers = [
-    { value: 'F-001', label: 'Rajesh Kumar (F-001)' },
-    { value: 'F-012', label: 'Suresh Patel (F-012)' },
-    { value: 'F-023', label: 'Amit Singh (F-023)' },
-    { value: 'F-045', label: 'Vijay Sharma (F-045)' },
-    { value: 'F-067', label: 'Ramesh Verma (F-067)' },
+    { value: 'F-001', label: 'James Kariuki (F-001)' },
+    { value: 'F-012', label: 'John Mwangi (F-012)' },
+    { value: 'F-023', label: 'Peter Ochieng (F-023)' },
+    { value: 'F-045', label: 'David Mutua (F-045)' },
+    { value: 'F-067', label: 'Samuel Njoroge (F-067)' },
   ];
 
   const cattleOptions = [
@@ -79,10 +79,10 @@ const BookServicePage = () => {
   ];
 
   const veterinarians = [
-    { value: 'V-001', label: 'Dr. Sharma (General)' },
-    { value: 'V-002', label: 'Dr. Verma (Surgery)' },
-    { value: 'V-003', label: 'Dr. Patel (Reproduction)' },
-    { value: 'V-004', label: 'Dr. Singh (Emergency)' },
+    { value: 'V-001', label: 'Dr. Kimani (General)' },
+    { value: 'V-002', label: 'Dr. Otieno (Surgery)' },
+    { value: 'V-003', label: 'Dr. Wanjiru (Reproduction)' },
+    { value: 'V-004', label: 'Dr. Maina (Emergency)' },
   ];
 
   const serviceTypes = [

@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -52,7 +52,7 @@ const LoanDetailPage = () => {
     id: id || '1',
     loanNumber: 'LN-2024-001',
     farmerId: 'F-001',
-    farmerName: 'Rajesh Kumar',
+    farmerName: 'James Kariuki',
     amount: 50000,
     interestRate: 8.5,
     tenure: 12,

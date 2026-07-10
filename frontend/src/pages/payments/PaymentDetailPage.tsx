@@ -1,4 +1,4 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -41,7 +41,7 @@ const PaymentDetailPage = () => {
   const payment: Payment = {
     id: id || '1',
     farmerId: 'F-001',
-    farmerName: 'Rajesh Kumar',
+    farmerName: 'James Kariuki',
     period: 'January 2024',
     totalQuantity: 1250,
     totalAmount: 62500,
@@ -376,7 +376,7 @@ const PaymentDetailPage = () => {
                 }
                 className="w-full text-center text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 py-2"
               >
-                View all collections →
+                View all collections ?
               </button>
             </div>
           </Card>

@@ -1,4 +1,4 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
@@ -33,11 +33,11 @@ const PurchaseSharesPage = () => {
 
   // Mock farmers data
   const farmers = [
-    { id: 'F-001', name: 'Rajesh Kumar', currentShares: 10 },
-    { id: 'F-002', name: 'Amit Patel', currentShares: 8 },
-    { id: 'F-003', name: 'Vijay Singh', currentShares: 15 },
-    { id: 'F-004', name: 'Ramesh Sharma', currentShares: 5 },
-    { id: 'F-005', name: 'Suresh Verma', currentShares: 12 },
+    { id: 'F-001', name: 'James Kariuki', currentShares: 10 },
+    { id: 'F-002', name: 'John Mwangi', currentShares: 8 },
+    { id: 'F-003', name: 'Peter Ochieng', currentShares: 15 },
+    { id: 'F-004', name: 'David Mutua', currentShares: 5 },
+    { id: 'F-005', name: 'Samuel Njoroge', currentShares: 12 },
   ];
 
   // Calculate total whenever share count changes
