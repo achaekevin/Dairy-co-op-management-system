@@ -126,6 +126,13 @@ export const menuItems: MenuItem[] = [
     permissions: [UserRole.ADMIN, UserRole.MANAGER],
   },
   {
+    id: 'user-management',
+    label: 'User Management',
+    icon: 'users',
+    path: '/dashboard/admin/users',
+    permissions: [UserRole.ADMIN],
+  },
+  {
     id: 'meetings',
     label: 'Meetings',
     icon: 'calendar',

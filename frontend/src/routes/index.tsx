@@ -42,6 +42,7 @@ import FleetPage from '../pages/fleet/FleetPage';
 import HRPage from '../pages/hr/HRPage';
 import CustomersPage from '../pages/customers/CustomersPage';
 import AddCustomerPage from '../pages/customers/AddCustomerPage';
+import UserManagementPage from '../pages/admin/UserManagementPage';
 import CustomerDashboardPage from '../pages/customer-portal/CustomerDashboardPage';
 import ProductsPage from '../pages/customer-portal/ProductsPage';
 import OrderHistoryPage from '../pages/customer-portal/OrderHistoryPage';
@@ -399,6 +400,10 @@ export const router = createBrowserRouter([
       {
         path: 'customers/new',
         element: <AddCustomerPage />,
+      },
+      {
+        path: 'admin/users',
+        element: <UserManagementPage />,
       },
       {
         path: 'customer-portal',
