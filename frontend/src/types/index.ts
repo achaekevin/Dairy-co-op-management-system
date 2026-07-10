@@ -20,6 +20,10 @@ export const UserRole = {
   OPERATOR: 'OPERATOR',
   ACCOUNTANT: 'ACCOUNTANT',
   VIEWER: 'VIEWER',
+  FARMER: 'FARMER',
+  CUSTOMER: 'CUSTOMER',
+  VETERINARIAN: 'VETERINARIAN',
+  STORE_MANAGER: 'STORE_MANAGER',
 } as const;
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole];
