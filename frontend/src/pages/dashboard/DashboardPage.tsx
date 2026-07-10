@@ -128,7 +128,7 @@ const DashboardPage = () => {
   }> = [
     {
       title: 'Total Farmers',
-      value: loading ? '...' : dashboardData?.farmers?.totalFarmers?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.farmers?.totalFarmers ?? 0).toString(),
       icon: <HiUsers className="w-6 h-6" />,
       trend: { value: 8.2, isPositive: true },
       color: 'primary' as const,
@@ -137,7 +137,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Active Farmers',
-      value: loading ? '...' : dashboardData?.farmers?.activeFarmers?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.farmers?.activeFarmers ?? 0).toString(),
       icon: <HiUsers className="w-6 h-6" />,
       trend: { value: 5.1, isPositive: true },
       color: 'success' as const,
@@ -146,7 +146,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Total Customers',
-      value: loading ? '...' : dashboardData?.customers?.totalCustomers?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.customers?.totalCustomers ?? 0).toString(),
       icon: <HiShoppingCart className="w-6 h-6" />,
       trend: { value: 12.3, isPositive: true },
       color: 'info' as const,
@@ -155,7 +155,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Milk Collected Today',
-      value: loading ? '...' : `${dashboardData?.milkCollection?.totalQuantity?.toFixed(0) || '0'} L`,
+      value: loading ? '...' : `${(dashboardData?.milkCollection?.totalQuantity ?? 0).toFixed(0)} L`,
       icon: <HiBeaker className="w-6 h-6" />,
       trend: { value: 5.4, isPositive: true },
       color: 'secondary' as const,
@@ -164,7 +164,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Total Collections',
-      value: loading ? '...' : dashboardData?.milkCollection?.totalCollections?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.milkCollection?.totalCollections ?? 0).toString(),
       icon: <HiBeaker className="w-6 h-6" />,
       trend: { value: 3.2, isPositive: true },
       color: 'secondary' as const,
@@ -173,7 +173,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Payments Pending',
-      value: loading ? '...' : `KSh ${dashboardData?.payments?.totalPending?.toLocaleString() || '0'}`,
+      value: loading ? '...' : `KSh ${(dashboardData?.payments?.totalPending ?? 0).toLocaleString()}`,
       icon: <HiCurrencyRupee className="w-6 h-6" />,
       trend: { value: 2.1, isPositive: false },
       color: 'warning' as const,
@@ -182,7 +182,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Payments Completed',
-      value: loading ? '...' : `KSh ${dashboardData?.payments?.totalPaid?.toLocaleString() || '0'}`,
+      value: loading ? '...' : `KSh ${(dashboardData?.payments?.totalPaid ?? 0).toLocaleString()}`,
       icon: <HiCurrencyRupee className="w-6 h-6" />,
       trend: { value: 12.5, isPositive: true },
       color: 'success' as const,
@@ -191,7 +191,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Outstanding Loans',
-      value: loading ? '...' : `KSh ${dashboardData?.loans?.totalOutstanding?.toLocaleString() || '0'}`,
+      value: loading ? '...' : `KSh ${(dashboardData?.loans?.totalOutstanding ?? 0).toLocaleString()}`,
       icon: <HiBanknotes className="w-6 h-6" />,
       trend: { value: 3.2, isPositive: false },
       color: 'warning' as const,
@@ -200,7 +200,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Quality Tests Passed',
-      value: loading ? '...' : `${dashboardData?.quality?.passedTests || '0'}/${dashboardData?.quality?.totalTests || '0'}`,
+      value: loading ? '...' : `${dashboardData?.quality?.passedTests ?? 0}/${dashboardData?.quality?.totalTests ?? 0}`,
       icon: <HiChartBar className="w-6 h-6" />,
       trend: { value: 2.1, isPositive: true },
       color: 'info' as const,
@@ -209,7 +209,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Quality Tests Failed',
-      value: loading ? '...' : dashboardData?.quality?.failedTests?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.quality?.failedTests ?? 0).toString(),
       icon: <HiExclamationTriangle className="w-6 h-6" />,
       trend: { value: 15.3, isPositive: false },
       color: 'error' as const,
@@ -218,7 +218,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Total Employees',
-      value: loading ? '...' : dashboardData?.employees?.totalEmployees?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.employees?.totalEmployees ?? 0).toString(),
       icon: <HiUsers className="w-6 h-6" />,
       trend: { value: 1.2, isPositive: true },
       color: 'primary' as const,
@@ -227,7 +227,7 @@ const DashboardPage = () => {
     },
     {
       title: 'Active Employees',
-      value: loading ? '...' : dashboardData?.employees?.activeEmployees?.toString() || '0',
+      value: loading ? '...' : (dashboardData?.employees?.activeEmployees ?? 0).toString(),
       icon: <HiCheckCircle className="w-6 h-6" />,
       trend: { value: 0.8, isPositive: true },
       color: 'success' as const,
