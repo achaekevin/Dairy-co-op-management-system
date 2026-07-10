@@ -19,19 +19,22 @@ import Table from '../../components/ui/Table';
 import type { Column } from '../../types';
 import { farmerService } from '../../services/farmerService';
 import { customerService } from '../../services/customerService';
+import { userService } from '../../services/userService';
 import toast from 'react-hot-toast';
+import type { UserRole } from '../../types';
 
 interface User {
-  [key: string]: string | number | undefined;
+  [key: string]: string | number | boolean | undefined;
   id: string;
   userId: string;
   name: string;
   email: string;
   phone: string;
-  role: 'FARMER' | 'CUSTOMER';
+  role: UserRole;
   status: string;
   location: string;
   joinDate: string;
+  isActive?: boolean;
 }
 
 const UserManagementPage = () => {
@@ -53,7 +56,10 @@ const UserManagementPage = () => {
     totalFarmers: 0,
     totalCustomers: 0,
     activeUsers: 0,
+    systemUsers: 0,
   });
+
+  const [activeFilter, setActiveFilter] = useState<string | null>(null);
 
   useEffect(() => {
     fetchUsers();
@@ -80,10 +86,11 @@ const UserManagementPage = () => {
             name: `${f.firstName} ${f.lastName}`,
             email: f.email || 'N/A',
             phone: f.phoneNumber,
-            role: 'FARMER' as const,
+            role: 'FARMER' as UserRole,
             status: f.status,
             location: `${f.village}, ${f.district}`,
             joinDate: f.joinDate,
+            isActive: f.status === 'ACTIVE',
           })));
         }
       }
@@ -104,20 +111,56 @@ const UserManagementPage = () => {
             name: c.customerName,
             email: c.email || 'N/A',
             phone: c.phoneNumber,
-            role: 'CUSTOMER' as const,
+            role: 'CUSTOMER' as UserRole,
             status: c.status,
             location: `${c.city}, ${c.state}`,
             joinDate: c.createdAt,
+            isActive: c.status === 'ACTIVE',
+          })));
+        }
+      }
+
+      const systemRoles = ['ADMIN', 'MANAGER', 'ACCOUNTANT', 'OPERATOR', 'STORE_MANAGER', 'VETERINARIAN', 'VIEWER'];
+      if (filterRole === 'ALL' || systemRoles.includes(filterRole)) {
+        const systemUsersResponse = await userService.getAll({
+          search: searchQuery || undefined,
+          role: filterRole !== 'ALL' ? filterRole : undefined,
+          status: filterStatus !== 'ALL' ? filterStatus : undefined,
+          page: 1,
+          limit: 100,
+        });
+
+        if (systemUsersResponse.success && systemUsersResponse.data) {
+          const systemUsers = Array.isArray(systemUsersResponse.data) ? systemUsersResponse.data : [];
+          allUsers.push(...systemUsers.map(u => ({
+            id: u.id,
+            userId: u.email.split('@')[0].toUpperCase(),
+            name: `${u.firstName} ${u.lastName}`,
+            email: u.email,
+            phone: u.phoneNumber || 'N/A',
+            role: u.role as UserRole,
+            status: u.isActive ? 'ACTIVE' : 'INACTIVE',
+            location: 'System User',
+            joinDate: u.createdAt,
+            isActive: u.isActive,
           })));
         }
       }
 
       setUsers(allUsers);
+
+      const totalFarmers = allUsers.filter(u => u.role === 'FARMER').length;
+      const totalCustomers = allUsers.filter(u => u.role === 'CUSTOMER').length;
+      const totalSystemUsers = allUsers.filter(u => 
+        !['FARMER', 'CUSTOMER'].includes(u.role)
+      ).length;
+
       setStats({
         totalUsers: allUsers.length,
-        totalFarmers: allUsers.filter(u => u.role === 'FARMER').length,
-        totalCustomers: allUsers.filter(u => u.role === 'CUSTOMER').length,
-        activeUsers: allUsers.filter(u => u.status === 'ACTIVE').length,
+        totalFarmers,
+        totalCustomers,
+        activeUsers: allUsers.filter(u => u.isActive).length,
+        systemUsers: totalSystemUsers,
       });
 
     } catch (error) {
@@ -165,8 +208,10 @@ const UserManagementPage = () => {
     try {
       if (selectedUser.role === 'FARMER') {
         await farmerService.delete(selectedUser.id);
-      } else {
+      } else if (selectedUser.role === 'CUSTOMER') {
         await customerService.delete(selectedUser.id);
+      } else {
+        await userService.delete(selectedUser.id);
       }
       toast.success(`${selectedUser.role} deleted successfully`);
       setShowDeleteModal(false);
@@ -179,11 +224,94 @@ const UserManagementPage = () => {
     }
   };
 
+  const handleStatCardClick = (filterType: string) => {
+    if (activeFilter === filterType) {
+      setActiveFilter(null);
+      setFilterRole('ALL');
+      setFilterStatus('ALL');
+    } else {
+      setActiveFilter(filterType);
+      switch (filterType) {
+        case 'farmers':
+          setFilterRole('FARMER');
+          setFilterStatus('ALL');
+          break;
+        case 'customers':
+          setFilterRole('CUSTOMER');
+          setFilterStatus('ALL');
+          break;
+        case 'systemUsers':
+          setFilterRole('ADMIN');
+          setFilterStatus('ALL');
+          break;
+        case 'active':
+          setFilterRole('ALL');
+          setFilterStatus('ACTIVE');
+          break;
+        default:
+          setFilterRole('ALL');
+          setFilterStatus('ALL');
+      }
+    }
+  };
+
+  const getRoleBadgeVariant = (role: UserRole): 'success' | 'info' | 'warning' | 'error' | 'default' => {
+    switch (role) {
+      case 'ADMIN':
+        return 'error';
+      case 'MANAGER':
+        return 'warning';
+      case 'ACCOUNTANT':
+        return 'info';
+      case 'OPERATOR':
+      case 'STORE_MANAGER':
+      case 'VETERINARIAN':
+        return 'default';
+      case 'FARMER':
+        return 'success';
+      case 'CUSTOMER':
+        return 'info';
+      default:
+        return 'default';
+    }
+  };
+
   const statsData = [
-    { label: 'Total Users', value: stats.totalUsers, icon: HiUsers, color: 'blue' },
-    { label: 'Farmers', value: stats.totalFarmers, icon: HiUserGroup, color: 'green' },
-    { label: 'Customers', value: stats.totalCustomers, icon: HiUserGroup, color: 'purple' },
-    { label: 'Active', value: stats.activeUsers, icon: HiCheckCircle, color: 'emerald' },
+    { 
+      label: 'Total Users', 
+      value: stats.totalUsers, 
+      icon: HiUsers, 
+      color: 'blue',
+      filterType: 'all'
+    },
+    { 
+      label: 'Farmers', 
+      value: stats.totalFarmers, 
+      icon: HiUserGroup, 
+      color: 'green',
+      filterType: 'farmers'
+    },
+    { 
+      label: 'Customers', 
+      value: stats.totalCustomers, 
+      icon: HiUserGroup, 
+      color: 'purple',
+      filterType: 'customers'
+    },
+    { 
+      label: 'System Users', 
+      value: stats.systemUsers, 
+      icon: HiUsers, 
+      color: 'orange',
+      filterType: 'systemUsers'
+    },
+    { 
+      label: 'Active', 
+      value: stats.activeUsers, 
+      icon: HiCheckCircle, 
+      color: 'emerald',
+      filterType: 'active'
+    },
   ];
 
   const columns: Column<User>[] = [
@@ -210,7 +338,7 @@ const UserManagementPage = () => {
       id: 'role',
       header: 'Role',
       accessor: (row) => (
-        <Badge variant={row.role === 'FARMER' ? 'success' : 'info'}>
+        <Badge variant={getRoleBadgeVariant(row.role)}>
           {row.role}
         </Badge>
       ),
@@ -260,21 +388,27 @@ const UserManagementPage = () => {
             User Management
           </h1>
           <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
-            Manage all farmers and customers in the system
+            Manage all users in the system (farmers, customers, and staff)
           </p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {statsData.map((stat, index) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
+            onClick={() => handleStatCardClick(stat.filterType)}
+            className="cursor-pointer"
           >
-            <Card>
+            <Card className={`transition-all duration-200 ${
+              activeFilter === stat.filterType 
+                ? 'ring-2 ring-primary-500 shadow-lg' 
+                : 'hover:shadow-md'
+            }`}>
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
@@ -310,8 +444,14 @@ const UserManagementPage = () => {
             onChange={(e) => setFilterRole(e.target.value)}
             options={[
               { value: 'ALL', label: 'All Roles' },
-              { value: 'FARMER', label: 'Farmers Only' },
-              { value: 'CUSTOMER', label: 'Customers Only' },
+              { value: 'ADMIN', label: 'Admin' },
+              { value: 'MANAGER', label: 'Manager' },
+              { value: 'ACCOUNTANT', label: 'Accountant' },
+              { value: 'OPERATOR', label: 'Operator' },
+              { value: 'STORE_MANAGER', label: 'Store Manager' },
+              { value: 'VETERINARIAN', label: 'Veterinarian' },
+              { value: 'FARMER', label: 'Farmers' },
+              { value: 'CUSTOMER', label: 'Customers' },
             ]}
           />
           <Select
