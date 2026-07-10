@@ -22,6 +22,7 @@ import storeOfficerRoutes from '@modules/store-officer/store-officer.routes.js';
 import veterinaryOfficerRoutes from '@modules/veterinary-officer/veterinary-officer.routes.js';
 import farmerPortalRoutes from '@modules/farmer-portal/farmer-portal.routes.js';
 import customerPortalRoutes from '@modules/customer-portal/customer-portal.routes.js';
+import userRoutes from '@modules/user/user.routes.js';
 import config from '@config/env.js';
 
 const router = Router();
@@ -51,5 +52,6 @@ router.use(`/api/${apiVersion}/customers`, customerRoutes);
 router.use(`/api/${apiVersion}/vehicles`, vehicleRoutes);
 router.use(`/api/${apiVersion}/employees`, employeeRoutes);
 router.use(`/api/${apiVersion}/meetings`, meetingRoutes);
+router.use(`/api/${apiVersion}/users`, userRoutes);
 
 export default router;
