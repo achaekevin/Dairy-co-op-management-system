@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StatsCard from '../../components/cards/StatsCard';
 import Card, { CardHeader, CardTitle, CardContent } from '../../components/ui/Card';
@@ -16,6 +16,7 @@ import { exportToExcel } from '../../utils/export';
 import { useAuthStore } from '../../store/authStore';
 import { UserRole } from '../../types';
 import toast from 'react-hot-toast';
+import api from '../../services/api';
 import {
   HiUsers,
   HiBeaker,
@@ -28,16 +29,73 @@ import {
   HiEllipsisVertical,
   HiCheckCircle,
   HiClock,
+  HiShoppingCart,
 } from 'react-icons/hi2';
+
+interface DashboardData {
+  farmers: {
+    totalFarmers: number;
+    activeFarmers: number;
+  };
+  milkCollection: {
+    totalQuantity: number;
+    totalCollections: number;
+    avgFat: number;
+    avgSnf: number;
+  };
+  quality: {
+    totalTests: number;
+    passedTests: number;
+    failedTests: number;
+  };
+  payments: {
+    totalPending: number;
+    totalPaid: number;
+  };
+  loans: {
+    totalOutstanding: number;
+    activeLoans: number;
+  };
+  customers: {
+    totalCustomers: number;
+    activeCustomers: number;
+  };
+  employees: {
+    totalEmployees: number;
+    activeEmployees: number;
+  };
+}
 
 const DashboardPage = () => {
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState<DashboardData | null>(null);
   const { user } = useAuthStore();
   const navigate = useNavigate();
   const userRole = user?.role || UserRole.VIEWER;
 
-  const handleRefresh = () => {
+  useEffect(() => {
+    fetchDashboardData();
+  }, []);
+
+  const fetchDashboardData = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/dashboard/overview');
+      if (response.data.success) {
+        setDashboardData(response.data.data);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard data:', error);
+      toast.error('Failed to load dashboard data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefresh = async () => {
     setRefreshing(true);
+    await fetchDashboardData();
     setTimeout(() => setRefreshing(false), 1000);
   };
 
@@ -70,7 +128,7 @@ const DashboardPage = () => {
   }> = [
     {
       title: 'Total Farmers',
-      value: '1,234',
+      value: loading ? '...' : dashboardData?.farmers?.totalFarmers?.toString() || '0',
       icon: <HiUsers className="w-6 h-6" />,
       trend: { value: 8.2, isPositive: true },
       color: 'primary' as const,
@@ -78,8 +136,26 @@ const DashboardPage = () => {
       onClick: () => navigate('/dashboard/farmers'),
     },
     {
+      title: 'Active Farmers',
+      value: loading ? '...' : dashboardData?.farmers?.activeFarmers?.toString() || '0',
+      icon: <HiUsers className="w-6 h-6" />,
+      trend: { value: 5.1, isPositive: true },
+      color: 'success' as const,
+      roles: [UserRole.ADMIN, UserRole.MANAGER],
+      onClick: () => navigate('/dashboard/farmers'),
+    },
+    {
+      title: 'Total Customers',
+      value: loading ? '...' : dashboardData?.customers?.totalCustomers?.toString() || '0',
+      icon: <HiShoppingCart className="w-6 h-6" />,
+      trend: { value: 12.3, isPositive: true },
+      color: 'info' as const,
+      roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.STORE_MANAGER],
+      onClick: () => navigate('/dashboard/customers'),
+    },
+    {
       title: 'Milk Collected Today',
-      value: '8,456 L',
+      value: loading ? '...' : `${dashboardData?.milkCollection?.totalQuantity?.toFixed(0) || '0'} L`,
       icon: <HiBeaker className="w-6 h-6" />,
       trend: { value: 5.4, isPositive: true },
       color: 'secondary' as const,
@@ -87,17 +163,35 @@ const DashboardPage = () => {
       onClick: () => navigate('/dashboard/milk-collection'),
     },
     {
-      title: 'Revenue Today',
-      value: 'KSh 4,23,890',
+      title: 'Total Collections',
+      value: loading ? '...' : dashboardData?.milkCollection?.totalCollections?.toString() || '0',
+      icon: <HiBeaker className="w-6 h-6" />,
+      trend: { value: 3.2, isPositive: true },
+      color: 'secondary' as const,
+      roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
+      onClick: () => navigate('/dashboard/milk-collection'),
+    },
+    {
+      title: 'Payments Pending',
+      value: loading ? '...' : `KSh ${dashboardData?.payments?.totalPending?.toLocaleString() || '0'}`,
+      icon: <HiCurrencyRupee className="w-6 h-6" />,
+      trend: { value: 2.1, isPositive: false },
+      color: 'warning' as const,
+      roles: [UserRole.ADMIN, UserRole.ACCOUNTANT],
+      onClick: () => navigate('/dashboard/payments'),
+    },
+    {
+      title: 'Payments Completed',
+      value: loading ? '...' : `KSh ${dashboardData?.payments?.totalPaid?.toLocaleString() || '0'}`,
       icon: <HiCurrencyRupee className="w-6 h-6" />,
       trend: { value: 12.5, isPositive: true },
       color: 'success' as const,
       roles: [UserRole.ADMIN, UserRole.ACCOUNTANT],
-      onClick: () => navigate('/dashboard/reports'),
+      onClick: () => navigate('/dashboard/payments'),
     },
     {
       title: 'Outstanding Loans',
-      value: 'KSh 28,45,000',
+      value: loading ? '...' : `KSh ${dashboardData?.loans?.totalOutstanding?.toLocaleString() || '0'}`,
       icon: <HiBanknotes className="w-6 h-6" />,
       trend: { value: 3.2, isPositive: false },
       color: 'warning' as const,
@@ -105,8 +199,8 @@ const DashboardPage = () => {
       onClick: () => navigate('/dashboard/loans'),
     },
     {
-      title: 'Quality Score',
-      value: '94.5%',
+      title: 'Quality Tests Passed',
+      value: loading ? '...' : `${dashboardData?.quality?.passedTests || '0'}/${dashboardData?.quality?.totalTests || '0'}`,
       icon: <HiChartBar className="w-6 h-6" />,
       trend: { value: 2.1, isPositive: true },
       color: 'info' as const,
@@ -114,13 +208,31 @@ const DashboardPage = () => {
       onClick: () => navigate('/dashboard/quality'),
     },
     {
-      title: 'Rejected Milk',
-      value: '45 L',
+      title: 'Quality Tests Failed',
+      value: loading ? '...' : dashboardData?.quality?.failedTests?.toString() || '0',
       icon: <HiExclamationTriangle className="w-6 h-6" />,
       trend: { value: 15.3, isPositive: false },
       color: 'error' as const,
       roles: [UserRole.ADMIN, UserRole.MANAGER, UserRole.OPERATOR],
       onClick: () => navigate('/dashboard/quality'),
+    },
+    {
+      title: 'Total Employees',
+      value: loading ? '...' : dashboardData?.employees?.totalEmployees?.toString() || '0',
+      icon: <HiUsers className="w-6 h-6" />,
+      trend: { value: 1.2, isPositive: true },
+      color: 'primary' as const,
+      roles: [UserRole.ADMIN, UserRole.MANAGER],
+      onClick: () => navigate('/dashboard/employees'),
+    },
+    {
+      title: 'Active Employees',
+      value: loading ? '...' : dashboardData?.employees?.activeEmployees?.toString() || '0',
+      icon: <HiCheckCircle className="w-6 h-6" />,
+      trend: { value: 0.8, isPositive: true },
+      color: 'success' as const,
+      roles: [UserRole.ADMIN, UserRole.MANAGER],
+      onClick: () => navigate('/dashboard/employees'),
     },
     {
       title: 'My Collections',
@@ -247,7 +359,19 @@ const DashboardPage = () => {
         animate="visible"
         className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-6 gap-3 sm:gap-4 lg:gap-6"
       >
-        {filteredStats.length > 0 ? (
+        {loading ? (
+          // Loading skeleton
+          Array.from({ length: 6 }).map((_, index) => (
+            <motion.div key={index} variants={itemVariants}>
+              <Card>
+                <div className="animate-pulse">
+                  <div className="h-4 bg-slate-200 dark:bg-slate-700 rounded w-3/4 mb-3"></div>
+                  <div className="h-8 bg-slate-200 dark:bg-slate-700 rounded w-1/2"></div>
+                </div>
+              </Card>
+            </motion.div>
+          ))
+        ) : filteredStats.length > 0 ? (
           filteredStats.map((stat) => (
             <motion.div key={stat.title} variants={itemVariants}>
               <StatsCard {...stat} />
