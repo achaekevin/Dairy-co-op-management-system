@@ -16,11 +16,18 @@ function App() {
             style: {
               background: 'var(--toast-bg)',
               color: 'var(--toast-color)',
+              zIndex: 99999,
+              boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)',
+              border: '1px solid rgba(255, 255, 255, 0.1)',
             },
             success: {
               iconTheme: {
                 primary: '#22c55e',
                 secondary: '#fff',
+              },
+              style: {
+                background: '#22c55e',
+                color: '#fff',
               },
             },
             error: {
@@ -28,7 +35,14 @@ function App() {
                 primary: '#ef4444',
                 secondary: '#fff',
               },
+              style: {
+                background: '#ef4444',
+                color: '#fff',
+              },
             },
+          }}
+          containerStyle={{
+            zIndex: 99999,
           }}
         />
       </ThemeProvider>
