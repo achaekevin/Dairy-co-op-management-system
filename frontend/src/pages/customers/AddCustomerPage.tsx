@@ -51,10 +51,10 @@ const AddCustomerPage = () => {
         address: formData.address,
         city: formData.city,
         state: formData.state,
-        pinCode: formData.pinCode,
+        pinCode: formData.pinCode || undefined,
         gstNumber: formData.gstNumber || undefined,
-        creditLimit: parseFloat(formData.creditLimit) || 0,
-        creditDays: parseInt(formData.creditDays, 10) || 0,
+        creditLimit: formData.creditLimit ? parseFloat(formData.creditLimit) : 0,
+        creditDays: formData.creditDays ? parseInt(formData.creditDays, 10) : 0,
       };
 
       const response = await customerService.create(customerData);
@@ -165,7 +165,7 @@ const AddCustomerPage = () => {
                   name="gstNumber"
                   value={formData.gstNumber}
                   onChange={handleChange}
-                  placeholder="GST123456789"
+                  placeholder="GST123456789 (optional)"
                 />
               </FormField>
             </div>
@@ -210,13 +210,12 @@ const AddCustomerPage = () => {
                 />
               </FormField>
 
-              <FormField label="PIN Code" required>
+              <FormField label="PIN Code">
                 <Input
                   name="pinCode"
                   value={formData.pinCode}
                   onChange={handleChange}
-                  placeholder="400001"
-                  required
+                  placeholder="400001 (optional)"
                 />
               </FormField>
             </div>
@@ -227,7 +226,7 @@ const AddCustomerPage = () => {
             <div className="flex items-center gap-2 mb-4">
               <HiBuildingOffice className="w-5 h-5 text-primary-600" />
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                Credit Details
+                Credit Details <span className="text-sm font-normal text-slate-500">(Optional)</span>
               </h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -237,7 +236,7 @@ const AddCustomerPage = () => {
                   type="number"
                   value={formData.creditLimit}
                   onChange={handleChange}
-                  placeholder="0"
+                  placeholder="0 (optional)"
                   min="0"
                 />
               </FormField>
@@ -248,7 +247,7 @@ const AddCustomerPage = () => {
                   type="number"
                   value={formData.creditDays}
                   onChange={handleChange}
-                  placeholder="0"
+                  placeholder="0 (optional)"
                   min="0"
                 />
               </FormField>

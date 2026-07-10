@@ -11,10 +11,10 @@ export interface CreateCustomerData {
   address: string;
   city: string;
   state: string;
-  pinCode: string;
+  pinCode?: string;
   gstNumber?: string;
-  creditLimit: number;
-  creditDays: number;
+  creditLimit?: number;
+  creditDays?: number;
 }
 
 export interface CustomerFilters {
