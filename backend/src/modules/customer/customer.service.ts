@@ -7,10 +7,15 @@ import { Customer } from '@prisma/client';
 
 class CustomerService {
   async createCustomer(tenantId: string, data: CreateCustomerData): Promise<Customer> {
+    if (!data.customerId) {
+      const count = await customerRepository.count(tenantId, {});
+      data.customerId = `CUST-${String(count + 1).padStart(6, '0')}`;
+    }
+
     const existing = await customerRepository.findByCustomerId(data.customerId, tenantId);
     if (existing) throw new ConflictError('Customer ID already exists');
 
-    const customer = await customerRepository.create(tenantId, data);
+    const customer = await customerRepository.create(tenantId, data as Required<CreateCustomerData>);
     await cacheService.deletePattern(`customers:${tenantId}:*`);
     return customer;
   }

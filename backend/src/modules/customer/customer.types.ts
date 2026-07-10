@@ -1,5 +1,5 @@
 export interface CreateCustomerData {
-  customerId: string;
+  customerId?: string;
   customerName: string;
   businessName?: string;
   customerType: 'RETAIL' | 'WHOLESALE' | 'DISTRIBUTOR' | 'INSTITUTION';

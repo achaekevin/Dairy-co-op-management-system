@@ -2,6 +2,7 @@ import api from './api';
 import type { ApiResponse, Customer, Sale } from '../types';
 
 export interface CreateCustomerData {
+  customerId?: string;
   customerName: string;
   businessName?: string;
   customerType: 'RETAIL' | 'WHOLESALE' | 'DISTRIBUTOR' | 'INSTITUTION';

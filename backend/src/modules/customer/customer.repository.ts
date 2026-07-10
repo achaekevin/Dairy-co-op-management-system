@@ -7,7 +7,17 @@ class CustomerRepository {
     return prisma.customer.create({
       data: {
         tenantId,
-        ...data,
+        customerId: data.customerId as string,
+        customerName: data.customerName,
+        businessName: data.businessName,
+        customerType: data.customerType,
+        phoneNumber: data.phoneNumber,
+        email: data.email,
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        pinCode: data.pinCode,
+        gstNumber: data.gstNumber,
         status: 'ACTIVE',
         creditLimit: data.creditLimit || 0,
         creditDays: data.creditDays || 0,
