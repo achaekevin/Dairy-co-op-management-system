@@ -49,7 +49,8 @@ const ProductsPage = () => {
         limit: 50,
       });
       if (response.success && response.data) {
-        setProducts(Array.isArray(response.data) ? response.data : []);
+        const productsData = response.data.data || response.data;
+        setProducts(Array.isArray(productsData) ? productsData : []);
       }
     } catch (error) {
       toast.error('Failed to load products');
