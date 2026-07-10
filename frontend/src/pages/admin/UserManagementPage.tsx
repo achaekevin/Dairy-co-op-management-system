@@ -255,7 +255,7 @@ const UserManagementPage = () => {
     }
   };
 
-  const getRoleBadgeVariant = (role: UserRole): 'success' | 'info' | 'warning' | 'error' | 'default' => {
+  const getRoleBadgeVariant = (role: UserRole): 'success' | 'info' | 'warning' | 'error' | 'primary' | 'secondary' => {
     switch (role) {
       case 'ADMIN':
         return 'error';
@@ -266,13 +266,14 @@ const UserManagementPage = () => {
       case 'OPERATOR':
       case 'STORE_MANAGER':
       case 'VETERINARIAN':
-        return 'default';
+      case 'VIEWER':
+        return 'secondary';
       case 'FARMER':
         return 'success';
       case 'CUSTOMER':
         return 'info';
       default:
-        return 'default';
+        return 'secondary';
     }
   };
 
