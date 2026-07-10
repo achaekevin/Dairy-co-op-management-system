@@ -44,6 +44,11 @@ import CustomersPage from '../pages/customers/CustomersPage';
 import AddCustomerPage from '../pages/customers/AddCustomerPage';
 import CustomerDashboardPage from '../pages/customer-portal/CustomerDashboardPage';
 import ProductsPage from '../pages/customer-portal/ProductsPage';
+import OrderHistoryPage from '../pages/customer-portal/OrderHistoryPage';
+import OrderTrackingPage from '../pages/customer-portal/OrderTrackingPage';
+import InvoicesPage from '../pages/customer-portal/InvoicesPage';
+import PaymentsPage from '../pages/customer-portal/PaymentsPage';
+import ProfilePage from '../pages/customer-portal/ProfilePage';
 import MeetingsPage from '../pages/meetings/MeetingsPage';
 import ReportsPage from '../pages/reports/ReportsPage';
 import AnalyticsPage from '../pages/analytics/AnalyticsPage';
@@ -402,6 +407,30 @@ export const router = createBrowserRouter([
       {
         path: 'customer-portal/products',
         element: <ProductsPage />,
+      },
+      {
+        path: 'customer-portal/orders',
+        element: <OrderHistoryPage />,
+      },
+      {
+        path: 'customer-portal/orders/:orderNumber',
+        element: <OrderTrackingPage />,
+      },
+      {
+        path: 'customer-portal/invoices',
+        element: <InvoicesPage />,
+      },
+      {
+        path: 'customer-portal/invoices/:orderId',
+        element: <InvoicesPage />,
+      },
+      {
+        path: 'customer-portal/payments',
+        element: <PaymentsPage />,
+      },
+      {
+        path: 'customer-portal/profile',
+        element: <ProfilePage />,
       },
       {
         path: 'meetings',
