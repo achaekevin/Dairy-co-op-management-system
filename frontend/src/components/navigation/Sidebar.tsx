@@ -130,7 +130,7 @@ const Sidebar = () => {
         className={cn(
           'flex items-center gap-3 px-3 py-2.5 rounded-xl transition-all duration-200 min-h-[44px] group relative',
           active
-            ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-md'
+            ? 'bg-gradient-to-r from-primary-600 to-primary-700 text-white shadow-lg'
             : 'hover:bg-primary-50 dark:hover:bg-primary-900/20 text-slate-900 dark:text-slate-100 hover:text-primary-700 dark:hover:text-primary-400',
           isCollapsed && 'justify-center',
           level > 0 && !isCollapsed && 'pl-6'
@@ -154,12 +154,12 @@ const Sidebar = () => {
         </div>
         {!isCollapsed && (
           <>
-            <span className="flex-1 text-sm font-medium truncate">{item.label}</span>
+            <span className={cn("flex-1 text-sm font-semibold truncate", active ? "text-white" : "")}>{item.label}</span>
             {item.badge && (
               <span className={cn(
                 "px-2 py-0.5 rounded-full text-xs font-semibold flex-shrink-0",
                 active 
-                  ? "bg-white/20 text-white" 
+                  ? "bg-white text-primary-700" 
                   : "bg-error-100 dark:bg-error-900/30 text-error-700 dark:text-error-400"
               )}>
                 {item.badge}
