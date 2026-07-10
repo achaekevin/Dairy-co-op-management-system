@@ -23,13 +23,22 @@ interface CartItem extends Product {
   quantity: number;
 }
 
+const CART_STORAGE_KEY = 'dairy_coop_cart';
+
 const ProductsPage = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<{ value: string; label: string }[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [isLoading, setIsLoading] = useState(false);
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const [cart, setCart] = useState<CartItem[]>(() => {
+    try {
+      const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+      return savedCart ? JSON.parse(savedCart) : [];
+    } catch {
+      return [];
+    }
+  });
   const [showCart, setShowCart] = useState(false);
   const [showCheckout, setShowCheckout] = useState(false);
   const [deliveryAddress, setDeliveryAddress] = useState('');
@@ -39,6 +48,10 @@ const ProductsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalProducts, setTotalProducts] = useState(0);
   const itemsPerPage = 12;
+
+  useEffect(() => {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+  }, [cart]);
 
   useEffect(() => {
     setCurrentPage(1);
@@ -154,6 +167,7 @@ const ProductsPage = () => {
       if (response.success) {
         toast.success('Order placed successfully!');
         setCart([]);
+        localStorage.removeItem(CART_STORAGE_KEY);
         setShowCheckout(false);
         setShowCart(false);
         setDeliveryAddress('');
