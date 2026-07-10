@@ -19,6 +19,14 @@ dist/
 .env.test.local
 .env.production.local
 
+# Security - Never commit these
+**/.env
+**/USER_ACCOUNTS.md
+**/*credentials*
+**/*secrets*
+**/config/local.js
+**/config/local.json
+
 # IDE
 .vscode/
 .idea/

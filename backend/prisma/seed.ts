@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
+const DEFAULT_PASSWORD = process.env.SEED_DEFAULT_PASSWORD || 'TempPass@2026!';
+
 async function main() {
   const defaultTenant = await prisma.tenant.upsert({
     where: { subdomain: 'default' },
@@ -18,7 +20,7 @@ async function main() {
   const users = [
     {
       email: 'admin@dairycoop.com',
-      password: 'Admin@123',
+      password: process.env.ADMIN_PASSWORD || DEFAULT_PASSWORD,
       firstName: 'Admin',
       lastName: 'User',
       role: 'ADMIN',
@@ -26,7 +28,7 @@ async function main() {
     },
     {
       email: 'manager@dairycoop.com',
-      password: 'Manager@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'John',
       lastName: 'Kamau',
       role: 'MANAGER',
@@ -34,7 +36,7 @@ async function main() {
     },
     {
       email: 'collection@dairycoop.com',
-      password: 'Collection@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'Peter',
       lastName: 'Mwangi',
       role: 'OPERATOR',
@@ -42,7 +44,7 @@ async function main() {
     },
     {
       email: 'accountant@dairycoop.com',
-      password: 'Accountant@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'Jane',
       lastName: 'Wanjiku',
       role: 'ACCOUNTANT',
@@ -50,7 +52,7 @@ async function main() {
     },
     {
       email: 'store@dairycoop.com',
-      password: 'Store@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'David',
       lastName: 'Ochieng',
       role: 'STORE_MANAGER',
@@ -58,7 +60,7 @@ async function main() {
     },
     {
       email: 'vet@dairycoop.com',
-      password: 'Vet@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'Dr. Sarah',
       lastName: 'Njeri',
       role: 'VETERINARIAN',
@@ -66,7 +68,7 @@ async function main() {
     },
     {
       email: 'farmer@dairycoop.com',
-      password: 'Farmer@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'James',
       lastName: 'Kiprop',
       role: 'FARMER',
@@ -74,13 +76,17 @@ async function main() {
     },
     {
       email: 'customer@dairycoop.com',
-      password: 'Customer@123',
+      password: DEFAULT_PASSWORD,
       firstName: 'Mary',
       lastName: 'Achieng',
       role: 'CUSTOMER',
       phoneNumber: '+254700000008',
     },
   ];
+
+  console.log('🔐 Seeding users with secure passwords...');
+  console.log('⚠️  Default password:', DEFAULT_PASSWORD);
+  console.log('💡 Change passwords after first login!');
 
   for (const userData of users) {
     const hashedPassword = await bcrypt.hash(userData.password, 12);
