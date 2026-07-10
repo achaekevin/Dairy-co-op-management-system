@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import {
   HiUser,
   HiMapPin,
-  HiCreditCard,
   HiPencil,
   HiPlus,
   HiTrash,
@@ -194,7 +193,7 @@ const ProfilePage = () => {
                 <p className="text-sm text-slate-600 dark:text-slate-400">{profile.businessName}</p>
               )}
               <div className="flex items-center gap-2 mt-1">
-                <Badge variant={profile.status === 'ACTIVE' ? 'success' : 'default'}>
+                <Badge variant={profile.status === 'ACTIVE' ? 'success' : 'info'}>
                   {profile.status}
                 </Badge>
                 <Badge variant="info">{profile.customerType}</Badge>

@@ -48,7 +48,7 @@ import OrderHistoryPage from '../pages/customer-portal/OrderHistoryPage';
 import OrderTrackingPage from '../pages/customer-portal/OrderTrackingPage';
 import InvoicesPage from '../pages/customer-portal/InvoicesPage';
 import PaymentsPage from '../pages/customer-portal/PaymentsPage';
-import ProfilePage from '../pages/customer-portal/ProfilePage';
+import CustomerProfilePage from '../pages/customer-portal/ProfilePage';
 import MeetingsPage from '../pages/meetings/MeetingsPage';
 import ReportsPage from '../pages/reports/ReportsPage';
 import AnalyticsPage from '../pages/analytics/AnalyticsPage';
@@ -430,7 +430,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'customer-portal/profile',
-        element: <ProfilePage />,
+        element: <CustomerProfilePage />,
       },
       {
         path: 'meetings',

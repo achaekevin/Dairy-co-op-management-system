@@ -73,7 +73,7 @@ const InvoicesPage = () => {
     toast.success(`Downloading invoice ${invoice.invoiceNumber}...`);
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): 'success' | 'warning' | 'error' | 'info' => {
     switch (status) {
       case 'PAID':
         return 'success';
@@ -82,7 +82,7 @@ const InvoicesPage = () => {
       case 'OVERDUE':
         return 'error';
       default:
-        return 'default';
+        return 'info';
     }
   };
 

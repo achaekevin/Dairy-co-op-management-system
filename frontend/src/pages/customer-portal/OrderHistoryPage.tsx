@@ -58,7 +58,7 @@ const OrderHistoryPage = () => {
     }
   };
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: string): 'success' | 'info' | 'warning' | 'error' => {
     switch (status) {
       case 'DELIVERED':
         return 'success';
@@ -70,11 +70,11 @@ const OrderHistoryPage = () => {
       case 'CANCELLED':
         return 'error';
       default:
-        return 'default';
+        return 'info';
     }
   };
 
-  const getPaymentStatusColor = (status: string) => {
+  const getPaymentStatusColor = (status: string): 'success' | 'warning' | 'error' => {
     switch (status) {
       case 'PAID':
         return 'success';
