@@ -25,11 +25,7 @@ const signupSchema = z.object({
   email: z.string().email('Invalid email address'),
   phone: z.string().min(10, 'Phone number must be at least 10 digits'),
   role: z.string().min(1, 'Please select a role'),
-  password: z.string().min(8, 'Password must be at least 8 characters')
-    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
-    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
-    .regex(/[0-9]/, 'Password must contain at least one number')
-    .regex(/[^A-Za-z0-9]/, 'Password must contain at least one special character'),
+  password: z.string().min(1, 'Password is required'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -338,11 +334,6 @@ const SignupPage = () => {
                 {errors.password && (
                   <p className="mt-1 text-sm text-red-600">{errors.password.message}</p>
                 )}
-                {!errors.password && (
-                  <p className="mt-1 text-xs text-slate-500">
-                    Must contain uppercase, lowercase, number, and special character
-                  </p>
-                )}
               </div>
 
               {/* Confirm Password */}
@@ -401,7 +392,7 @@ const SignupPage = () => {
                     {errors.email && <li>Valid email is required</li>}
                     {errors.phone && <li>Phone number is required</li>}
                     {errors.role && <li>Please select your role</li>}
-                    {errors.password && <li>Password must meet requirements</li>}
+                    {errors.password && <li>Password is required</li>}
                     {errors.confirmPassword && <li>Passwords must match</li>}
                   </ul>
                 </div>
