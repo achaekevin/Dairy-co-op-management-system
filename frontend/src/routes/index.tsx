@@ -14,7 +14,7 @@ import AccountLockedPage from '../pages/auth/AccountLockedPage';
 import DashboardPage from '../pages/dashboard/DashboardPage';
 import FarmersListPage from '../pages/farmers/FarmersListPage';
 import AddFarmerPage from '../pages/farmers/AddFarmerPage';
-import FarmerProfilePage from '../pages/farmers/FarmerProfilePage';
+import FarmerAdminProfilePage from '../pages/farmers/FarmerProfilePage';
 import MilkCollectionListPage from '../pages/milk-collection/MilkCollectionListPage';
 import AddCollectionPage from '../pages/milk-collection/AddCollectionPage';
 import CollectionDetailPage from '../pages/milk-collection/CollectionDetailPage';
@@ -50,6 +50,16 @@ import OrderTrackingPage from '../pages/customer-portal/OrderTrackingPage';
 import InvoicesPage from '../pages/customer-portal/InvoicesPage';
 import PaymentsPage from '../pages/customer-portal/PaymentsPage';
 import CustomerProfilePage from '../pages/customer-portal/ProfilePage';
+import FarmerDashboardPage from '../pages/farmer-portal/FarmerDashboardPage';
+import FarmerDeliveriesPage from '../pages/farmer-portal/DeliveriesPage';
+import FarmerPaymentsPage from '../pages/farmer-portal/PaymentsPage';
+import FarmerLoansPage from '../pages/farmer-portal/LoansPage';
+import FarmerApplyLoanPage from '../pages/farmer-portal/ApplyLoanPage';
+import FarmerSharesPage from '../pages/farmer-portal/SharesPage';
+import FarmerAnimalsPage from '../pages/farmer-portal/AnimalsPage';
+import FarmerProfilePage from '../pages/farmer-portal/FarmerProfilePage';
+import FarmerNotificationsPage from '../pages/farmer-portal/FarmerNotificationsPage';
+import RepaymentSchedulePage from '../pages/farmer-portal/RepaymentSchedulePage';
 import MeetingsPage from '../pages/meetings/MeetingsPage';
 import ReportsPage from '../pages/reports/ReportsPage';
 import AnalyticsPage from '../pages/analytics/AnalyticsPage';
@@ -271,7 +281,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'farmers/:id',
-        element: <FarmerProfilePage />,
+        element: <FarmerAdminProfilePage />,
       },
       {
         path: 'farmers/:id/edit',
@@ -436,6 +446,46 @@ export const router = createBrowserRouter([
       {
         path: 'customer-portal/profile',
         element: <CustomerProfilePage />,
+      },
+      {
+        path: 'farmer-portal',
+        element: <FarmerDashboardPage />,
+      },
+      {
+        path: 'farmer-portal/deliveries',
+        element: <FarmerDeliveriesPage />,
+      },
+      {
+        path: 'farmer-portal/payments',
+        element: <FarmerPaymentsPage />,
+      },
+      {
+        path: 'farmer-portal/loans',
+        element: <FarmerLoansPage />,
+      },
+      {
+        path: 'farmer-portal/loans/apply',
+        element: <FarmerApplyLoanPage />,
+      },
+      {
+        path: 'farmer-portal/loans/:loanId/repayment',
+        element: <RepaymentSchedulePage />,
+      },
+      {
+        path: 'farmer-portal/shares',
+        element: <FarmerSharesPage />,
+      },
+      {
+        path: 'farmer-portal/animals',
+        element: <FarmerAnimalsPage />,
+      },
+      {
+        path: 'farmer-portal/profile',
+        element: <FarmerProfilePage />,
+      },
+      {
+        path: 'farmer-portal/notifications',
+        element: <FarmerNotificationsPage />,
       },
       {
         path: 'meetings',

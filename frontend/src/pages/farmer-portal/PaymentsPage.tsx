@@ -135,7 +135,7 @@ const PaymentsPage = () => {
     {
       id: 'actions',
       header: 'Actions',
-      accessor: (row) => (
+      accessor: () => (
         <Button
           size="sm"
           variant="outline"
@@ -212,7 +212,7 @@ const PaymentsPage = () => {
             </div>
           ) : payments.length > 0 ? (
             <>
-              <Table columns={columns} data={payments} />
+              <Table columns={columns as any} data={payments as any} />
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <Button

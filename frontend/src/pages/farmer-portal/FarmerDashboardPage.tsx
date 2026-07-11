@@ -28,14 +28,6 @@ interface DashboardStats {
   unreadNotifications: number;
 }
 
-interface RecentActivity {
-  id: string;
-  type: string;
-  message: string;
-  date: string;
-  amount?: number;
-}
-
 const FarmerDashboardPage = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);

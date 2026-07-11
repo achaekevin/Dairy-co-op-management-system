@@ -12,7 +12,6 @@ import {
   HiEye,
   HiCheckCircle,
   HiClock,
-  HiXCircle,
 } from 'react-icons/hi2';
 import api from '../../services/api';
 import toast from 'react-hot-toast';
@@ -230,7 +229,7 @@ const LoansPage = () => {
             </div>
           ) : loans.length > 0 ? (
             <>
-              <Table columns={columns} data={loans} />
+              <Table columns={columns as any} data={loans as any} />
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <Button

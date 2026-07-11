@@ -261,7 +261,7 @@ const DeliveriesPage = () => {
             </div>
           ) : filteredDeliveries.length > 0 ? (
             <>
-              <Table columns={columns} data={filteredDeliveries} />
+              <Table columns={columns as any} data={filteredDeliveries as any} />
               {totalPages > 1 && (
                 <div className="flex items-center justify-center gap-2 mt-4">
                   <Button

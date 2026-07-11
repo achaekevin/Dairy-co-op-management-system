@@ -13,6 +13,7 @@ import {
   HiUser,
   HiPhone,
   HiUserGroup,
+  HiCheckCircle,
 } from 'react-icons/hi2';
 import { authService } from '../../services/authService';
 import toast from 'react-hot-toast';
