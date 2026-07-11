@@ -12,7 +12,6 @@ import {
   HiBeaker,
   HiUser,
   HiPhone,
-  HiCheckCircle,
   HiUserGroup,
 } from 'react-icons/hi2';
 import { authService } from '../../services/authService';
@@ -55,7 +54,6 @@ const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   const {
     register,
@@ -73,13 +71,8 @@ const SignupPage = () => {
       const response = await authService.register(registerData);
       
       if (response.success) {
-        setShowSuccessModal(true);
-        toast.success('Account created successfully! Redirecting to login...');
-        
-        // Redirect to login after showing success modal
-        setTimeout(() => {
-          navigate('/login', { replace: true });
-        }, 2000);
+        toast.success('Account created successfully! Please login to continue.');
+        navigate('/login', { replace: true });
       } else {
         toast.error(response.message || 'Registration failed');
       }
@@ -428,33 +421,6 @@ const SignupPage = () => {
           </motion.div>
         </div>
       </div>
-
-      {/* Success Modal */}
-      {showSuccessModal && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white rounded-3xl p-8 max-w-md w-full text-center"
-          >
-            <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <HiCheckCircle className="w-12 h-12 text-green-600" />
-            </div>
-            <h3 className="text-2xl font-bold text-slate-900 mb-3">
-              Account Created Successfully!
-            </h3>
-            <p className="text-slate-600 mb-6">
-              Your account has been created. You will be redirected to the login page to sign in.
-            </p>
-            <Button
-              onClick={() => navigate('/login', { replace: true })}
-              className="w-full"
-            >
-              Go to Login
-            </Button>
-          </motion.div>
-        </div>
-      )}
     </div>
   );
 };
