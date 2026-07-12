@@ -1,99 +1,105 @@
-import { cn } from '../../utils/cn';
+import { motion } from 'framer-motion';
 
-export interface SkeletonProps {
-  variant?: 'text' | 'rectangular' | 'circular' | 'card' | 'table';
+interface SkeletonProps {
+  className?: string;
+  variant?: 'text' | 'circular' | 'rectangular';
   width?: string | number;
   height?: string | number;
-  count?: number;
-  className?: string;
+  animate?: boolean;
 }
 
 const Skeleton = ({
+  className = '',
   variant = 'text',
   width,
   height,
-  count = 1,
-  className,
+  animate = true,
 }: SkeletonProps) => {
-  const baseClasses = 'animate-pulse bg-slate-200 dark:bg-slate-700';
-
+  const baseClasses = 'bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 dark:from-slate-700 dark:via-slate-600 dark:to-slate-700';
+  
   const variantClasses = {
-    text: 'h-4 rounded',
-    rectangular: 'rounded-lg',
+    text: 'rounded',
     circular: 'rounded-full',
-    card: 'h-64 rounded-lg',
-    table: 'h-12 rounded',
+    rectangular: 'rounded-lg',
   };
 
-  const skeletonElement = (
-    <div
-      className={cn(
-        baseClasses,
-        variantClasses[variant],
-        className
-      )}
-      style={{
-        width: width || (variant === 'circular' ? height : '100%'),
-        height: height || undefined,
-      }}
-    />
-  );
+  const style: React.CSSProperties = {
+    width: width || (variant === 'text' ? '100%' : undefined),
+    height: height || (variant === 'text' ? '1em' : undefined),
+  };
 
-  if (count === 1) {
-    return skeletonElement;
+  if (animate) {
+    return (
+      <motion.div
+        className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+        style={style}
+        animate={{
+          backgroundPosition: ['200% 0', '-200% 0'],
+        }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: 'linear',
+        }}
+      />
+    );
   }
 
   return (
-    <>
-      {Array.from({ length: count }).map((_, index) => (
-        <div key={index} className="mb-2 last:mb-0">
-          {skeletonElement}
+    <div
+      className={`${baseClasses} ${variantClasses[variant]} ${className}`}
+      style={style}
+    />
+  );
+};
+
+export const TableSkeleton = ({ rows = 5 }: { rows?: number }) => {
+  return (
+    <div className="space-y-3">
+      {Array.from({ length: rows }).map((_, i) => (
+        <div key={i} className="flex items-center gap-4">
+          <Skeleton variant="circular" width={40} height={40} />
+          <div className="flex-1 space-y-2">
+            <Skeleton width="60%" height={16} />
+            <Skeleton width="40%" height={12} />
+          </div>
+          <Skeleton width={80} height={32} variant="rectangular" />
         </div>
       ))}
-    </>
+    </div>
+  );
+};
+
+export const CardSkeleton = () => {
+  return (
+    <div className="p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm space-y-4">
+      <div className="flex items-start justify-between">
+        <div className="space-y-2 flex-1">
+          <Skeleton width="60%" height={24} />
+          <Skeleton width="40%" height={16} />
+        </div>
+        <Skeleton variant="circular" width={48} height={48} />
+      </div>
+      <Skeleton width="100%" height={100} variant="rectangular" />
+      <div className="flex gap-3">
+        <Skeleton width="30%" height={36} variant="rectangular" />
+        <Skeleton width="30%" height={36} variant="rectangular" />
+      </div>
+    </div>
+  );
+};
+
+export const StatCardSkeleton = () => {
+  return (
+    <div className="p-6 bg-white dark:bg-slate-800 rounded-xl shadow-sm space-y-3">
+      <div className="flex items-center justify-between">
+        <Skeleton width="50%" height={16} />
+        <Skeleton variant="circular" width={40} height={40} />
+      </div>
+      <Skeleton width="70%" height={32} />
+      <Skeleton width="40%" height={14} />
+    </div>
   );
 };
 
 export default Skeleton;
-
-// Preset skeleton loaders
-export const SkeletonCard = ({ className }: { className?: string }) => (
-  <div className={cn('p-4 border border-slate-200 dark:border-slate-700 rounded-lg', className)}>
-    <Skeleton variant="rectangular" height={192} className="mb-4" />
-    <Skeleton variant="text" className="mb-2" />
-    <Skeleton variant="text" width="60%" />
-  </div>
-);
-
-export const SkeletonTable = ({ rows = 5, columns = 5 }: { rows?: number; columns?: number }) => (
-  <div className="space-y-2">
-    {/* Header */}
-    <div className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
-      {Array.from({ length: columns }).map((_, i) => (
-        <Skeleton key={`header-${i}`} variant="text" height={20} />
-      ))}
-    </div>
-    {/* Rows */}
-    {Array.from({ length: rows }).map((_, rowIndex) => (
-      <div key={`row-${rowIndex}`} className="grid gap-4" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
-        {Array.from({ length: columns }).map((_, colIndex) => (
-          <Skeleton key={`cell-${rowIndex}-${colIndex}`} variant="text" />
-        ))}
-      </div>
-    ))}
-  </div>
-);
-
-export const SkeletonList = ({ count = 5 }: { count?: number }) => (
-  <div className="space-y-3">
-    {Array.from({ length: count }).map((_, index) => (
-      <div key={index} className="flex items-center gap-3">
-        <Skeleton variant="circular" width={40} height={40} />
-        <div className="flex-1 space-y-2">
-          <Skeleton variant="text" width="70%" />
-          <Skeleton variant="text" width="40%" />
-        </div>
-      </div>
-    ))}
-  </div>
-);
