@@ -350,7 +350,10 @@ const ComponentLibraryPage = () => {
               <Alert variant="info" title="Info" message="Here's some helpful information" />
 
               <div className="pt-4 border-t border-slate-200 dark:border-slate-700">
-                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Toasts</h4>
+                <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-3">Toasts with Auto-dismiss</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-3">
+                  Toasts automatically dismiss after 5 seconds. Click to trigger notifications.
+                </p>
                 <div className="flex flex-wrap gap-3">
                   <Button onClick={() => addToast('success')} size="sm">Success Toast</Button>
                   <Button onClick={() => addToast('error')} size="sm" variant="danger">Error Toast</Button>
