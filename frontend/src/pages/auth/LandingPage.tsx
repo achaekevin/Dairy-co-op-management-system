@@ -23,6 +23,7 @@ import NewsSection from '../../components/landing/NewsSection';
 import FaqSection from '../../components/landing/FaqSection';
 import ContactSection from '../../components/landing/ContactSection';
 import Footer from '../../components/landing/Footer';
+import ScrollToTopButton from '../../components/landing/ScrollToTopButton';
 
 const LandingPage = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
@@ -262,6 +263,9 @@ const LandingPage = () => {
       >
         <HiSparkles className="w-6 h-6" />
       </motion.button>
+
+      {/* Scroll To Top Button */}
+      <ScrollToTopButton />
 
       {/* Login Modal */}
       {showLoginModal && (
