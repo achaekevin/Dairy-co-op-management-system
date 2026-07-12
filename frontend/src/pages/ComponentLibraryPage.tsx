@@ -428,16 +428,35 @@ const ComponentLibraryPage = () => {
         <Card>
           <CardHeader>
             <CardTitle>Skeleton</CardTitle>
-            <CardDescription>Loading placeholders</CardDescription>
+            <CardDescription>Loading placeholders with shimmer effects</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="space-y-4">
-              <Skeleton height={40} />
-              <Skeleton height={100} />
-              <div className="grid grid-cols-3 gap-4">
-                <Skeleton height={80} />
-                <Skeleton height={80} />
-                <Skeleton height={80} />
+            <div className="space-y-6">
+              <div>
+                <h4 className="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">Text Skeletons</h4>
+                <div className="space-y-2">
+                  <Skeleton variant="text" width="100%" height={20} />
+                  <Skeleton variant="text" width="80%" height={20} />
+                  <Skeleton variant="text" width="60%" height={20} />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">Circular Skeletons</h4>
+                <div className="flex gap-4">
+                  <Skeleton variant="circular" width={40} height={40} />
+                  <Skeleton variant="circular" width={60} height={60} />
+                  <Skeleton variant="circular" width={80} height={80} />
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-sm font-semibold mb-3 text-slate-700 dark:text-slate-300">Rectangular Skeletons</h4>
+                <div className="grid grid-cols-3 gap-4">
+                  <Skeleton variant="rectangular" width="100%" height={100} />
+                  <Skeleton variant="rectangular" width="100%" height={100} />
+                  <Skeleton variant="rectangular" width="100%" height={100} />
+                </div>
               </div>
             </div>
           </CardContent>
