@@ -6,6 +6,8 @@ import { useThemeStore } from '../../store/themeStore';
 import { useAuthStore } from '../../store/authStore';
 import { authService } from '../../services/authService';
 import NotificationPanel from './NotificationPanel';
+import KeyboardShortcutsModal from '../ui/KeyboardShortcutsModal';
+import { useGlobalShortcuts } from '../../hooks/useKeyboardShortcut';
 import {
   HiBars3,
   HiMagnifyingGlass,
@@ -16,6 +18,7 @@ import {
   HiUser,
   HiArrowRightOnRectangle,
   HiSparkles,
+  HiCommandLine,
 } from 'react-icons/hi2';
 import { cn } from '../../utils/cn';
 
@@ -27,6 +30,13 @@ const Header = () => {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [showShortcuts, setShowShortcuts] = useState(false);
+
+  useGlobalShortcuts({
+    'ctrl+/': () => setShowShortcuts(!showShortcuts),
+    'ctrl+b': () => toggleCollapse(),
+    'ctrl+h': () => navigate('/dashboard'),
+  });
 
   const handleLogout = async () => {
     try {
@@ -98,6 +108,16 @@ const Header = () => {
 
           {/* Right Section */}
           <div className="flex items-center gap-2 flex-shrink-0">
+            {/* Keyboard Shortcuts */}
+            <button
+              onClick={() => setShowShortcuts(true)}
+              className="hidden lg:flex p-2.5 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-xl transition-all duration-200 hover:scale-110 flex-shrink-0 group"
+              aria-label="Keyboard shortcuts"
+              title="Keyboard shortcuts (Ctrl + /)"
+            >
+              <HiCommandLine className="w-5 h-5 text-slate-700 dark:text-slate-200" />
+            </button>
+
             {/* Theme Toggle */}
             <button
               onClick={toggleTheme}
@@ -202,6 +222,12 @@ const Header = () => {
       <NotificationPanel
         isOpen={showNotifications}
         onClose={() => setShowNotifications(false)}
+      />
+
+      {/* Keyboard Shortcuts Modal */}
+      <KeyboardShortcutsModal
+        isOpen={showShortcuts}
+        onClose={() => setShowShortcuts(false)}
       />
     </>
   );
